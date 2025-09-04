@@ -1,5 +1,6 @@
 package com.williamsilva.algashop.ordering.domain.entity;
 
+import com.williamsilva.algashop.ordering.domain.exception.OrderStatusCannotBeChangedException;
 import com.williamsilva.algashop.ordering.domain.valueobjects.CustomerId;
 import com.williamsilva.algashop.ordering.domain.valueobjects.Money;
 import com.williamsilva.algashop.ordering.domain.valueobjects.ProductName;
@@ -84,4 +85,19 @@ class OrderTest {
 
     }
 
+    @Test
+    void givenDraftOrder_whenPlace_shouldChangeToPlaced() {
+        Order order = Order.draft(new CustomerId());
+        order.place();
+        Assertions.assertThat(order.isPlaced()).isTrue();
+    }
+
+    @Test
+    void givenPlacedOrder_whenTryToPlace_shouldGenerateException() {
+        Order order = Order.draft(new CustomerId());
+        order.place();
+
+        Assertions.assertThatExceptionOfType(OrderStatusCannotBeChangedException.class)
+                .isThrownBy(order::place);
+    }
 }
