@@ -118,8 +118,13 @@ public class Order {
             throw new OrderCannotBePlacedException(this.id());
         }
 
-        this.changeStatus(OrderStatus.PLACED);
         this.setPlacedAt(OffsetDateTime.now());
+        this.changeStatus(OrderStatus.PLACED);
+    }
+
+    public void markAsPaid() {
+        this.setPaidAt(OffsetDateTime.now());
+        this.changeStatus(OrderStatus.PAID);
     }
 
     public void changePaymentMethod(PaymentMethod paymentMethod) {
@@ -152,6 +157,10 @@ public class Order {
 
     public boolean isPlaced() {
         return OrderStatus.PLACED.equals(this.status());
+    }
+
+    public boolean isPaid() {
+        return OrderStatus.PAID.equals(this.status());
     }
 
     public OrderId id() {
@@ -215,7 +224,7 @@ public class Order {
     }
 
     private void recalculateTotals() {
-        BigDecimal totalItemsAmount = this.items.stream()
+        BigDecimal totalItemsAmount = this.items().stream()
                 .map(i -> i.totalAmount().value())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
@@ -241,7 +250,6 @@ public class Order {
         if (this.status().canNotChangeTo(newStatus)) {
             throw new OrderStatusCannotBeChangedException(this.id(), this.status(), newStatus);
         }
-
         this.setStatus(newStatus);
     }
 
