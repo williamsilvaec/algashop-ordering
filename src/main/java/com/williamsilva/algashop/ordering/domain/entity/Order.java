@@ -1,10 +1,17 @@
 package com.williamsilva.algashop.ordering.domain.entity;
 
 import com.williamsilva.algashop.ordering.domain.exception.OrderCannotBePlacedException;
+import com.williamsilva.algashop.ordering.domain.exception.OrderDoesNotContainOrderItemException;
 import com.williamsilva.algashop.ordering.domain.exception.OrderInvalidShippingDeliveryDateException;
 import com.williamsilva.algashop.ordering.domain.exception.OrderStatusCannotBeChangedException;
-import com.williamsilva.algashop.ordering.domain.valueobjects.*;
+import com.williamsilva.algashop.ordering.domain.valueobjects.BillingInfo;
+import com.williamsilva.algashop.ordering.domain.valueobjects.CustomerId;
+import com.williamsilva.algashop.ordering.domain.valueobjects.Money;
+import com.williamsilva.algashop.ordering.domain.valueobjects.ProductName;
+import com.williamsilva.algashop.ordering.domain.valueobjects.Quantity;
+import com.williamsilva.algashop.ordering.domain.valueobjects.ShippingInfo;
 import com.williamsilva.algashop.ordering.domain.valueobjects.id.OrderId;
+import com.williamsilva.algashop.ordering.domain.valueobjects.id.OrderItemId;
 import com.williamsilva.algashop.ordering.domain.valueobjects.id.ProductId;
 import lombok.Builder;
 
@@ -141,6 +148,22 @@ public class Order {
         this.setExpectedDeliveryDate(expectedDeliveryDate);
     }
 
+    public void changeItemQuantity(OrderItemId orderItemId, Quantity quantity) {
+        Objects.requireNonNull(orderItemId);
+        Objects.requireNonNull(quantity);
+
+        OrderItem orderItem = this.findOrderItem(orderItemId);
+        orderItem.changeQuantity(quantity);
+        this.recalculateTotals();
+    }
+
+    private OrderItem findOrderItem(OrderItemId orderItemId) {
+        return this.items().stream()
+                .filter(orderItem -> orderItem.id().equals(orderItemId))
+                .findFirst()
+                .orElseThrow(() -> new OrderDoesNotContainOrderItemException(this.id(), orderItemId));
+    }
+
     public boolean isDraft() {
         return OrderStatus.DRAFT.equals(this.status());
     }
@@ -221,7 +244,7 @@ public class Order {
                 .reduce(0, Integer::sum);
 
         BigDecimal shippingCost;
-        if(this.shippingCost() == null) {
+        if (this.shippingCost() == null) {
             shippingCost = BigDecimal.ZERO;
         } else {
             shippingCost = this.shippingCost.value();
