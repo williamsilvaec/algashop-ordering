@@ -107,17 +107,7 @@ public class Order {
     }
 
     public void place() {
-        Objects.requireNonNull(this.shipping());
-        Objects.requireNonNull(this.billing());
-        Objects.requireNonNull(this.expectedDeliveryDate());
-        Objects.requireNonNull(this.shippingCost());
-        Objects.requireNonNull(this.paymentMethod());
-        Objects.requireNonNull(this.items());
-
-        if (this.items().isEmpty()) {
-            throw new OrderCannotBePlacedException(this.id());
-        }
-
+        this.verifyIfCanChangeToPlaced();
         this.setPlacedAt(OffsetDateTime.now());
         this.changeStatus(OrderStatus.PLACED);
     }
@@ -224,16 +214,14 @@ public class Order {
     }
 
     private void recalculateTotals() {
-        BigDecimal totalItemsAmount = this.items().stream()
-                .map(i -> i.totalAmount().value())
+        BigDecimal totalItemsAmount = this.items().stream().map(i -> i.totalAmount().value())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        Integer totalItemsQuantity = this.items().stream()
-                .map(i -> i.quantity().value())
+        Integer totalItemsQuantity = this.items().stream().map(i -> i.quantity().value())
                 .reduce(0, Integer::sum);
 
         BigDecimal shippingCost;
-        if (this.shippingCost() == null) {
+        if(this.shippingCost() == null) {
             shippingCost = BigDecimal.ZERO;
         } else {
             shippingCost = this.shippingCost.value();
@@ -251,6 +239,27 @@ public class Order {
             throw new OrderStatusCannotBeChangedException(this.id(), this.status(), newStatus);
         }
         this.setStatus(newStatus);
+    }
+
+    private void verifyIfCanChangeToPlaced() {
+        if (this.shipping() == null) {
+            throw OrderCannotBePlacedException.noShippingInfo(this.id());
+        }
+        if (this.billing() == null) {
+            throw OrderCannotBePlacedException.noBillingInfo(this.id());
+        }
+        if (this.paymentMethod() == null) {
+            throw OrderCannotBePlacedException.noPaymentMethod(this.id());
+        }
+        if (this.shippingCost() == null) {
+            throw OrderCannotBePlacedException.invalidShippingCost(this.id());
+        }
+        if (this.expectedDeliveryDate() == null) {
+            throw OrderCannotBePlacedException.invalidExpectedDeliveryDate(this.id());
+        }
+        if (this.items() == null || this.items().isEmpty()) {
+            throw OrderCannotBePlacedException.noItems(this.id());
+        }
     }
 
     private void setId(OrderId id) {
@@ -330,4 +339,5 @@ public class Order {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
 }
