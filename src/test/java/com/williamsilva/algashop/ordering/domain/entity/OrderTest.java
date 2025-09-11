@@ -13,21 +13,17 @@ import java.util.Set;
 class OrderTest {
 
     @Test
-    void shouldGenerate() {
+    public void shouldGenerate() {
         Order order = Order.draft(new CustomerId());
     }
 
     @Test
-    void shouldAddItem() {
+    public void shouldAddItem() {
         Order order = Order.draft(new CustomerId());
-        ProductId productId = new ProductId();
+        Product product = ProductTestDataBuilder.aProductAltMousePad().build();
+        ProductId productId = product.id();
 
-        order.addItem(
-                productId,
-                new ProductName("Mouse pad"),
-                new Money("100"),
-                new Quantity(1)
-        );
+        order.addItem(product, new Quantity(1));
 
         Assertions.assertThat(order.items().size()).isEqualTo(1);
 
@@ -35,7 +31,7 @@ class OrderTest {
 
         Assertions.assertWith(orderItem,
                 (i) -> Assertions.assertThat(i.id()).isNotNull(),
-                (i) -> Assertions.assertThat(i.productName()).isEqualTo(new ProductName("Mouse pad")),
+                (i) -> Assertions.assertThat(i.productName()).isEqualTo(new ProductName("Mouse Pad")),
                 (i) -> Assertions.assertThat(i.productId()).isEqualTo(productId),
                 (i) -> Assertions.assertThat(i.price()).isEqualTo(new Money("100")),
                 (i) -> Assertions.assertThat(i.quantity()).isEqualTo(new Quantity(1))
@@ -43,16 +39,11 @@ class OrderTest {
     }
 
     @Test
-    void shouldGenerateExceptionWhenTryToChangeItemSet() {
+    public void shouldGenerateExceptionWhenTryToChangeItemSet() {
         Order order = Order.draft(new CustomerId());
-        ProductId productId = new ProductId();
+        Product product = ProductTestDataBuilder.aProductAltMousePad().build();
 
-        order.addItem(
-                productId,
-                new ProductName("Mouse pad"),
-                new Money("100"),
-                new Quantity(1)
-        );
+        order.addItem(product, new Quantity(1));
 
         Set<OrderItem> items = order.items();
 
@@ -61,37 +52,32 @@ class OrderTest {
     }
 
     @Test
-    void shouldCalculateTotals() {
+    public void shouldCalculateTotals() {
         Order order = Order.draft(new CustomerId());
-        ProductId productId = new ProductId();
 
         order.addItem(
-                productId,
-                new ProductName("Mouse pad"),
-                new Money("100"),
+                ProductTestDataBuilder.aProductAltMousePad().build(),
                 new Quantity(2)
         );
 
         order.addItem(
-                productId,
-                new ProductName("RAM Memory"),
-                new Money("50"),
+                ProductTestDataBuilder.aProductAltRamMemory().build(),
                 new Quantity(1)
         );
 
-        Assertions.assertThat(order.totalAmount()).isEqualTo(new Money("250"));
+        Assertions.assertThat(order.totalAmount()).isEqualTo(new Money("400"));
         Assertions.assertThat(order.totalItems()).isEqualTo(new Quantity(3));
     }
 
     @Test
-    void givenDraftOrder_whenPlace_shouldChangeToPlaced() {
+    public void givenDraftOrder_whenPlace_shouldChangeToPlaced() {
         Order order = OrderTestDataBuilder.anOrder().build();
         order.place();
         Assertions.assertThat(order.isPlaced()).isTrue();
     }
 
     @Test
-    void givenPlacedOrder_whenMarkAsPaid_shouldChangeToPaid() {
+    public void givenPlacedOrder_whenMarkAsPaid_shouldChangeToPaid() {
         Order order = OrderTestDataBuilder.anOrder().status(OrderStatus.PLACED).build();
         order.markAsPaid();
         Assertions.assertThat(order.isPaid()).isTrue();
@@ -99,21 +85,21 @@ class OrderTest {
     }
 
     @Test
-    void givenPlacedOrder_whenTryToPlace_shouldGenerateException() {
+    public void givenPlacedOrder_whenTryToPlace_shouldGenerateException() {
         Order order = OrderTestDataBuilder.anOrder().status(OrderStatus.PLACED).build();
         Assertions.assertThatExceptionOfType(OrderStatusCannotBeChangedException.class)
                 .isThrownBy(order::place);
     }
 
     @Test
-    void givenDraftOrder_whenChangePaymentMethod_shouldAllowChange() {
+    public void givenDraftOrder_whenChangePaymentMethod_shouldAllowChange() {
         Order order = Order.draft(new CustomerId());
         order.changePaymentMethod(PaymentMethod.CREDIT_CARD);
         Assertions.assertWith(order.paymentMethod()).isEqualTo(PaymentMethod.CREDIT_CARD);
     }
 
     @Test
-    void givenDraftOrder_whenChangeBillingInfo_shouldAllowChange() {
+    public void givenDraftOrder_whenChangeBillingInfo_shouldAllowChange() {
         Address address = Address.builder()
                 .street("Bourbon Street")
                 .number("1234")
@@ -144,7 +130,7 @@ class OrderTest {
     }
 
     @Test
-    void givenDraftOrder_whenChangeShippingInfo_shouldAllowChange() {
+    public void givenDraftOrder_whenChangeShippingInfo_shouldAllowChange() {
         Address address = Address.builder()
                 .street("Bourbon Street")
                 .number("1234")
@@ -176,7 +162,7 @@ class OrderTest {
     }
 
     @Test
-    void givenDraftOrderAndDeliveryDateInThePast_whenChangeShippingInfo_shouldNotAllowChange() {
+    public void givenDraftOrderAndDeliveryDateInThePast_whenChangeShippingInfo_shouldNotAllowChange() {
         Address address = Address.builder()
                 .street("Bourbon Street")
                 .number("1234")
@@ -203,23 +189,21 @@ class OrderTest {
     }
 
     @Test
-    void givenDraftOrder_whenChangeItem_shouldRecalculate() {
+    public void givenDraftOrder_whenChangeItem_shouldRecalculate() {
         Order order = Order.draft(new CustomerId());
 
         order.addItem(
-                new ProductId(),
-                new ProductName("xtpo"),
-                new Money("50.00"),
-                new Quantity(2)
+                ProductTestDataBuilder.aProductAltMousePad().build(),
+                new Quantity(3)
         );
 
         OrderItem orderItem = order.items().iterator().next();
 
-        order.changeItemQuantity(orderItem.id(), new Quantity(3));
+        order.changeItemQuantity(orderItem.id(), new Quantity(5));
 
         Assertions.assertWith(order,
-                (o) -> Assertions.assertThat(o.totalAmount()).isEqualTo(new Money("150.00")),
-                (o) -> Assertions.assertThat(o.totalItems()).isEqualTo(new Quantity(3))
+                (o) -> Assertions.assertThat(o.totalAmount()).isEqualTo(new Money("500")),
+                (o) -> Assertions.assertThat(o.totalItems()).isEqualTo(new Quantity(5))
         );
     }
 }

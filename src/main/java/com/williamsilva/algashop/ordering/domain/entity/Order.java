@@ -7,12 +7,11 @@ import com.williamsilva.algashop.ordering.domain.exception.OrderStatusCannotBeCh
 import com.williamsilva.algashop.ordering.domain.valueobjects.BillingInfo;
 import com.williamsilva.algashop.ordering.domain.valueobjects.CustomerId;
 import com.williamsilva.algashop.ordering.domain.valueobjects.Money;
-import com.williamsilva.algashop.ordering.domain.valueobjects.ProductName;
+import com.williamsilva.algashop.ordering.domain.valueobjects.Product;
 import com.williamsilva.algashop.ordering.domain.valueobjects.Quantity;
 import com.williamsilva.algashop.ordering.domain.valueobjects.ShippingInfo;
 import com.williamsilva.algashop.ordering.domain.valueobjects.id.OrderId;
 import com.williamsilva.algashop.ordering.domain.valueobjects.id.OrderItemId;
-import com.williamsilva.algashop.ordering.domain.valueobjects.id.ProductId;
 import lombok.Builder;
 
 import java.math.BigDecimal;
@@ -93,15 +92,14 @@ public class Order {
         );
     }
 
-    public void addItem(ProductId productId, ProductName productName,
-                        Money price, Quantity quantity) {
+    public void addItem(Product product, Quantity quantity) {
+        Objects.requireNonNull(product);
+        Objects.requireNonNull(quantity);
 
         OrderItem orderItem = OrderItem.brandNew()
                 .orderId(this.id())
-                .price(price)
                 .quantity(quantity)
-                .productName(productName)
-                .productId(productId)
+                .product(product)
                 .build();
 
         if (this.items == null) {

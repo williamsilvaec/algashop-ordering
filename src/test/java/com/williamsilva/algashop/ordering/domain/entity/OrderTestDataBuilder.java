@@ -1,7 +1,15 @@
 package com.williamsilva.algashop.ordering.domain.entity;
 
-import com.williamsilva.algashop.ordering.domain.valueobjects.*;
-import com.williamsilva.algashop.ordering.domain.valueobjects.id.ProductId;
+import com.williamsilva.algashop.ordering.domain.valueobjects.Address;
+import com.williamsilva.algashop.ordering.domain.valueobjects.BillingInfo;
+import com.williamsilva.algashop.ordering.domain.valueobjects.CustomerId;
+import com.williamsilva.algashop.ordering.domain.valueobjects.Document;
+import com.williamsilva.algashop.ordering.domain.valueobjects.FullName;
+import com.williamsilva.algashop.ordering.domain.valueobjects.Money;
+import com.williamsilva.algashop.ordering.domain.valueobjects.Phone;
+import com.williamsilva.algashop.ordering.domain.valueobjects.Quantity;
+import com.williamsilva.algashop.ordering.domain.valueobjects.ShippingInfo;
+import com.williamsilva.algashop.ordering.domain.valueobjects.ZipCode;
 
 import java.time.LocalDate;
 
@@ -36,11 +44,13 @@ public class OrderTestDataBuilder {
         order.changePaymentMethod(paymentMethod);
 
         if (withItems) {
-            order.addItem(new ProductId(), new ProductName("Notebook X11"),
-                    new Money("3000"), new Quantity(2));
+            order.addItem(ProductTestDataBuilder.aProduct().build(),
+                    new Quantity(2)
+            );
 
-            order.addItem(new ProductId(), new ProductName("4GB RAM"),
-                    new Money("200"), new Quantity(1));
+            order.addItem(ProductTestDataBuilder.aProductAltRamMemory().build(),
+                    new Quantity(1)
+            );
         }
 
         switch (this.status) {
