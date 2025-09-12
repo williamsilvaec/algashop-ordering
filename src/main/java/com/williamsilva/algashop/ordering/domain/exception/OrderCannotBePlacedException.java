@@ -2,7 +2,10 @@ package com.williamsilva.algashop.ordering.domain.exception;
 
 import com.williamsilva.algashop.ordering.domain.valueobjects.id.OrderId;
 
-import static com.williamsilva.algashop.ordering.domain.exception.ErrorMessages.*;
+import static com.williamsilva.algashop.ordering.domain.exception.ErrorMessages.ERROR_ORDER_CANNOT_BE_PLACED_HAS_NO_BILLING_INFO;
+import static com.williamsilva.algashop.ordering.domain.exception.ErrorMessages.ERROR_ORDER_CANNOT_BE_PLACED_HAS_NO_ITEMS;
+import static com.williamsilva.algashop.ordering.domain.exception.ErrorMessages.ERROR_ORDER_CANNOT_BE_PLACED_HAS_NO_PAYMENT_METHOD;
+import static com.williamsilva.algashop.ordering.domain.exception.ErrorMessages.ERROR_ORDER_CANNOT_BE_PLACED_HAS_NO_SHIPPING_INFO;
 
 public class OrderCannotBePlacedException extends DomainException {
 
@@ -22,14 +25,6 @@ public class OrderCannotBePlacedException extends DomainException {
 
     public static OrderCannotBePlacedException noBillingInfo(OrderId id) {
         return new OrderCannotBePlacedException(String.format(ERROR_ORDER_CANNOT_BE_PLACED_HAS_NO_BILLING_INFO, id));
-    }
-
-    public static OrderCannotBePlacedException invalidShippingCost(OrderId id) {
-        return new OrderCannotBePlacedException(String.format(ERROR_ORDER_CANNOT_BE_PLACED_INVALID_SHIPPING_COST, id));
-    }
-
-    public static OrderCannotBePlacedException invalidExpectedDeliveryDate(OrderId id) {
-        return new OrderCannotBePlacedException(String.format(ERROR_ORDER_CANNOT_BE_PLACED_INVALID_DELIVERY_DATE, id));
     }
 
     public static OrderCannotBePlacedException noPaymentMethod(OrderId id) {

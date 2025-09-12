@@ -3,7 +3,18 @@ package com.williamsilva.algashop.ordering.domain.entity;
 import com.williamsilva.algashop.ordering.domain.exception.OrderInvalidShippingDeliveryDateException;
 import com.williamsilva.algashop.ordering.domain.exception.OrderStatusCannotBeChangedException;
 import com.williamsilva.algashop.ordering.domain.exception.ProductOutOfStockException;
-import com.williamsilva.algashop.ordering.domain.valueobjects.*;
+import com.williamsilva.algashop.ordering.domain.valueobjects.Address;
+import com.williamsilva.algashop.ordering.domain.valueobjects.BillingInfo;
+import com.williamsilva.algashop.ordering.domain.valueobjects.CustomerId;
+import com.williamsilva.algashop.ordering.domain.valueobjects.Document;
+import com.williamsilva.algashop.ordering.domain.valueobjects.FullName;
+import com.williamsilva.algashop.ordering.domain.valueobjects.Money;
+import com.williamsilva.algashop.ordering.domain.valueobjects.Phone;
+import com.williamsilva.algashop.ordering.domain.valueobjects.Product;
+import com.williamsilva.algashop.ordering.domain.valueobjects.ProductName;
+import com.williamsilva.algashop.ordering.domain.valueobjects.Quantity;
+import com.williamsilva.algashop.ordering.domain.valueobjects.Shipping;
+import com.williamsilva.algashop.ordering.domain.valueobjects.ZipCode;
 import com.williamsilva.algashop.ordering.domain.valueobjects.id.ProductId;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.ThrowableAssert;
@@ -132,62 +143,27 @@ class OrderTest {
     }
 
     @Test
-    public void givenDraftOrder_whenChangeShippingInfo_shouldAllowChange() {
-        Address address = Address.builder()
-                .street("Bourbon Street")
-                .number("1234")
-                .neighborhood("North Ville")
-                .complement("apt. 11")
-                .city("Montfort")
-                .state("South Carolina")
-                .zipCode(new ZipCode("79911")).build();
-
-        ShippingInfo shippingInfo = ShippingInfo.builder()
-                .address(address)
-                .fullName(new FullName("John", "Doe"))
-                .document(new Document("112-33-2321"))
-                .phone(new Phone("111-441-1244"))
-                .build();
-
+    public void givenDraftOrder_whenChangeShipping_shouldAllowChange() {
+        Shipping shipping = OrderTestDataBuilder.aShipping();
         Order order = Order.draft(new CustomerId());
-        Money shippingCost = Money.ZERO;
-        LocalDate expectedDeliveryDate = LocalDate.now().plusDays(1);
 
-        order.changeShipping(shippingInfo, shippingCost, expectedDeliveryDate);
+        order.changeShipping(shipping);
 
-        Assertions.assertWith(order,
-                o -> Assertions.assertThat(o.shipping()).isEqualTo(shippingInfo),
-                o -> Assertions.assertThat(o.shippingCost()).isEqualTo(shippingCost),
-                o -> Assertions.assertThat(o.expectedDeliveryDate()).isEqualTo(expectedDeliveryDate)
-        );
-
+        Assertions.assertWith(order, o -> Assertions.assertThat(o.shipping()).isEqualTo(shipping));
     }
 
     @Test
-    public void givenDraftOrderAndDeliveryDateInThePast_whenChangeShippingInfo_shouldNotAllowChange() {
-        Address address = Address.builder()
-                .street("Bourbon Street")
-                .number("1234")
-                .neighborhood("North Ville")
-                .complement("apt. 11")
-                .city("Montfort")
-                .state("South Carolina")
-                .zipCode(new ZipCode("79911")).build();
+    public void givenDraftOrderAndDeliveryDateInThePast_whenChangeShipping_shouldNotAllowChange() {
+        LocalDate expectedDeliveryDate = LocalDate.now().minusDays(2);
 
-        ShippingInfo shippingInfo = ShippingInfo.builder()
-                .address(address)
-                .fullName(new FullName("John", "Doe"))
-                .document(new Document("112-33-2321"))
-                .phone(new Phone("111-441-1244"))
+        Shipping shipping = OrderTestDataBuilder.aShipping().toBuilder()
+                .expectedDate(expectedDeliveryDate)
                 .build();
 
         Order order = Order.draft(new CustomerId());
-        Money shippingCost = Money.ZERO;
-
-        LocalDate expectedDeliveryDate = LocalDate.now().minusDays(2);
 
         Assertions.assertThatExceptionOfType(OrderInvalidShippingDeliveryDateException.class)
-                .isThrownBy(()-> order.changeShipping(shippingInfo, shippingCost, expectedDeliveryDate));
+                .isThrownBy(() -> order.changeShipping(shipping));
     }
 
     @Test
@@ -212,12 +188,13 @@ class OrderTest {
     @Test
     public void givenOutOfStockProduct_whenTryToAddToAnOrder_shouldNotAllow() {
         Order order = Order.draft(new CustomerId());
+
         ThrowableAssert.ThrowingCallable addItemTask = () -> order.addItem(
                 ProductTestDataBuilder.aProductUnavailable().build(),
-                new Quantity(3)
+                new Quantity(1)
         );
 
-        Assertions.assertThatExceptionOfType(ProductOutOfStockException.class)
-                .isThrownBy(addItemTask);
+        Assertions.assertThatExceptionOfType(ProductOutOfStockException.class).isThrownBy(addItemTask);
     }
+
 }
