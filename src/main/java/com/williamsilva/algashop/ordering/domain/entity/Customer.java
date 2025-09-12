@@ -1,7 +1,14 @@
 package com.williamsilva.algashop.ordering.domain.entity;
 
 import com.williamsilva.algashop.ordering.domain.exception.CustomerArchivedException;
-import com.williamsilva.algashop.ordering.domain.valueobjects.*;
+import com.williamsilva.algashop.ordering.domain.valueobjects.Address;
+import com.williamsilva.algashop.ordering.domain.valueobjects.BirthDate;
+import com.williamsilva.algashop.ordering.domain.valueobjects.CustomerId;
+import com.williamsilva.algashop.ordering.domain.valueobjects.Document;
+import com.williamsilva.algashop.ordering.domain.valueobjects.Email;
+import com.williamsilva.algashop.ordering.domain.valueobjects.FullName;
+import com.williamsilva.algashop.ordering.domain.valueobjects.LoyaltyPoints;
+import com.williamsilva.algashop.ordering.domain.valueobjects.Phone;
 import lombok.Builder;
 
 import java.time.OffsetDateTime;

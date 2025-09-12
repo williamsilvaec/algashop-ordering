@@ -3,18 +3,13 @@ package com.williamsilva.algashop.ordering.domain.entity;
 import com.williamsilva.algashop.ordering.domain.exception.OrderInvalidShippingDeliveryDateException;
 import com.williamsilva.algashop.ordering.domain.exception.OrderStatusCannotBeChangedException;
 import com.williamsilva.algashop.ordering.domain.exception.ProductOutOfStockException;
-import com.williamsilva.algashop.ordering.domain.valueobjects.Address;
-import com.williamsilva.algashop.ordering.domain.valueobjects.BillingInfo;
+import com.williamsilva.algashop.ordering.domain.valueobjects.Billing;
 import com.williamsilva.algashop.ordering.domain.valueobjects.CustomerId;
-import com.williamsilva.algashop.ordering.domain.valueobjects.Document;
-import com.williamsilva.algashop.ordering.domain.valueobjects.FullName;
 import com.williamsilva.algashop.ordering.domain.valueobjects.Money;
-import com.williamsilva.algashop.ordering.domain.valueobjects.Phone;
 import com.williamsilva.algashop.ordering.domain.valueobjects.Product;
 import com.williamsilva.algashop.ordering.domain.valueobjects.ProductName;
 import com.williamsilva.algashop.ordering.domain.valueobjects.Quantity;
 import com.williamsilva.algashop.ordering.domain.valueobjects.Shipping;
-import com.williamsilva.algashop.ordering.domain.valueobjects.ZipCode;
 import com.williamsilva.algashop.ordering.domain.valueobjects.id.ProductId;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.ThrowableAssert;
@@ -112,34 +107,12 @@ class OrderTest {
     }
 
     @Test
-    public void givenDraftOrder_whenChangeBillingInfo_shouldAllowChange() {
-        Address address = Address.builder()
-                .street("Bourbon Street")
-                .number("1234")
-                .neighborhood("North Ville")
-                .complement("apt. 11")
-                .city("Montfort")
-                .state("South Carolina")
-                .zipCode(new ZipCode("79911")).build();
-
-        BillingInfo billingInfo = BillingInfo.builder()
-                .address(address)
-                .document(new Document("225-09-1992"))
-                .phone(new Phone("123-111-9911"))
-                .fullName(new FullName("John", "Doe"))
-                .build();
-
+    public void givenDraftOrder_whenChangeBilling_shouldAllowChange() {
+        Billing billing = OrderTestDataBuilder.aBilling();
         Order order = Order.draft(new CustomerId());
-        order.changeBilling(billingInfo);
+        order.changeBilling(billing);
 
-        BillingInfo expectedBillingInfo = BillingInfo.builder()
-                .address(address)
-                .document(new Document("225-09-1992"))
-                .phone(new Phone("123-111-9911"))
-                .fullName(new FullName("John", "Doe"))
-                .build();
-
-        Assertions.assertThat(order.billing()).isEqualTo(expectedBillingInfo);
+        Assertions.assertThat(order.billing()).isEqualTo(billing);
     }
 
     @Test
