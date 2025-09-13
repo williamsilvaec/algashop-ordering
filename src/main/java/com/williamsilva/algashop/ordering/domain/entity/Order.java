@@ -1,5 +1,6 @@
 package com.williamsilva.algashop.ordering.domain.entity;
 
+import com.williamsilva.algashop.ordering.domain.exception.OrderCannotBeEditedException;
 import com.williamsilva.algashop.ordering.domain.exception.OrderCannotBePlacedException;
 import com.williamsilva.algashop.ordering.domain.exception.OrderDoesNotContainOrderItemException;
 import com.williamsilva.algashop.ordering.domain.exception.OrderInvalidShippingDeliveryDateException;
@@ -88,6 +89,8 @@ public class Order {
         Objects.requireNonNull(product);
         Objects.requireNonNull(quantity);
 
+        this.verifyIfChangeable();
+
         product.checkOutOfStock();
 
         OrderItem orderItem = OrderItem.brandNew()
@@ -118,16 +121,20 @@ public class Order {
 
     public void changePaymentMethod(PaymentMethod paymentMethod) {
         Objects.requireNonNull(paymentMethod);
+        this.verifyIfChangeable();
         this.setPaymentMethod(paymentMethod);
     }
 
     public void changeBilling(Billing billing) {
         Objects.requireNonNull(billing);
+        this.verifyIfChangeable();
         this.setBilling(billing);
     }
 
     public void changeShipping(Shipping newShipping) {
         Objects.requireNonNull(newShipping);
+
+        this.verifyIfChangeable();
 
         if (newShipping.expectedDate().isBefore(LocalDate.now())) {
             throw new OrderInvalidShippingDeliveryDateException(this.id());
@@ -141,16 +148,11 @@ public class Order {
         Objects.requireNonNull(orderItemId);
         Objects.requireNonNull(quantity);
 
+        this.verifyIfChangeable();
+
         OrderItem orderItem = this.findOrderItem(orderItemId);
         orderItem.changeQuantity(quantity);
         this.recalculateTotals();
-    }
-
-    private OrderItem findOrderItem(OrderItemId orderItemId) {
-        return this.items().stream()
-                .filter(orderItem -> orderItem.id().equals(orderItemId))
-                .findFirst()
-                .orElseThrow(() -> new OrderDoesNotContainOrderItemException(this.id(), orderItemId));
     }
 
     public boolean isDraft() {
@@ -257,6 +259,19 @@ public class Order {
         }
         if (this.items() == null || this.items().isEmpty()) {
             throw OrderCannotBePlacedException.noItems(this.id());
+        }
+    }
+
+    private OrderItem findOrderItem(OrderItemId orderItemId) {
+        return this.items().stream()
+                .filter(orderItem -> orderItem.id().equals(orderItemId))
+                .findFirst()
+                .orElseThrow(() -> new OrderDoesNotContainOrderItemException(this.id(), orderItemId));
+    }
+
+    private void verifyIfChangeable() {
+        if (!this.isDraft()) {
+            throw new OrderCannotBeEditedException(this.id(), this.status());
         }
     }
 
