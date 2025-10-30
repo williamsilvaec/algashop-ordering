@@ -1,6 +1,6 @@
 package com.williamsilva.algashop.ordering.domain.exception;
 
-import com.williamsilva.algashop.ordering.domain.valueobjects.id.ProductId;
+import com.williamsilva.algashop.ordering.domain.valueobject.id.ProductId;
 
 public class ProductOutOfStockException extends DomainException {
 

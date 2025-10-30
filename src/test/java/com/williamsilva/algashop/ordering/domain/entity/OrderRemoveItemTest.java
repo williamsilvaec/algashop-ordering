@@ -2,10 +2,10 @@ package com.williamsilva.algashop.ordering.domain.entity;
 
 import com.williamsilva.algashop.ordering.domain.exception.OrderCannotBeEditedException;
 import com.williamsilva.algashop.ordering.domain.exception.OrderDoesNotContainOrderItemException;
-import com.williamsilva.algashop.ordering.domain.valueobjects.CustomerId;
-import com.williamsilva.algashop.ordering.domain.valueobjects.Money;
-import com.williamsilva.algashop.ordering.domain.valueobjects.Quantity;
-import com.williamsilva.algashop.ordering.domain.valueobjects.id.OrderItemId;
+import com.williamsilva.algashop.ordering.domain.valueobject.id.CustomerId;
+import com.williamsilva.algashop.ordering.domain.valueobject.Money;
+import com.williamsilva.algashop.ordering.domain.valueobject.Quantity;
+import com.williamsilva.algashop.ordering.domain.valueobject.id.OrderItemId;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

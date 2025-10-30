@@ -1,19 +1,22 @@
-package com.williamsilva.algashop.ordering.domain.valueobjects.id;
-
+package com.williamsilva.algashop.ordering.domain.valueobject.id;
 
 import com.williamsilva.algashop.ordering.domain.utility.IdGenerator;
 
 import java.util.Objects;
 import java.util.UUID;
 
-public record ProductId(UUID value) {
+public record ShoppingCartItemId(UUID value) {
 
-    public ProductId {
+    public ShoppingCartItemId {
         Objects.requireNonNull(value);
     }
 
-    public ProductId() {
+    public ShoppingCartItemId() {
         this(IdGenerator.generateTimeBasedUUID());
+    }
+
+    public ShoppingCartItemId(String value) {
+        this(UUID.fromString(value));
     }
 
     @Override

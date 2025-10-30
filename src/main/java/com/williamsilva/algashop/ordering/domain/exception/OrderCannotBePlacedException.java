@@ -1,6 +1,6 @@
 package com.williamsilva.algashop.ordering.domain.exception;
 
-import com.williamsilva.algashop.ordering.domain.valueobjects.id.OrderId;
+import com.williamsilva.algashop.ordering.domain.valueobject.id.OrderId;
 
 import static com.williamsilva.algashop.ordering.domain.exception.ErrorMessages.ERROR_ORDER_CANNOT_BE_PLACED_HAS_NO_BILLING_INFO;
 import static com.williamsilva.algashop.ordering.domain.exception.ErrorMessages.ERROR_ORDER_CANNOT_BE_PLACED_HAS_NO_ITEMS;

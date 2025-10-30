@@ -1,7 +1,7 @@
-package com.williamsilva.algashop.ordering.domain.valueobjects;
+package com.williamsilva.algashop.ordering.domain.valueobject;
 
 import com.williamsilva.algashop.ordering.domain.exception.ProductOutOfStockException;
-import com.williamsilva.algashop.ordering.domain.valueobjects.id.ProductId;
+import com.williamsilva.algashop.ordering.domain.valueobject.id.ProductId;
 import lombok.Builder;
 
 import java.util.Objects;

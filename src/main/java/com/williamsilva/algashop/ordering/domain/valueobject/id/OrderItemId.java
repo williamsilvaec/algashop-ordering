@@ -1,25 +1,25 @@
-package com.williamsilva.algashop.ordering.domain.valueobjects.id;
+package com.williamsilva.algashop.ordering.domain.valueobject.id;
 
 import com.williamsilva.algashop.ordering.domain.utility.IdGenerator;
 import io.hypersistence.tsid.TSID;
 
 import java.util.Objects;
 
-public record OrderId(TSID value) {
+public record OrderItemId(TSID value) {
 
-    public OrderId {
+    public OrderItemId {
         Objects.requireNonNull(value);
     }
 
-    public OrderId() {
+    public OrderItemId() {
         this(IdGenerator.generateTSID());
     }
 
-    public OrderId(Long value) {
+    public OrderItemId(Long value) {
         this(TSID.from(value));
     }
 
-    public OrderId(String value) {
+    public OrderItemId(String value) {
         this(TSID.from(value));
     }
 

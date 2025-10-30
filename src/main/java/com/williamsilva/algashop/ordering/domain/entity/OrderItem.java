@@ -1,12 +1,12 @@
 package com.williamsilva.algashop.ordering.domain.entity;
 
-import com.williamsilva.algashop.ordering.domain.valueobjects.Money;
-import com.williamsilva.algashop.ordering.domain.valueobjects.Product;
-import com.williamsilva.algashop.ordering.domain.valueobjects.ProductName;
-import com.williamsilva.algashop.ordering.domain.valueobjects.Quantity;
-import com.williamsilva.algashop.ordering.domain.valueobjects.id.OrderId;
-import com.williamsilva.algashop.ordering.domain.valueobjects.id.OrderItemId;
-import com.williamsilva.algashop.ordering.domain.valueobjects.id.ProductId;
+import com.williamsilva.algashop.ordering.domain.valueobject.Money;
+import com.williamsilva.algashop.ordering.domain.valueobject.Product;
+import com.williamsilva.algashop.ordering.domain.valueobject.ProductName;
+import com.williamsilva.algashop.ordering.domain.valueobject.Quantity;
+import com.williamsilva.algashop.ordering.domain.valueobject.id.OrderId;
+import com.williamsilva.algashop.ordering.domain.valueobject.id.OrderItemId;
+import com.williamsilva.algashop.ordering.domain.valueobject.id.ProductId;
 import lombok.Builder;
 
 import java.util.Objects;

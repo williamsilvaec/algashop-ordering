@@ -1,4 +1,4 @@
-package com.williamsilva.algashop.ordering.domain.valueobjects;
+package com.williamsilva.algashop.ordering.domain.valueobject;
 
 import java.time.LocalDate;
 import java.time.Period;

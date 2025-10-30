@@ -5,11 +5,11 @@ import com.williamsilva.algashop.ordering.domain.entity.Order;
 import com.williamsilva.algashop.ordering.domain.entity.OrderTestDataBuilder;
 import com.williamsilva.algashop.ordering.domain.entity.PaymentMethod;
 import com.williamsilva.algashop.ordering.domain.entity.ProductTestDataBuilder;
-import com.williamsilva.algashop.ordering.domain.valueobjects.Billing;
-import com.williamsilva.algashop.ordering.domain.valueobjects.CustomerId;
-import com.williamsilva.algashop.ordering.domain.valueobjects.Product;
-import com.williamsilva.algashop.ordering.domain.valueobjects.Quantity;
-import com.williamsilva.algashop.ordering.domain.valueobjects.Shipping;
+import com.williamsilva.algashop.ordering.domain.valueobject.Billing;
+import com.williamsilva.algashop.ordering.domain.valueobject.id.CustomerId;
+import com.williamsilva.algashop.ordering.domain.valueobject.Product;
+import com.williamsilva.algashop.ordering.domain.valueobject.Quantity;
+import com.williamsilva.algashop.ordering.domain.valueobject.Shipping;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

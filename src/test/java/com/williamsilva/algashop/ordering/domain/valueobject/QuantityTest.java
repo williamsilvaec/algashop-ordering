@@ -1,4 +1,4 @@
-package com.williamsilva.algashop.ordering.domain.valueobjects;
+package com.williamsilva.algashop.ordering.domain.valueobject;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

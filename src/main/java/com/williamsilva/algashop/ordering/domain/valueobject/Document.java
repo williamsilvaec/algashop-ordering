@@ -1,14 +1,16 @@
-package com.williamsilva.algashop.ordering.domain.valueobjects;
+package com.williamsilva.algashop.ordering.domain.valueobject;
 
 import java.util.Objects;
 
-public record Phone(String value) {
+public record Document(String value) {
 
-    public Phone(String value) {
+    public Document(String value) {
         Objects.requireNonNull(value);
+
         if (value.isBlank()) {
             throw new IllegalArgumentException();
         }
+
         this.value = value.trim();
     }
 

@@ -1,68 +1,49 @@
 package com.williamsilva.algashop.ordering.domain.entity;
 
 import com.williamsilva.algashop.ordering.domain.exception.OrderStatusCannotBeChangedException;
+import com.williamsilva.algashop.ordering.domain.valueobject.id.CustomerId;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.time.OffsetDateTime;
 
 public class OrderCancelTest {
 
     @Test
-    void givenDraftOrder_whenCancel_shouldUpdateStatusAndTimestamp() {
+    void givenEmptyOrder_whenCancel_shouldAllow() {
+        Order order = Order.draft(new CustomerId());
+
+        order.cancel();
+
+        Assertions.assertWith(order,
+                (i) -> Assertions.assertThat(i.status()).isEqualTo(OrderStatus.CANCELED),
+                (i) -> Assertions.assertThat(i.isCanceled()).isTrue(),
+                (i) -> Assertions.assertThat(i.canceledAt()).isNotNull()
+        );
+    }
+
+    @Test
+    void givenFilledOrder_whenCancel_shouldAllow() {
         Order order = OrderTestDataBuilder.anOrder().status(OrderStatus.DRAFT).build();
+
         order.cancel();
 
         Assertions.assertWith(order,
-                (o) -> Assertions.assertThat(order.status()).isEqualTo(OrderStatus.CANCELED),
-                (o) -> Assertions.assertThat(order.canceledAt()).isNotNull()
+                (i) -> Assertions.assertThat(i.status()).isEqualTo(OrderStatus.CANCELED),
+                (i) -> Assertions.assertThat(i.isCanceled()).isTrue(),
+                (i) -> Assertions.assertThat(i.canceledAt()).isNotNull()
         );
     }
 
     @Test
-    void givenPlacedOrder_whenCancel_shouldUpdateStatusAndTimestamp() {
-        Order order = OrderTestDataBuilder.anOrder().status(OrderStatus.PLACED).build();
-        order.cancel();
-
-        Assertions.assertWith(order,
-                (o) -> Assertions.assertThat(order.status()).isEqualTo(OrderStatus.CANCELED),
-                (o) -> Assertions.assertThat(order.canceledAt()).isNotNull()
-        );
-    }
-
-    @Test
-    void givenPaidOrder_whenCancel_shouldUpdateStatusAndTimestamp() {
-        Order order = OrderTestDataBuilder.anOrder().status(OrderStatus.PAID).build();
-        order.cancel();
-
-        Assertions.assertWith(order,
-                (o) -> Assertions.assertThat(order.status()).isEqualTo(OrderStatus.CANCELED),
-                (o) -> Assertions.assertThat(order.canceledAt()).isNotNull()
-        );
-    }
-
-    @Test
-    void givenReadyOrder_whenCancel_shouldUpdateStatusAndTimestamp() {
-        Order order = OrderTestDataBuilder.anOrder().status(OrderStatus.READY).build();
-        order.cancel();
-
-        Assertions.assertWith(order,
-                (o) -> Assertions.assertThat(order.status()).isEqualTo(OrderStatus.CANCELED),
-                (o) -> Assertions.assertThat(order.canceledAt()).isNotNull()
-        );
-    }
-
-    @Test
-    void givenCanceledOrder_whenCancel_shouldThrowExceptionAndNotChangeState() {
+    void givenCanceledOrder_whenCancelAgain_shouldThrowException() {
         Order order = OrderTestDataBuilder.anOrder().status(OrderStatus.CANCELED).build();
-        OffsetDateTime canceledAt = order.canceledAt();
 
         Assertions.assertThatExceptionOfType(OrderStatusCannotBeChangedException.class)
                 .isThrownBy(order::cancel);
 
         Assertions.assertWith(order,
-                (o) -> Assertions.assertThat(o.status()).isEqualTo(OrderStatus.CANCELED),
-                (o) -> Assertions.assertThat(o.canceledAt()).isEqualTo(canceledAt)
+                (i) -> Assertions.assertThat(i.status()).isEqualTo(OrderStatus.CANCELED),
+                (i) -> Assertions.assertThat(i.isCanceled()).isTrue(),
+                (i) -> Assertions.assertThat(i.canceledAt()).isNotNull()
         );
     }
 }

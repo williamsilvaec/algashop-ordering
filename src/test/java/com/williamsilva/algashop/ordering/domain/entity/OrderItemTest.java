@@ -1,9 +1,9 @@
 package com.williamsilva.algashop.ordering.domain.entity;
 
 
-import com.williamsilva.algashop.ordering.domain.valueobjects.Product;
-import com.williamsilva.algashop.ordering.domain.valueobjects.Quantity;
-import com.williamsilva.algashop.ordering.domain.valueobjects.id.OrderId;
+import com.williamsilva.algashop.ordering.domain.valueobject.Product;
+import com.williamsilva.algashop.ordering.domain.valueobject.Quantity;
+import com.williamsilva.algashop.ordering.domain.valueobject.id.OrderId;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

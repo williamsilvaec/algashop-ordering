@@ -5,14 +5,14 @@ import com.williamsilva.algashop.ordering.domain.exception.OrderCannotBePlacedEx
 import com.williamsilva.algashop.ordering.domain.exception.OrderDoesNotContainOrderItemException;
 import com.williamsilva.algashop.ordering.domain.exception.OrderInvalidShippingDeliveryDateException;
 import com.williamsilva.algashop.ordering.domain.exception.OrderStatusCannotBeChangedException;
-import com.williamsilva.algashop.ordering.domain.valueobjects.Billing;
-import com.williamsilva.algashop.ordering.domain.valueobjects.CustomerId;
-import com.williamsilva.algashop.ordering.domain.valueobjects.Money;
-import com.williamsilva.algashop.ordering.domain.valueobjects.Product;
-import com.williamsilva.algashop.ordering.domain.valueobjects.Quantity;
-import com.williamsilva.algashop.ordering.domain.valueobjects.Shipping;
-import com.williamsilva.algashop.ordering.domain.valueobjects.id.OrderId;
-import com.williamsilva.algashop.ordering.domain.valueobjects.id.OrderItemId;
+import com.williamsilva.algashop.ordering.domain.valueobject.Billing;
+import com.williamsilva.algashop.ordering.domain.valueobject.id.CustomerId;
+import com.williamsilva.algashop.ordering.domain.valueobject.Money;
+import com.williamsilva.algashop.ordering.domain.valueobject.Product;
+import com.williamsilva.algashop.ordering.domain.valueobject.Quantity;
+import com.williamsilva.algashop.ordering.domain.valueobject.Shipping;
+import com.williamsilva.algashop.ordering.domain.valueobject.id.OrderId;
+import com.williamsilva.algashop.ordering.domain.valueobject.id.OrderItemId;
 import lombok.Builder;
 
 import java.math.BigDecimal;

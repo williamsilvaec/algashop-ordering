@@ -1,7 +1,7 @@
 package com.williamsilva.algashop.ordering.domain.exception;
 
-import com.williamsilva.algashop.ordering.domain.valueobjects.id.OrderId;
-import com.williamsilva.algashop.ordering.domain.valueobjects.id.OrderItemId;
+import com.williamsilva.algashop.ordering.domain.valueobject.id.OrderId;
+import com.williamsilva.algashop.ordering.domain.valueobject.id.OrderItemId;
 
 public class OrderDoesNotContainOrderItemException extends DomainException {
 

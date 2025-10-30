@@ -1,14 +1,14 @@
 package com.williamsilva.algashop.ordering.domain.entity;
 
-import com.williamsilva.algashop.ordering.domain.valueobjects.Address;
-import com.williamsilva.algashop.ordering.domain.valueobjects.BirthDate;
-import com.williamsilva.algashop.ordering.domain.valueobjects.CustomerId;
-import com.williamsilva.algashop.ordering.domain.valueobjects.Document;
-import com.williamsilva.algashop.ordering.domain.valueobjects.Email;
-import com.williamsilva.algashop.ordering.domain.valueobjects.FullName;
-import com.williamsilva.algashop.ordering.domain.valueobjects.LoyaltyPoints;
-import com.williamsilva.algashop.ordering.domain.valueobjects.Phone;
-import com.williamsilva.algashop.ordering.domain.valueobjects.ZipCode;
+import com.williamsilva.algashop.ordering.domain.valueobject.Address;
+import com.williamsilva.algashop.ordering.domain.valueobject.BirthDate;
+import com.williamsilva.algashop.ordering.domain.valueobject.id.CustomerId;
+import com.williamsilva.algashop.ordering.domain.valueobject.Document;
+import com.williamsilva.algashop.ordering.domain.valueobject.Email;
+import com.williamsilva.algashop.ordering.domain.valueobject.FullName;
+import com.williamsilva.algashop.ordering.domain.valueobject.LoyaltyPoints;
+import com.williamsilva.algashop.ordering.domain.valueobject.Phone;
+import com.williamsilva.algashop.ordering.domain.valueobject.ZipCode;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
