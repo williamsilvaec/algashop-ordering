@@ -1,15 +1,18 @@
 package com.williamsilva.algashop.ordering.domain.model.repository;
 
 import com.williamsilva.algashop.ordering.domain.model.entity.Order;
+import com.williamsilva.algashop.ordering.domain.model.entity.OrderStatus;
 import com.williamsilva.algashop.ordering.domain.model.entity.OrderTestDataBuilder;
 import com.williamsilva.algashop.ordering.domain.model.valueobject.id.OrderId;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.assembler.OrderPersistenceEntityAssembler;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.disassembler.OrderPersistenceEntityDisassembler;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.provider.OrdersPersistenceProvider;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 import java.util.Optional;
 
@@ -51,5 +54,28 @@ class OrdersIT {
                 s -> assertThat(s.status()).isEqualTo(originalOrder.status()),
                 s -> assertThat(s.paymentMethod()).isEqualTo(originalOrder.paymentMethod())
         );
+    }
+
+    @Test
+    void shouldNotAllowStaleUpdates() {
+        Order order = OrderTestDataBuilder.anOrder().status(OrderStatus.PLACED).build();
+        orders.add(order);
+
+        Order order1 = orders.ofId(order.id()).orElseThrow();
+        Order order2 = orders.ofId(order.id()).orElseThrow();
+
+        order1.markAsPaid();
+        orders.add(order1);
+
+        order2.cancel();
+
+        Assertions.assertThatExceptionOfType(ObjectOptimisticLockingFailureException.class)
+                .isThrownBy(() -> orders.add(order2));
+
+        Order savedOrder = orders.ofId(order.id()).orElseThrow();
+
+        Assertions.assertThat(savedOrder.canceledAt()).isNull();
+        Assertions.assertThat(savedOrder.paidAt()).isNotNull();
+
     }
 }
