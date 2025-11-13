@@ -1,20 +1,21 @@
 package com.williamsilva.algashop.ordering.domain.model.entity;
 
-import com.williamsilva.algashop.ordering.domain.model.entity.Customer;
 import com.williamsilva.algashop.ordering.domain.model.valueobject.Address;
 import com.williamsilva.algashop.ordering.domain.model.valueobject.BirthDate;
-import com.williamsilva.algashop.ordering.domain.model.valueobject.id.CustomerId;
 import com.williamsilva.algashop.ordering.domain.model.valueobject.Document;
 import com.williamsilva.algashop.ordering.domain.model.valueobject.Email;
 import com.williamsilva.algashop.ordering.domain.model.valueobject.FullName;
 import com.williamsilva.algashop.ordering.domain.model.valueobject.LoyaltyPoints;
 import com.williamsilva.algashop.ordering.domain.model.valueobject.Phone;
 import com.williamsilva.algashop.ordering.domain.model.valueobject.ZipCode;
+import com.williamsilva.algashop.ordering.domain.model.valueobject.id.CustomerId;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
 public class CustomerTestDataBuilder {
+
+    public static final CustomerId DEFAULT_CUSTOMER_ID = new CustomerId();
 
     private CustomerTestDataBuilder() {
     }
@@ -40,7 +41,7 @@ public class CustomerTestDataBuilder {
 
     public static Customer.ExistingCustomerBuild existingCustomer() {
         return Customer.existing()
-                .id(new CustomerId())
+                .id(DEFAULT_CUSTOMER_ID)
                 .registeredAt(OffsetDateTime.now())
                 .promotionNotificationsAllowed(true)
                 .archived(false)
