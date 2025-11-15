@@ -2,6 +2,7 @@ package com.williamsilva.algashop.ordering.infrastructure.persistence.provider;
 
 import com.williamsilva.algashop.ordering.domain.model.entity.Customer;
 import com.williamsilva.algashop.ordering.domain.model.repository.Customers;
+import com.williamsilva.algashop.ordering.domain.model.valueobject.Email;
 import com.williamsilva.algashop.ordering.domain.model.valueobject.id.CustomerId;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.assembler.CustomerPersistenceEntityAssembler;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.disassembler.CustomerPersistenceEntityDisassembler;
@@ -75,5 +76,11 @@ public class CustomersPersistenceProvider implements Customers {
         CustomerPersistenceEntity persistenceEntity = assembler.fromDomain(aggregateRoot);
         persistenceRepository.saveAndFlush(persistenceEntity);
         updateVersion(aggregateRoot, persistenceEntity);
+    }
+
+    @Override
+    public Optional<Customer> ofEmail(Email email) {
+        return persistenceRepository.findByEmail(email.value())
+                .map(disassembler::toDomainEntity);
     }
 }

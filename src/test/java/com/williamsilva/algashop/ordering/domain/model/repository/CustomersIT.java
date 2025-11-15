@@ -2,6 +2,7 @@ package com.williamsilva.algashop.ordering.domain.model.repository;
 
 import com.williamsilva.algashop.ordering.domain.model.entity.Customer;
 import com.williamsilva.algashop.ordering.domain.model.entity.CustomerTestDataBuilder;
+import com.williamsilva.algashop.ordering.domain.model.valueobject.Email;
 import com.williamsilva.algashop.ordering.domain.model.valueobject.FullName;
 import com.williamsilva.algashop.ordering.domain.model.valueobject.id.CustomerId;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.assembler.CustomerPersistenceEntityAssembler;
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -108,6 +110,23 @@ class CustomersIT {
 
         Assertions.assertThat(customers.exists(customer.id())).isTrue();
         Assertions.assertThat(customers.exists(new CustomerId())).isFalse();
+    }
+
+    @Test
+    public void shouldFindByEmail() {
+        Customer customer = CustomerTestDataBuilder.brandNewCustomer().build();
+        customers.add(customer);
+
+        Optional<Customer> customerOpt = customers.ofEmail(customer.email());
+
+        Assertions.assertThat(customerOpt).isPresent();
+    }
+
+    @Test
+    public void shouldNotFindByEmailIfNoCustomerExistsWithEmail() {
+        Optional<Customer> customerOpt = customers.ofEmail(new Email(UUID.randomUUID() + "@gmail.com"));
+
+        Assertions.assertThat(customerOpt).isNotPresent();
     }
 
 }
