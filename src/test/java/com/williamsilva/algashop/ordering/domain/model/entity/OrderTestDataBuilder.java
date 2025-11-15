@@ -70,9 +70,6 @@ public class OrderTestDataBuilder {
                 order.markAsReady();
             }
             case CANCELED -> {
-                order.place();
-                order.markAsPaid();
-                order.markAsReady();
                 order.cancel();
             }
         }
