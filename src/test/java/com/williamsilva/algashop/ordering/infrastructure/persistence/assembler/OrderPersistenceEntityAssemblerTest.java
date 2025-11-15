@@ -3,21 +3,45 @@ package com.williamsilva.algashop.ordering.infrastructure.persistence.assembler;
 import com.williamsilva.algashop.ordering.domain.model.entity.Order;
 import com.williamsilva.algashop.ordering.domain.model.entity.OrderItem;
 import com.williamsilva.algashop.ordering.domain.model.entity.OrderTestDataBuilder;
+import com.williamsilva.algashop.ordering.infrastructure.persistence.entity.CustomerPersistenceEntityTestDataBuilder;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.entity.OrderItemPersistenceEntity;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.entity.OrderPersistenceEntity;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.entity.OrderPersistenceEntityTestDataBuilder;
+import com.williamsilva.algashop.ordering.infrastructure.persistence.repository.CustomerPersistenceEntityRepository;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@ExtendWith(MockitoExtension.class)
 class OrderPersistenceEntityAssemblerTest {
 
-    private final OrderPersistenceEntityAssembler assembler = new OrderPersistenceEntityAssembler();
+    @Mock
+    private CustomerPersistenceEntityRepository customerRepository;
+
+    @InjectMocks
+    private OrderPersistenceEntityAssembler assembler;
+
+    @BeforeEach
+    void setUp() {
+        assembler = new OrderPersistenceEntityAssembler(customerRepository);
+        Mockito.when(customerRepository.getReferenceById(Mockito.any(UUID.class)))
+                .then(a -> {
+                    UUID id = a.getArgument(0, UUID.class);
+                    return CustomerPersistenceEntityTestDataBuilder.aCustomer().id(id).build();
+                });
+    }
 
     @Test
     void shouldConvertToDomain() {
