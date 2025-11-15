@@ -2,6 +2,7 @@ package com.williamsilva.algashop.ordering.infrastructure.persistence.provider;
 
 import com.williamsilva.algashop.ordering.domain.model.entity.Order;
 import com.williamsilva.algashop.ordering.domain.model.repository.Orders;
+import com.williamsilva.algashop.ordering.domain.model.valueobject.Money;
 import com.williamsilva.algashop.ordering.domain.model.valueobject.id.CustomerId;
 import com.williamsilva.algashop.ordering.domain.model.valueobject.id.OrderId;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.assembler.OrderPersistenceEntityAssembler;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.time.Year;
 import java.util.List;
 import java.util.Optional;
@@ -64,6 +66,17 @@ public class OrdersPersistenceProvider implements Orders {
                 .stream()
                 .map(disassembler::toDomainEntity)
                 .toList();
+    }
+
+    @Override
+    public long salesQuantityByCustomerInYear(CustomerId customerId, Year year) {
+        return persistenceRepository.salesQuantityByCustomerInYear(customerId.value(), year.getValue());
+    }
+
+    @Override
+    public Money totalSoldForCustomer(CustomerId customerId) {
+        BigDecimal totalSoldByCustomer = persistenceRepository.totalSoldByCustomer(customerId.value());
+        return new Money(totalSoldByCustomer);
     }
 
     private void update(Order aggregateRoot, OrderPersistenceEntity persistenceEntity) {
