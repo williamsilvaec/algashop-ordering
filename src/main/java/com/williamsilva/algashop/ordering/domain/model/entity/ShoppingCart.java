@@ -2,10 +2,10 @@ package com.williamsilva.algashop.ordering.domain.model.entity;
 
 import com.williamsilva.algashop.ordering.domain.model.exception.ShoppingCartDoesNotContainItemException;
 import com.williamsilva.algashop.ordering.domain.model.exception.ShoppingCartDoesNotContainProductException;
-import com.williamsilva.algashop.ordering.domain.model.valueobject.id.CustomerId;
 import com.williamsilva.algashop.ordering.domain.model.valueobject.Money;
 import com.williamsilva.algashop.ordering.domain.model.valueobject.Product;
 import com.williamsilva.algashop.ordering.domain.model.valueobject.Quantity;
+import com.williamsilva.algashop.ordering.domain.model.valueobject.id.CustomerId;
 import com.williamsilva.algashop.ordering.domain.model.valueobject.id.ProductId;
 import com.williamsilva.algashop.ordering.domain.model.valueobject.id.ShoppingCartId;
 import com.williamsilva.algashop.ordering.domain.model.valueobject.id.ShoppingCartItemId;
@@ -13,7 +13,11 @@ import lombok.Builder;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 public class ShoppingCart implements AggregateRoot<ShoppingCartId> {
 
@@ -24,11 +28,14 @@ public class ShoppingCart implements AggregateRoot<ShoppingCartId> {
     private OffsetDateTime createdAt;
     private Set<ShoppingCartItem> items;
 
+    private Long version;
+
     @Builder(builderClassName = "ExistingShoppingCartBuilder", builderMethodName = "existing")
-    public ShoppingCart(ShoppingCartId id, CustomerId customerId,
+    public ShoppingCart(ShoppingCartId id, Long version, CustomerId customerId,
                         Money totalAmount, Quantity totalItems, OffsetDateTime createdAt,
                         Set<ShoppingCartItem> items) {
         this.setId(id);
+        this.setVersion(version);
         this.setCustomerId(customerId);
         this.setTotalAmount(totalAmount);
         this.setTotalItems(totalItems);
@@ -37,7 +44,7 @@ public class ShoppingCart implements AggregateRoot<ShoppingCartId> {
     }
 
     public static ShoppingCart startShopping(CustomerId customerId) {
-        return new ShoppingCart(new ShoppingCartId(), customerId, Money.ZERO,
+        return new ShoppingCart(new ShoppingCartId(), null, customerId, Money.ZERO,
                 Quantity.ZERO, OffsetDateTime.now(), new HashSet<>());
     }
 
@@ -132,6 +139,14 @@ public class ShoppingCart implements AggregateRoot<ShoppingCartId> {
 
     public OffsetDateTime createdAt() {
         return createdAt;
+    }
+
+    public Long version() {
+        return version;
+    }
+
+    private void setVersion(Long version) {
+        this.version = version;
     }
 
     private void updateItem(ShoppingCartItem shoppingCartItem, Product product, Quantity quantity) {
