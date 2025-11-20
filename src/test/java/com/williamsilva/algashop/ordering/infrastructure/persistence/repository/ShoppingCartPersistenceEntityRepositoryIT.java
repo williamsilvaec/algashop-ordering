@@ -1,4 +1,4 @@
-package com.williamsilva.algashop.ordering.infrastructure.persistence.provider;
+package com.williamsilva.algashop.ordering.infrastructure.persistence.repository;
 
 import com.williamsilva.algashop.ordering.domain.model.entity.CustomerTestDataBuilder;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.config.SpringDataAuditingConfig;
@@ -6,8 +6,6 @@ import com.williamsilva.algashop.ordering.infrastructure.persistence.entity.Cust
 import com.williamsilva.algashop.ordering.infrastructure.persistence.entity.CustomerPersistenceEntityTestDataBuilder;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.entity.ShoppingCartPersistenceEntity;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.entity.ShoppingCartPersistenceEntityTestDataBuilder;
-import com.williamsilva.algashop.ordering.infrastructure.persistence.repository.CustomerPersistenceEntityRepository;
-import com.williamsilva.algashop.ordering.infrastructure.persistence.repository.ShoppingCartPersistenceEntityRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -24,13 +24,11 @@ public class ShoppingCartPersistenceEntityAssembler {
     public ShoppingCartPersistenceEntity merge(ShoppingCartPersistenceEntity persistenceEntity,
                                                ShoppingCart shoppingCart) {
         persistenceEntity.setId(shoppingCart.id().value());
-        persistenceEntity.setCustomer(
-                customerPersistenceEntityRepository.getReferenceById(shoppingCart.customerId().value())
-        );
+        persistenceEntity.setCustomer(customerPersistenceEntityRepository.getReferenceById(shoppingCart.customerId().value()));
         persistenceEntity.setTotalAmount(shoppingCart.totalAmount().value());
         persistenceEntity.setTotalItems(shoppingCart.totalItems().value());
         persistenceEntity.setCreatedAt(shoppingCart.createdAt());
-        persistenceEntity.addItem(toOrderItemsEntities(shoppingCart.items()));
+        persistenceEntity.replaceItems(toOrderItemsEntities(shoppingCart.items()));
         return persistenceEntity;
     }
 

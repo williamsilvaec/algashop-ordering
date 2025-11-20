@@ -9,7 +9,7 @@ import com.williamsilva.algashop.ordering.infrastructure.persistence.assembler.S
 import com.williamsilva.algashop.ordering.infrastructure.persistence.disassembler.CustomerPersistenceEntityDisassembler;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.disassembler.ShoppingCartPersistenceEntityDisassembler;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.provider.CustomersPersistenceProvider;
-import com.williamsilva.algashop.ordering.infrastructure.persistence.provider.ShoppingCartPersistenceProvider;
+import com.williamsilva.algashop.ordering.infrastructure.persistence.provider.ShoppingCartsPersistenceProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
 @Import({
-        ShoppingCartPersistenceProvider.class,
+        ShoppingCartsPersistenceProvider.class,
         ShoppingCartPersistenceEntityAssembler.class,
         ShoppingCartPersistenceEntityDisassembler.class,
         CustomersPersistenceProvider.class,

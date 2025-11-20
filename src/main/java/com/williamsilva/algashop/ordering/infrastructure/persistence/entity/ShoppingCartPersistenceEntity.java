@@ -92,6 +92,16 @@ public class ShoppingCartPersistenceEntity {
         this.items.add(item);
     }
 
+    public void replaceItems(Set<ShoppingCartItemPersistenceEntity> updatedItems) {
+        if (updatedItems == null || updatedItems.isEmpty()) {
+            this.setItems(new HashSet<>());
+            return;
+        }
+
+        updatedItems.forEach(i -> i.setShoppingCart(this));
+        this.setItems(updatedItems);
+    }
+
     public UUID getCustomerId() {
         if (this.customer == null) {
             return null;

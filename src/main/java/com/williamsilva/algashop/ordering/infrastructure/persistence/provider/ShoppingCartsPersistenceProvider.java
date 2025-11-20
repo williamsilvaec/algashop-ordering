@@ -21,7 +21,7 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class ShoppingCartPersistenceProvider implements ShoppingCarts {
+public class ShoppingCartsPersistenceProvider implements ShoppingCarts {
 
     private final ShoppingCartPersistenceEntityRepository repository;
     private final ShoppingCartPersistenceEntityAssembler assembler;
@@ -36,7 +36,7 @@ public class ShoppingCartPersistenceProvider implements ShoppingCarts {
 
     @Override
     public void remove(ShoppingCart shoppingCart) {
-        repository.delete(assembler.fromDomain(shoppingCart));
+        repository.deleteById(shoppingCart.id().value());
     }
 
     @Override
