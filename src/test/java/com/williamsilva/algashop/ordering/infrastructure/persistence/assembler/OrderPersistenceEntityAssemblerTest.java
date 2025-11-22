@@ -1,13 +1,14 @@
 package com.williamsilva.algashop.ordering.infrastructure.persistence.assembler;
 
-import com.williamsilva.algashop.ordering.domain.model.entity.Order;
-import com.williamsilva.algashop.ordering.domain.model.entity.OrderItem;
-import com.williamsilva.algashop.ordering.domain.model.entity.OrderTestDataBuilder;
+import com.williamsilva.algashop.ordering.domain.model.order.Order;
+import com.williamsilva.algashop.ordering.domain.model.order.OrderItem;
+import com.williamsilva.algashop.ordering.domain.model.order.OrderTestDataBuilder;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.entity.CustomerPersistenceEntityTestDataBuilder;
-import com.williamsilva.algashop.ordering.infrastructure.persistence.entity.OrderItemPersistenceEntity;
-import com.williamsilva.algashop.ordering.infrastructure.persistence.entity.OrderPersistenceEntity;
+import com.williamsilva.algashop.ordering.infrastructure.persistence.order.OrderItemPersistenceEntity;
+import com.williamsilva.algashop.ordering.infrastructure.persistence.order.OrderPersistenceEntity;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.entity.OrderPersistenceEntityTestDataBuilder;
-import com.williamsilva.algashop.ordering.infrastructure.persistence.repository.CustomerPersistenceEntityRepository;
+import com.williamsilva.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityRepository;
+import com.williamsilva.algashop.ordering.infrastructure.persistence.order.OrderPersistenceEntityAssembler;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

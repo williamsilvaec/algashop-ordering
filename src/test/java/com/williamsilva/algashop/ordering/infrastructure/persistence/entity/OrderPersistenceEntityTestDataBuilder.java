@@ -1,12 +1,14 @@
 package com.williamsilva.algashop.ordering.infrastructure.persistence.entity;
 
-import com.williamsilva.algashop.ordering.domain.model.utility.IdGenerator;
+import com.williamsilva.algashop.ordering.domain.model.IdGenerator;
+import com.williamsilva.algashop.ordering.infrastructure.persistence.order.OrderItemPersistenceEntity;
+import com.williamsilva.algashop.ordering.infrastructure.persistence.order.OrderPersistenceEntity;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.Set;
 
-import static com.williamsilva.algashop.ordering.infrastructure.persistence.entity.OrderPersistenceEntity.OrderPersistenceEntityBuilder;
+import static com.williamsilva.algashop.ordering.infrastructure.persistence.order.OrderPersistenceEntity.OrderPersistenceEntityBuilder;
 
 public class OrderPersistenceEntityTestDataBuilder {
 
