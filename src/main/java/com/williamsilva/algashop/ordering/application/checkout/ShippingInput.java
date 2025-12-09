@@ -1,4 +1,4 @@
-package com.williamsilva.algashop.ordering.application.customer.management;
+package com.williamsilva.algashop.ordering.application.checkout;
 
 import com.williamsilva.algashop.ordering.application.commons.AddressData;
 import lombok.AllArgsConstructor;
@@ -10,10 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CustomerUpdateInput {
-    private String firstName;
-    private String lastName;
-    private String phone;
-    private Boolean promotionNotificationsAllowed;
+public class ShippingInput {
+    private RecipientData recipient;
     private AddressData address;
 }

@@ -1,6 +1,6 @@
 package com.williamsilva.algashop.ordering.application.customer.management;
 
-import com.williamsilva.algashop.ordering.application.commos.AddressData;
+import com.williamsilva.algashop.ordering.application.commons.AddressData;
 import com.williamsilva.algashop.ordering.application.utility.Mapper;
 import com.williamsilva.algashop.ordering.domain.model.commons.Address;
 import com.williamsilva.algashop.ordering.domain.model.commons.Document;

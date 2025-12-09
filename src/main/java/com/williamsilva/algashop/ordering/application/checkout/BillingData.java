@@ -1,4 +1,4 @@
-package com.williamsilva.algashop.ordering.application.customer.management;
+package com.williamsilva.algashop.ordering.application.checkout;
 
 import com.williamsilva.algashop.ordering.application.commons.AddressData;
 import lombok.AllArgsConstructor;
@@ -6,19 +6,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class CustomerInput {
+public class BillingData {
     private String firstName;
     private String lastName;
+    private String document;
     private String email;
     private String phone;
-    private String document;
-    private LocalDate birthDate;
-    private Boolean promotionNotificationsAllowed;
     private AddressData address;
 }
