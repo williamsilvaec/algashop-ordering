@@ -1,10 +1,12 @@
 package com.williamsilva.algashop.ordering.domain.model.order;
 
+import com.williamsilva.algashop.ordering.domain.model.DomainService;
 import com.williamsilva.algashop.ordering.domain.model.shoppingcart.ShoppingCart;
 import com.williamsilva.algashop.ordering.domain.model.shoppingcart.ShoppingCartItem;
 import com.williamsilva.algashop.ordering.domain.model.shoppingcart.ShoppingCartCantProceedToCheckoutException;
 import com.williamsilva.algashop.ordering.domain.model.product.Product;
 
+@DomainService
 public class CheckoutService {
 
     public Order checkout(ShoppingCart shoppingCart,
