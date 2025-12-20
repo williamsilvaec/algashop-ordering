@@ -97,6 +97,8 @@ public class Customer
         this.setAddress(this.address().toBuilder()
                 .number("Anonymized")
                 .complement(null).build());
+
+        this.publishDomainEvent(new CustomerRegisteredEvent(this.id(), this.archivedAt()));
     }
 
     public void enablePromotionNotifications() {
