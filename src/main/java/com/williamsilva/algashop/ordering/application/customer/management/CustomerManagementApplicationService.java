@@ -98,4 +98,21 @@ public class CustomerManagementApplicationService {
 
         customers.add(customer);
     }
+
+    @Transactional
+    public void archive(UUID rawCustomerId) {
+        CustomerId customerId = new CustomerId(rawCustomerId);
+        Customer customer = customers.ofId(customerId)
+                .orElseThrow(() -> new CustomerNotFoundException());
+        customer.archive();
+        customers.add(customer);
+    }
+
+    @Transactional
+    public void changeEmail(UUID rawCustomerId, String newEmail) {
+        Customer customer = customers.ofId(new CustomerId(rawCustomerId))
+                .orElseThrow(() -> new CustomerNotFoundException());
+        customerRegistration.changeEmail(customer, new Email(newEmail));
+        customers.add(customer);
+    }
 }
