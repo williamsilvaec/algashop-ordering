@@ -1,5 +1,6 @@
 package com.williamsilva.algashop.ordering.domain.model.order;
 
+import com.williamsilva.algashop.ordering.domain.model.AbstractEventSourceEntity;
 import com.williamsilva.algashop.ordering.domain.model.AggregateRoot;
 import com.williamsilva.algashop.ordering.domain.model.customer.CustomerId;
 import com.williamsilva.algashop.ordering.domain.model.commons.Money;
@@ -15,7 +16,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class Order implements AggregateRoot<OrderId> {
+public class Order extends AbstractEventSourceEntity implements AggregateRoot<OrderId> {
 
     private OrderId id;
     private CustomerId customerId;

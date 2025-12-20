@@ -1,5 +1,6 @@
 package com.williamsilva.algashop.ordering.domain.model.shoppingcart;
 
+import com.williamsilva.algashop.ordering.domain.model.AbstractEventSourceEntity;
 import com.williamsilva.algashop.ordering.domain.model.AggregateRoot;
 import com.williamsilva.algashop.ordering.domain.model.commons.Money;
 import com.williamsilva.algashop.ordering.domain.model.product.Product;
@@ -16,7 +17,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-public class ShoppingCart implements AggregateRoot<ShoppingCartId> {
+public class ShoppingCart
+        extends AbstractEventSourceEntity
+        implements AggregateRoot<ShoppingCartId> {
 
     private ShoppingCartId id;
     private CustomerId customerId;
