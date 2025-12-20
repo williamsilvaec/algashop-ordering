@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface DomainEventSource {
 
-    List<Object> domainEvent();
+    List<Object> domainEvents();
     void clearDomaintEvents();
 }
