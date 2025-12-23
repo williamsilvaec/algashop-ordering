@@ -1,5 +1,6 @@
 package com.williamsilva.algashop.ordering.application.customer.management;
 
+import com.williamsilva.algashop.ordering.application.customer.notification.CustomerNotificationApplicationService;
 import com.williamsilva.algashop.ordering.domain.model.customer.CustomerArchivedException;
 import com.williamsilva.algashop.ordering.domain.model.customer.CustomerEmailIsInUseException;
 import com.williamsilva.algashop.ordering.domain.model.customer.CustomerNotFoundException;
@@ -25,6 +26,9 @@ class CustomerManagementApplicationServiceIT {
 
     @MockitoSpyBean
     private CustomerEventListener customerEventListener;
+
+    @MockitoSpyBean
+    private CustomerNotificationApplicationService notificationApplicationService;
 
     @Test
     public void shouldRegister() {
@@ -53,7 +57,9 @@ class CustomerManagementApplicationServiceIT {
         Assertions.assertThat(customerOutput.getRegisteredAt()).isNotNull();
 
         Mockito.verify(customerEventListener).listen(Mockito.any(CustomerRegisteredEvent.class));
-        Mockito.verify(customerEventListener).listenSecundary(Mockito.any(CustomerRegisteredEvent.class));
+        Mockito.verify(notificationApplicationService).notifyNewRegistration(
+                Mockito.any(CustomerNotificationApplicationService.NotifyNewRegistrationInput.class)
+        );
     }
 
     @Test
