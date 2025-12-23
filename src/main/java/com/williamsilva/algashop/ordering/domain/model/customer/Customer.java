@@ -98,7 +98,7 @@ public class Customer
                 .number("Anonymized")
                 .complement(null).build());
 
-        this.publishDomainEvent(new CustomerRegisteredEvent(this.id(), this.archivedAt()));
+        this.publishDomainEvent(new CustomerArchivedEvent(this.id(), this.archivedAt()));
     }
 
     public void enablePromotionNotifications() {
