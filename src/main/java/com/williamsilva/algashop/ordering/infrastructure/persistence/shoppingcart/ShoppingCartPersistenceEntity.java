@@ -19,10 +19,12 @@ import lombok.ToString;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.domain.AbstractAggregateRoot;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -32,10 +34,10 @@ import java.util.UUID;
 @Setter
 @ToString(of = "id")
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class ShoppingCartPersistenceEntity {
+public class ShoppingCartPersistenceEntity extends AbstractAggregateRoot<ShoppingCartPersistenceEntity> {
 
     @Id
     @EqualsAndHashCode.Include
@@ -109,5 +111,19 @@ public class ShoppingCartPersistenceEntity {
         }
 
         return this.customer.getId();
+    }
+
+    public Collection<Object> getEvents() {
+        return super.domainEvents();
+    }
+
+    public void addEvents(Collection<Object> events) {
+        if (events == null) {
+            return;
+        }
+
+        for (Object event : events) {
+            this.registerEvent(event);
+        }
     }
 }
