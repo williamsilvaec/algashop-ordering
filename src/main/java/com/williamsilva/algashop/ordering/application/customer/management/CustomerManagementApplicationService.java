@@ -1,7 +1,6 @@
 package com.williamsilva.algashop.ordering.application.customer.management;
 
 import com.williamsilva.algashop.ordering.application.commons.AddressData;
-import com.williamsilva.algashop.ordering.application.utility.Mapper;
 import com.williamsilva.algashop.ordering.domain.model.commons.Address;
 import com.williamsilva.algashop.ordering.domain.model.commons.Document;
 import com.williamsilva.algashop.ordering.domain.model.commons.Email;
@@ -27,8 +26,6 @@ public class CustomerManagementApplicationService {
 
     private final CustomerRegistrationService customerRegistration;
     private final Customers customers;
-
-    private final Mapper mapper;
 
     @Transactional
     public UUID create(CustomerInput input) {
@@ -56,15 +53,6 @@ public class CustomerManagementApplicationService {
         customers.add(customer);
 
         return customer.id().value();
-    }
-
-    @Transactional(readOnly = true)
-    public CustomerOutput findById(UUID customerId) {
-        Objects.requireNonNull(customerId);
-        Customer customer = customers.ofId(new CustomerId(customerId))
-                .orElseThrow(() -> new CustomerNotFoundException());
-
-        return mapper.convert(customer, CustomerOutput.class);
     }
 
     @Transactional

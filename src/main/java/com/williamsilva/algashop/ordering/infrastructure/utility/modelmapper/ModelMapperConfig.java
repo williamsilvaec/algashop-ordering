@@ -1,6 +1,6 @@
 package com.williamsilva.algashop.ordering.infrastructure.utility.modelmapper;
 
-import com.williamsilva.algashop.ordering.application.customer.management.CustomerOutput;
+import com.williamsilva.algashop.ordering.application.customer.query.CustomerOutput;
 import com.williamsilva.algashop.ordering.application.utility.Mapper;
 import com.williamsilva.algashop.ordering.domain.model.commons.FullName;
 import com.williamsilva.algashop.ordering.domain.model.customer.BirthDate;

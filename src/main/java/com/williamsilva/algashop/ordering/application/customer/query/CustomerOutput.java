@@ -1,4 +1,4 @@
-package com.williamsilva.algashop.ordering.application.customer.management;
+package com.williamsilva.algashop.ordering.application.customer.query;
 
 import com.williamsilva.algashop.ordering.application.commons.AddressData;
 import lombok.AllArgsConstructor;
