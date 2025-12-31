@@ -1,6 +1,7 @@
 package com.williamsilva.algashop.ordering.application.checkout;
 
 import com.williamsilva.algashop.ordering.application.commons.AddressData;
+import com.williamsilva.algashop.ordering.application.order.query.BillingData;
 import com.williamsilva.algashop.ordering.domain.model.commons.*;
 import com.williamsilva.algashop.ordering.domain.model.order.Billing;
 import org.springframework.stereotype.Component;

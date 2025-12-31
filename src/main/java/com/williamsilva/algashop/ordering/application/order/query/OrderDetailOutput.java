@@ -1,6 +1,5 @@
 package com.williamsilva.algashop.ordering.application.order.query;
 
-import com.williamsilva.algashop.ordering.application.checkout.BillingData;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,6 +1,8 @@
 package com.williamsilva.algashop.ordering.application.checkout;
 
 import com.williamsilva.algashop.ordering.application.commons.AddressData;
+import com.williamsilva.algashop.ordering.application.order.query.BillingData;
+import com.williamsilva.algashop.ordering.application.order.query.RecipientData;
 import com.williamsilva.algashop.ordering.domain.model.customer.CustomerTestDataBuilder;
 import com.williamsilva.algashop.ordering.domain.model.product.ProductTestDataBuilder;
 
