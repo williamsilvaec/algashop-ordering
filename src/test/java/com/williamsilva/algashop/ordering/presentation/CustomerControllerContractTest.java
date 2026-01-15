@@ -1,5 +1,6 @@
 package com.williamsilva.algashop.ordering.presentation;
 
+import com.williamsilva.algashop.ordering.application.commons.AddressData;
 import com.williamsilva.algashop.ordering.application.customer.management.CustomerInput;
 import com.williamsilva.algashop.ordering.application.customer.management.CustomerManagementApplicationService;
 import com.williamsilva.algashop.ordering.application.customer.query.CustomerFilter;
@@ -52,8 +53,9 @@ class CustomerControllerContractTest {
     public void createCustomerContract() {
         CustomerOutput customerOutput = CustomerOutputTestDataBuilder.existing().build();
 
+        UUID customerId = UUID.randomUUID();
         Mockito.when(customerManagementApplicationService.create(Mockito.any(CustomerInput.class)))
-                .thenReturn(UUID.randomUUID());
+                .thenReturn(customerId);
         Mockito.when(customerQueryService.findById(Mockito.any(UUID.class)))
                 .thenReturn(customerOutput);
 
@@ -89,6 +91,7 @@ class CustomerControllerContractTest {
                 .assertThat()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .statusCode(HttpStatus.CREATED.value())
+                .header("Location", Matchers.containsString("/api/v1/customers/" + customerId))
                 .body(
                         "id", Matchers.notNullValue(),
                         "registeredAt", Matchers.notNullValue(),
@@ -209,6 +212,46 @@ class CustomerControllerContractTest {
                         "content[1].archived", Matchers.is(customer2.getArchived()),
                         "content[1].registeredAt", Matchers.is(formatter.format(customer2.getRegisteredAt()))
 
+                );
+    }
+
+    @Test
+    public void findByIdContract() {
+        CustomerOutput customer = CustomerOutputTestDataBuilder.existing().build();
+
+        Mockito.when(customerQueryService.findById(customer.getId())).thenReturn(customer);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+        AddressData address = customer.getAddress();
+
+        RestAssuredMockMvc
+                .given()
+                .accept(MediaType.APPLICATION_JSON)
+                .when()
+                .get("/api/v1/customers/{customerId}", customer.getId())
+                .then()
+                .assertThat()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .statusCode(HttpStatus.OK.value())
+                .body(
+                        "id", Matchers.equalTo(customer.getId().toString()),
+                        "firstName", Matchers.equalTo(customer.getFirstName()),
+                        "lastName", Matchers.is(customer.getLastName()),
+                        "email", Matchers.is(customer.getEmail()),
+                        "document", Matchers.is(customer.getDocument()),
+                        "phone", Matchers.is(customer.getPhone()),
+                        "birthDate", Matchers.is(customer.getBirthDate().toString()),
+                        "loyaltyPoints", Matchers.is(customer.getLoyaltyPoints()),
+                        "promotionNotificationsAllowed", Matchers.is(customer.getPromotionNotificationsAllowed()),
+                        "archived", Matchers.is(customer.getArchived()),
+                        "registeredAt", Matchers.is(formatter.format(customer.getRegisteredAt())),
+                        "address.street", Matchers.is(address.getStreet()),
+                        "address.number", Matchers.is(address.getNumber()),
+                        "address.complement", Matchers.is(address.getComplement()),
+                        "address.neighborhood", Matchers.is(address.getNeighborhood()),
+                        "address.city", Matchers.is(address.getCity()),
+                        "address.state", Matchers.is(address.getState()),
+                        "address.zipCode", Matchers.is(address.getZipCode())
                 );
     }
 }

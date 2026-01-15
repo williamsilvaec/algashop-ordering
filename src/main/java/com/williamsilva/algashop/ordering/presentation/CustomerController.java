@@ -6,16 +6,20 @@ import com.williamsilva.algashop.ordering.application.customer.query.CustomerFil
 import com.williamsilva.algashop.ordering.application.customer.query.CustomerOutput;
 import com.williamsilva.algashop.ordering.application.customer.query.CustomerQueryService;
 import com.williamsilva.algashop.ordering.application.customer.query.CustomerSummaryOutput;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.UUID;
 
@@ -29,8 +33,14 @@ public class CustomerController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CustomerOutput create(@RequestBody @Valid CustomerInput input) {
+    public CustomerOutput create(@RequestBody @Valid CustomerInput input, HttpServletResponse response) {
         UUID customerId = customerManagementApplicationService.create(input);
+
+        UriComponentsBuilder builder = MvcUriComponentsBuilder.fromMethodCall(
+                MvcUriComponentsBuilder.on(CustomerController.class).findById(customerId)
+        );
+        response.addHeader("Location", builder.toUriString());
+
         return customerQueryService.findById(customerId);
     }
 
@@ -38,5 +48,10 @@ public class CustomerController {
     public PageModel<CustomerSummaryOutput> findAll(CustomerFilter filter) {
         Page<CustomerSummaryOutput> page = customerQueryService.filter(filter);
         return PageModel.of(page);
+    }
+
+    @GetMapping("/{customerId}")
+    public CustomerOutput findById(@PathVariable UUID customerId) {
+        return customerQueryService.findById(customerId);
     }
 }
