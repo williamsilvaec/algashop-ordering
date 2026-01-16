@@ -2,6 +2,7 @@ package com.williamsilva.algashop.ordering.presentation;
 
 import com.williamsilva.algashop.ordering.application.customer.management.CustomerInput;
 import com.williamsilva.algashop.ordering.application.customer.management.CustomerManagementApplicationService;
+import com.williamsilva.algashop.ordering.application.customer.management.CustomerUpdateInput;
 import com.williamsilva.algashop.ordering.application.customer.query.CustomerFilter;
 import com.williamsilva.algashop.ordering.application.customer.query.CustomerOutput;
 import com.williamsilva.algashop.ordering.application.customer.query.CustomerQueryService;
@@ -11,9 +12,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -53,5 +56,18 @@ public class CustomerController {
     @GetMapping("/{customerId}")
     public CustomerOutput findById(@PathVariable UUID customerId) {
         return customerQueryService.findById(customerId);
+    }
+
+    @PutMapping("/{customerId}")
+    public CustomerOutput update(@PathVariable UUID customerId,
+                                 @RequestBody @Valid CustomerUpdateInput input) {
+        customerManagementApplicationService.update(customerId, input);
+        return customerQueryService.findById(customerId);
+    }
+
+    @DeleteMapping("/{customerId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable UUID customerId) {
+        customerManagementApplicationService.archive(customerId);
     }
 }
