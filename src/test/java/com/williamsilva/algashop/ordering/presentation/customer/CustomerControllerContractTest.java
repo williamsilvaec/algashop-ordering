@@ -1,4 +1,4 @@
-package com.williamsilva.algashop.ordering.presentation;
+package com.williamsilva.algashop.ordering.presentation.customer;
 
 import com.williamsilva.algashop.ordering.application.commons.AddressData;
 import com.williamsilva.algashop.ordering.application.customer.management.CustomerInput;
