@@ -18,13 +18,13 @@ public class ShoppingService {
 
     public ShoppingCart startShopping(CustomerId customerId) {
         if (!customers.exists(customerId)) {
-            throw new CustomerNotFoundException();
+            throw new CustomerNotFoundException(customerId);
         }
 
         Optional<ShoppingCart> shoppingCartOptional = shoppingCarts.ofCustomer(customerId);
 
         if (shoppingCartOptional.isPresent()) {
-            throw new CustomerAlreadyHaveShoppingCartException();
+            throw new CustomerAlreadyHaveShoppingCartException(customerId);
         }
 
         return ShoppingCart.startShopping(customerId);
