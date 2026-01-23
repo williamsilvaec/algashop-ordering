@@ -13,8 +13,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class OrderDetailOutput {
+
     private String id;
     private CustomerMinimalOutput customer;
     private Integer totalItems;
