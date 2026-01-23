@@ -38,7 +38,7 @@ public class ShoppingCartPersistenceEntityDisassembler {
                 .id(new ShoppingCartItemId(source.getId()))
                 .shoppingCartId(new ShoppingCartId(source.getShoppingCartId()))
                 .productId(new ProductId(source.getProductId()))
-                .productName(new ProductName(source.getProductName()))
+                .productName(new ProductName(source.getName()))
                 .price(new Money(source.getPrice()))
                 .quantity(new Quantity(source.getQuantity()))
                 .available(source.getAvailable())

@@ -43,7 +43,7 @@ public class ShoppingCartPersistenceEntityAssembler {
                                                         ShoppingCartItem shoppingCartItem) {
         persistenceEntity.setId(shoppingCartItem.id().value());
         persistenceEntity.setProductId(shoppingCartItem.productId().value());
-        persistenceEntity.setProductName(shoppingCartItem.productName().value());
+        persistenceEntity.setName(shoppingCartItem.productName().value());
         persistenceEntity.setPrice(shoppingCartItem.price().value());
         persistenceEntity.setQuantity(shoppingCartItem.quantity().value());
         persistenceEntity.setAvailable(shoppingCartItem.isAvailable());
