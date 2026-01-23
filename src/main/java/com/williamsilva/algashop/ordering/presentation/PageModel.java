@@ -43,4 +43,24 @@ public class PageModel<T> {
     public List<T> getContent() {
         return content;
     }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public void setTotalPages(int totalPages) {
+        this.totalPages = totalPages;
+    }
+
+    public void setTotalElements(long totalElements) {
+        this.totalElements = totalElements;
+    }
+
+    public void setContent(List<T> content) {
+        this.content = content;
+    }
 }

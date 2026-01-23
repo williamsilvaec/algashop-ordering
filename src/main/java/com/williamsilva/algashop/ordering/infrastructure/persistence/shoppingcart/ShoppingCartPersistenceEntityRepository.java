@@ -12,6 +12,8 @@ import java.util.UUID;
 
 public interface ShoppingCartPersistenceEntityRepository extends JpaRepository<ShoppingCartPersistenceEntity, UUID> {
 
+	Optional<ShoppingCartPersistenceEntity> findByCustomer_Id(UUID value);
+
     @Query("select s from ShoppingCartPersistenceEntity s where s.customer.id = :customerId")
     Optional<ShoppingCartPersistenceEntity> findByCustomerId(@Param("customerId") UUID customerId);
 

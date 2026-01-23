@@ -13,6 +13,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class OrderDetailOutput {
 
     private String id;
@@ -28,5 +29,6 @@ public class OrderDetailOutput {
     private ShippingData shipping;
     private BillingData billing;
 
+    @Builder.Default
     private List<OrderItemDetailOutput> items = new ArrayList<>();
 }

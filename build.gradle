@@ -1,6 +1,6 @@
 plugins {
     id 'idea'
-	id 'java'
+    id 'java'
     id 'org.springframework.boot' version '3.5.5'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'org.springframework.cloud.contract' version '4.3.0'
@@ -8,12 +8,18 @@ plugins {
 
 group = 'com.williamsilva.algashop'
 version = '0.0.1-SNAPSHOT'
-description = 'Ordering microservice'
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
-	}
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    mockitoAgent
 }
 
 repositories {
@@ -21,41 +27,34 @@ repositories {
 }
 
 ext {
-    set('springCloudVersion', "2025.0.1")
-}
-
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-    mockitoAgent
-}
-
-dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'com.fasterxml.uuid:java-uuid-generator:5.1.0'
-    implementation 'commons-validator:commons-validator:1.9.0'
-    implementation 'io.hypersistence:hypersistence-tsid:2.1.4'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.modelmapper:modelmapper:3.2.4'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-    runtimeOnly 'com.h2database:h2'
-    compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
-    testImplementation 'io.rest-assured:rest-assured'
-    testImplementation 'io.rest-assured:spring-mock-mvc'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
-    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
-    mockitoAgent('org.mockito:mockito-core:5.14.2') {transitive = false}
+    set('springCloudVersion', "2025.0.0")
 }
 
 dependencyManagement {
     imports {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
     }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'commons-validator:commons-validator:1.9.0'
+    implementation 'com.fasterxml.uuid:java-uuid-generator:5.1.0'
+    implementation 'io.hypersistence:hypersistence-tsid:2.1.4'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.modelmapper:modelmapper:3.2.4'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    runtimeOnly 'com.h2database:h2'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
+    testImplementation 'io.rest-assured:rest-assured'
+    testImplementation 'io.rest-assured:spring-mock-mvc'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.assertj:assertj-core:3.27.3'
+    testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    mockitoAgent('org.mockito:mockito-core:5.14.2') {transitive = false}
 }
 
 contracts {
@@ -102,8 +101,3 @@ tasks.register('integrationTest', Test) {
         excludeTestsMatching "*Test"
     }
 }
-
-
-
-
-

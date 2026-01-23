@@ -9,6 +9,7 @@ import com.williamsilva.algashop.ordering.application.customer.query.CustomerQue
 import com.williamsilva.algashop.ordering.application.customer.query.CustomerOutputTestDataBuilder;
 import com.williamsilva.algashop.ordering.application.customer.query.CustomerSummaryOutput;
 import com.williamsilva.algashop.ordering.application.customer.query.CustomerSummaryOutputTestDataBuilder;
+import com.williamsilva.algashop.ordering.application.shoppingcart.query.ShoppingCartQueryService;
 import com.williamsilva.algashop.ordering.domain.model.DomainException;
 import com.williamsilva.algashop.ordering.domain.model.customer.CustomerEmailIsInUseException;
 import com.williamsilva.algashop.ordering.domain.model.customer.CustomerNotFoundException;
@@ -42,6 +43,9 @@ class CustomerControllerContractTest {
 
     @MockitoBean
     private CustomerQueryService customerQueryService;
+
+    @MockitoBean
+    private ShoppingCartQueryService shoppingCartQueryService;
 
     @BeforeEach
     public void setupAll() {
