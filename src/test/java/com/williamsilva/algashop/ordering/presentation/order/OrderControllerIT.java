@@ -8,7 +8,6 @@ import com.williamsilva.algashop.ordering.application.checkout.BuyNowInputTestDa
 import com.williamsilva.algashop.ordering.application.order.query.OrderDetailOutput;
 import com.williamsilva.algashop.ordering.domain.model.order.OrderId;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityRepository;
-import com.williamsilva.algashop.ordering.infrastructure.persistence.entity.CustomerPersistenceEntityTestDataBuilder;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.order.OrderPersistenceEntityRepository;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.shoppingcart.ShoppingCartPersistenceEntityRepository;
 import com.williamsilva.algashop.ordering.utils.AlgaShopResourceUtils;
@@ -33,7 +32,8 @@ import static com.williamsilva.algashop.ordering.infrastructure.persistence.enti
 import static io.restassured.config.JsonConfig.jsonConfig;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(scripts = "classpath:sql/clean-database.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+@Sql(scripts = "classpath:db/testdata/afterMigrate.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
+@Sql(scripts = "classpath:db/clean/afterMigrate.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_CLASS)
 public class OrderControllerIT {
 
     @LocalServerPort
@@ -62,8 +62,6 @@ public class OrderControllerIT {
 
         RestAssured.config().jsonConfig(jsonConfig().numberReturnType(JsonPathConfig.NumberReturnType.BIG_DECIMAL));
 
-        initDatabase();
-
         wireMockRapidex = new WireMockServer(options()
                 .port(8780)
                 .usingFilesUnderDirectory("src/test/resources/wiremock/rapidex")
@@ -82,12 +80,6 @@ public class OrderControllerIT {
     public void after() {
         wireMockRapidex.stop();
         wireMockProductCatalog.stop();
-    }
-
-    private void initDatabase() {
-        customerRepository.saveAndFlush(
-                CustomerPersistenceEntityTestDataBuilder.aCustomer().id(validCustomerId).build()
-        );
     }
 
     @Test

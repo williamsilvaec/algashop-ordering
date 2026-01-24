@@ -1,24 +1,24 @@
 package com.williamsilva.algashop.ordering.infrastructure.persistence.provider;
 
 import com.williamsilva.algashop.ordering.domain.model.customer.Customer;
+import com.williamsilva.algashop.ordering.domain.model.customer.CustomerId;
 import com.williamsilva.algashop.ordering.domain.model.customer.CustomerTestDataBuilder;
 import com.williamsilva.algashop.ordering.domain.model.shoppingcart.ShoppingCart;
 import com.williamsilva.algashop.ordering.domain.model.shoppingcart.ShoppingCartTestDataBuilder;
-import com.williamsilva.algashop.ordering.domain.model.customer.CustomerId;
+import com.williamsilva.algashop.ordering.infrastructure.persistence.SpringDataAuditingConfig;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityAssembler;
+import com.williamsilva.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityDisassembler;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.customer.CustomersPersistenceProvider;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.shoppingcart.ShoppingCartPersistenceEntityAssembler;
-import com.williamsilva.algashop.ordering.infrastructure.persistence.SpringDataAuditingConfig;
-import com.williamsilva.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityDisassembler;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.shoppingcart.ShoppingCartPersistenceEntityDisassembler;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.shoppingcart.ShoppingCartPersistenceEntityRepository;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.shoppingcart.ShoppingCartsPersistenceProvider;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +36,7 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
         SpringDataAuditingConfig.class
 })
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@TestPropertySource(properties = "spring.flyway.locations=classpath:db/migration,classpath:db/testdata")
 class ShoppingCartsPersistenceProviderIT {
 
     private ShoppingCartsPersistenceProvider persistenceProvider;
@@ -51,15 +52,6 @@ class ShoppingCartsPersistenceProviderIT {
         this.entityRepository = entityRepository;
     }
 
-    @BeforeEach
-    public void setup() {
-        if (!customersPersistenceProvider.exists(CustomerTestDataBuilder.DEFAULT_CUSTOMER_ID)) {
-            customersPersistenceProvider.add(
-                    CustomerTestDataBuilder.existingCustomer().build()
-            );
-        }
-    }
-
     @Test
     public void shouldAddAndFindShoppingCart() {
         ShoppingCart shoppingCart = ShoppingCartTestDataBuilder.aShoppingCart().build();
@@ -67,8 +59,9 @@ class ShoppingCartsPersistenceProviderIT {
 
         persistenceProvider.add(shoppingCart);
 
+        assertThat(shoppingCart.version()).isNotNull().isEqualTo(0L);
+
         ShoppingCart foundCart = persistenceProvider.ofId(shoppingCart.id()).orElseThrow();
-        assertThat(foundCart.version()).isNotNull().isEqualTo(0L);
         assertThat(foundCart).isNotNull();
         assertThat(foundCart.id()).isEqualTo(shoppingCart.id());
         assertThat(foundCart.totalItems().value()).isEqualTo(3);
