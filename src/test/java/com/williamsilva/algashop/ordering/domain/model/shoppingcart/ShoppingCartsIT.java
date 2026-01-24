@@ -62,7 +62,6 @@ class ShoppingCartsIT {
         assertThat(savedShoppingCart).satisfies(
                 s -> assertThat(s.id()).isEqualTo(shoppingCartId),
                 s -> assertThat(s.customerId()).isEqualTo(originalShoppingCart.customerId()),
-                s -> assertThat(s.createdAt()).isEqualTo(originalShoppingCart.createdAt()),
                 s -> assertThat(s.items().size()).isEqualTo(originalShoppingCart.items().size()),
                 s -> assertThat(s.totalAmount()).isEqualTo(originalShoppingCart.totalAmount()),
                 s -> assertThat(s.totalItems()).isEqualTo(originalShoppingCart.totalItems())

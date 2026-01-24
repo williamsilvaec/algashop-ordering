@@ -14,7 +14,7 @@ public class ShoppingCartItem {
     private ShoppingCartItemId id;
     private ShoppingCartId shoppingCartId;
     private ProductId productId;
-    private ProductName productName;
+    private ProductName name;
     private Money price;
     private Quantity quantity;
     private Boolean available;
@@ -76,8 +76,8 @@ public class ShoppingCartItem {
         return productId;
     }
 
-    public ProductName productName() {
-        return productName;
+    public ProductName name() {
+        return name;
     }
 
     public Money price() {
@@ -113,7 +113,7 @@ public class ShoppingCartItem {
 
     private void setProductName(ProductName productName) {
         Objects.requireNonNull(productName);
-        this.productName = productName;
+        this.name = productName;
     }
 
     private void setPrice(Money price) {
@@ -151,4 +151,5 @@ public class ShoppingCartItem {
     public int hashCode() {
         return Objects.hash(id);
     }
+
 }
