@@ -55,6 +55,8 @@ public class OrderPersistenceEntity extends AbstractAggregateRoot<OrderPersisten
     private Integer totalItems;
     private String status;
     private String paymentMethod;
+    private UUID creditCardId;
+
     private OffsetDateTime placedAt;
     private OffsetDateTime paidAt;
     private OffsetDateTime canceledAt;

@@ -1,5 +1,6 @@
 package com.williamsilva.algashop.ordering.application.checkout;
 
+import com.williamsilva.algashop.ordering.domain.model.DomainException;
 import com.williamsilva.algashop.ordering.domain.model.commons.Quantity;
 import com.williamsilva.algashop.ordering.domain.model.commons.ZipCode;
 import com.williamsilva.algashop.ordering.domain.model.customer.Customer;
@@ -8,6 +9,7 @@ import com.williamsilva.algashop.ordering.domain.model.customer.CustomerNotFound
 import com.williamsilva.algashop.ordering.domain.model.customer.Customers;
 import com.williamsilva.algashop.ordering.domain.model.order.Billing;
 import com.williamsilva.algashop.ordering.domain.model.order.BuyNowService;
+import com.williamsilva.algashop.ordering.domain.model.order.CreditCardId;
 import com.williamsilva.algashop.ordering.domain.model.order.Order;
 import com.williamsilva.algashop.ordering.domain.model.order.Orders;
 import com.williamsilva.algashop.ordering.domain.model.order.PaymentMethod;
@@ -48,6 +50,15 @@ public class BuyNowApplicationService {
         CustomerId customerId = new CustomerId(input.getCustomerId());
         Quantity quantity = new Quantity(input.getQuantity());
         ProductId productId = new ProductId(input.getProductId());
+        CreditCardId creditCardId = null;
+
+        if (paymentMethod.equals(PaymentMethod.CREDIT_CARD)) {
+            if (input.getCreditCardId() == null) {
+                throw new DomainException("Credit card id is required");
+            }
+
+            creditCardId = new CreditCardId(input.getCreditCardId());
+        }
 
         Customer customer = customers.ofId(customerId).orElseThrow(() -> new CustomerNotFoundException(customerId));
         Product product = productCatalogService.ofId(productId).orElseThrow(() -> new ProductNotFoundException(productId));
@@ -57,7 +68,7 @@ public class BuyNowApplicationService {
         Shipping shipping = shippingInputDisassembler.toDomainModel(input.getShipping(), calculationResult);
         Billing billing = billingInputDisassembler.toDomainModel(input.getBilling());
 
-        Order order = buyNowService.buyNow(product, customer, billing, shipping, quantity, paymentMethod);
+        Order order = buyNowService.buyNow(product, customer, billing, shipping, quantity, paymentMethod, creditCardId);
 
         orders.add(order);
 

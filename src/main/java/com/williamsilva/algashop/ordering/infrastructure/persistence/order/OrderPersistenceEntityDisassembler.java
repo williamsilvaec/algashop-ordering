@@ -1,5 +1,6 @@
 package com.williamsilva.algashop.ordering.infrastructure.persistence.order;
 
+import com.williamsilva.algashop.ordering.domain.model.order.CreditCardId;
 import com.williamsilva.algashop.ordering.domain.model.order.Order;
 import com.williamsilva.algashop.ordering.domain.model.order.OrderItem;
 import com.williamsilva.algashop.ordering.domain.model.order.OrderStatus;
@@ -20,6 +21,10 @@ import java.util.stream.Collectors;
 public class OrderPersistenceEntityDisassembler {
 
     public Order toDomainEntity(OrderPersistenceEntity persistenceEntity) {
+        CreditCardId creditCardId = null;
+        if (persistenceEntity.getCreditCardId() != null) {
+            creditCardId = new CreditCardId(persistenceEntity.getCreditCardId());
+        }
         return Order.existing()
                 .id(new OrderId(persistenceEntity.getId()))
                 .customerId(new CustomerId(persistenceEntity.getCustomerId()))
@@ -33,6 +38,7 @@ public class OrderPersistenceEntityDisassembler {
                 .readyAt(persistenceEntity.getReadyAt())
                 .items(toDomainEntity(persistenceEntity.getItems()))
                 .version(persistenceEntity.getVersion())
+                .creditCardId(creditCardId)
                 .build();
     }
 

@@ -21,7 +21,7 @@ public class OrderChangingTest {
         OrderItem orderItem = draftOrder.items().iterator().next();
 
         Assertions.assertThatCode(() -> draftOrder.addItem(product, quantity)).doesNotThrowAnyException();
-        Assertions.assertThatCode(() -> draftOrder.changePaymentMethod(paymentMethod)).doesNotThrowAnyException();
+        Assertions.assertThatCode(() -> draftOrder.changePaymentMethod(paymentMethod, new CreditCardId())).doesNotThrowAnyException();
         Assertions.assertThatCode(() -> draftOrder.changeShipping(shipping)).doesNotThrowAnyException();
         Assertions.assertThatCode(() -> draftOrder.changeBilling(billing)).doesNotThrowAnyException();
         Assertions.assertThatCode(() -> draftOrder.changeItemQuantity(orderItem.id(), quantity)).doesNotThrowAnyException();
@@ -61,7 +61,7 @@ public class OrderChangingTest {
         Order placedOrder = OrderTestDataBuilder.anOrder().status(OrderStatus.PLACED).build();
         PaymentMethod paymentMethod = PaymentMethod.CREDIT_CARD;
 
-        Assertions.assertThatThrownBy(() -> placedOrder.changePaymentMethod(paymentMethod))
+        Assertions.assertThatThrownBy(() -> placedOrder.changePaymentMethod(paymentMethod, new CreditCardId()))
                 .isInstanceOf(OrderCannotBeEditedException.class);
     }
 }
