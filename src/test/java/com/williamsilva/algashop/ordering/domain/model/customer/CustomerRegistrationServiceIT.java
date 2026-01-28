@@ -1,5 +1,6 @@
 package com.williamsilva.algashop.ordering.domain.model.customer;
 
+import com.williamsilva.algashop.ordering.domain.model.AbstractDomainIT;
 import com.williamsilva.algashop.ordering.domain.model.commons.Address;
 import com.williamsilva.algashop.ordering.domain.model.commons.Document;
 import com.williamsilva.algashop.ordering.domain.model.commons.Email;
@@ -14,7 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDate;
 
 @SpringBootTest
-class CustomerRegistrationServiceIT {
+class CustomerRegistrationServiceIT extends AbstractDomainIT {
 
     @Autowired
     private CustomerRegistrationService customerRegistrationService;

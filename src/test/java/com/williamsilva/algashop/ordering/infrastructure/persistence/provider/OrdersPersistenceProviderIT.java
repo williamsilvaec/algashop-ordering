@@ -3,6 +3,7 @@ package com.williamsilva.algashop.ordering.infrastructure.persistence.provider;
 import com.williamsilva.algashop.ordering.domain.model.order.Order;
 import com.williamsilva.algashop.ordering.domain.model.order.OrderStatus;
 import com.williamsilva.algashop.ordering.domain.model.order.OrderTestDataBuilder;
+import com.williamsilva.algashop.ordering.infrastructure.persistence.AbstractPersistenceIT;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.SpringDataAuditingConfig;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityAssembler;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityDisassembler;
@@ -14,14 +15,11 @@ import com.williamsilva.algashop.ordering.infrastructure.persistence.order.Order
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-@DataJpaTest
 @Import({
         OrdersPersistenceProvider.class,
         OrderPersistenceEntityAssembler.class,
@@ -31,9 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
         CustomerPersistenceEntityDisassembler.class,
         SpringDataAuditingConfig.class
 })
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestPropertySource(properties = "spring.flyway.locations=classpath:db/migration,classpath:db/testdata")
-class OrdersPersistenceProviderIT {
+class OrdersPersistenceProviderIT extends AbstractPersistenceIT {
 
     private OrdersPersistenceProvider persistenceProvider;
     private OrderPersistenceEntityRepository entityRepository;

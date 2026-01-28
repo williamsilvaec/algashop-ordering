@@ -9,6 +9,7 @@ import com.williamsilva.algashop.ordering.domain.model.product.ProductTestDataBu
 import com.williamsilva.algashop.ordering.domain.model.shoppingcart.ShoppingCart;
 import com.williamsilva.algashop.ordering.domain.model.shoppingcart.ShoppingCartItem;
 import com.williamsilva.algashop.ordering.domain.model.shoppingcart.ShoppingCartTestDataBuilder;
+import com.williamsilva.algashop.ordering.infrastructure.persistence.AbstractPersistenceIT;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.SpringDataAuditingConfig;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityAssembler;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityDisassembler;
@@ -22,14 +23,11 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-@DataJpaTest
 @Import({
         ShoppingCartUpdateProvider.class,
         ShoppingCartsPersistenceProvider.class,
@@ -40,9 +38,8 @@ import org.springframework.transaction.annotation.Transactional;
         CustomerPersistenceEntityDisassembler.class,
         SpringDataAuditingConfig.class
 })
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Sql(scripts = "classpath:sql/clean-database.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-class ShoppingCartUpdateProviderIT {
+@Sql(scripts = "classpath:db/clean/afterMigrate.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+class ShoppingCartUpdateProviderIT extends AbstractPersistenceIT {
 
     private ShoppingCartsPersistenceProvider persistenceProvider;
     private CustomersPersistenceProvider customersPersistenceProvider;
