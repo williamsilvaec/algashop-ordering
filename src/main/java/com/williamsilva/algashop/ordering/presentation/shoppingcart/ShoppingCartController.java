@@ -1,11 +1,11 @@
 package com.williamsilva.algashop.ordering.presentation.shoppingcart;
 
-import com.williamsilva.algashop.ordering.application.shoppingcart.management.ShoppingCartItemInput;
-import com.williamsilva.algashop.ordering.application.shoppingcart.management.ShoppingCartManagementApplicationService;
-import com.williamsilva.algashop.ordering.application.shoppingcart.query.ShoppingCartOutput;
-import com.williamsilva.algashop.ordering.application.shoppingcart.query.ShoppingCartQueryService;
-import com.williamsilva.algashop.ordering.domain.model.customer.CustomerNotFoundException;
-import com.williamsilva.algashop.ordering.domain.model.product.ProductNotFoundException;
+import com.williamsilva.algashop.ordering.core.application.shoppingcart.management.ShoppingCartItemInput;
+import com.williamsilva.algashop.ordering.core.application.shoppingcart.management.ShoppingCartManagementApplicationService;
+import com.williamsilva.algashop.ordering.core.application.shoppingcart.query.ShoppingCartOutput;
+import com.williamsilva.algashop.ordering.core.application.shoppingcart.query.ShoppingCartQueryService;
+import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerNotFoundException;
+import com.williamsilva.algashop.ordering.core.domain.model.product.ProductNotFoundException;
 import com.williamsilva.algashop.ordering.presentation.UnprocessableEntityException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

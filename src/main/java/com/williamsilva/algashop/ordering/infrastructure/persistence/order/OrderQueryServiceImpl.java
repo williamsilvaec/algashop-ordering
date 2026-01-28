@@ -1,13 +1,13 @@
 package com.williamsilva.algashop.ordering.infrastructure.persistence.order;
 
-import com.williamsilva.algashop.ordering.application.order.query.CustomerMinimalOutput;
-import com.williamsilva.algashop.ordering.application.order.query.OrderDetailOutput;
-import com.williamsilva.algashop.ordering.application.order.query.OrderFilter;
-import com.williamsilva.algashop.ordering.application.order.query.OrderQueryService;
-import com.williamsilva.algashop.ordering.application.order.query.OrderSummaryOutput;
-import com.williamsilva.algashop.ordering.application.utility.Mapper;
-import com.williamsilva.algashop.ordering.domain.model.order.OrderId;
-import com.williamsilva.algashop.ordering.domain.model.order.OrderNotFoundException;
+import com.williamsilva.algashop.ordering.core.application.order.query.CustomerMinimalOutput;
+import com.williamsilva.algashop.ordering.core.application.order.query.OrderDetailOutput;
+import com.williamsilva.algashop.ordering.core.application.order.query.OrderFilter;
+import com.williamsilva.algashop.ordering.core.application.order.query.OrderQueryService;
+import com.williamsilva.algashop.ordering.core.application.order.query.OrderSummaryOutput;
+import com.williamsilva.algashop.ordering.core.application.utility.Mapper;
+import com.williamsilva.algashop.ordering.core.domain.model.order.OrderId;
+import com.williamsilva.algashop.ordering.core.domain.model.order.OrderNotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;

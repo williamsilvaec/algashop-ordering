@@ -1,10 +1,10 @@
 package com.williamsilva.algashop.ordering.presentation.order;
 
 
-import com.williamsilva.algashop.ordering.application.checkout.BuyNowInput;
-import com.williamsilva.algashop.ordering.application.checkout.BuyNowInputTestDataBuilder;
-import com.williamsilva.algashop.ordering.application.order.query.OrderDetailOutput;
-import com.williamsilva.algashop.ordering.domain.model.order.OrderId;
+import com.williamsilva.algashop.ordering.core.application.checkout.BuyNowInput;
+import com.williamsilva.algashop.ordering.core.application.checkout.BuyNowInputTestDataBuilder;
+import com.williamsilva.algashop.ordering.core.application.order.query.OrderDetailOutput;
+import com.williamsilva.algashop.ordering.core.domain.model.order.OrderId;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.order.OrderPersistenceEntityRepository;
 import com.williamsilva.algashop.ordering.presentation.AbstractPresentationIT;
 import com.williamsilva.algashop.ordering.utils.AlgaShopResourceUtils;

@@ -1,15 +1,15 @@
 package com.williamsilva.algashop.ordering.infrastructure.persistence.customer;
 
-import com.williamsilva.algashop.ordering.domain.model.customer.Customer;
-import com.williamsilva.algashop.ordering.domain.model.commons.Address;
-import com.williamsilva.algashop.ordering.domain.model.customer.BirthDate;
-import com.williamsilva.algashop.ordering.domain.model.commons.Document;
-import com.williamsilva.algashop.ordering.domain.model.commons.Email;
-import com.williamsilva.algashop.ordering.domain.model.commons.FullName;
-import com.williamsilva.algashop.ordering.domain.model.customer.LoyaltyPoints;
-import com.williamsilva.algashop.ordering.domain.model.commons.Phone;
-import com.williamsilva.algashop.ordering.domain.model.commons.ZipCode;
-import com.williamsilva.algashop.ordering.domain.model.customer.CustomerId;
+import com.williamsilva.algashop.ordering.core.domain.model.customer.Customer;
+import com.williamsilva.algashop.ordering.core.domain.model.commons.Address;
+import com.williamsilva.algashop.ordering.core.domain.model.customer.BirthDate;
+import com.williamsilva.algashop.ordering.core.domain.model.commons.Document;
+import com.williamsilva.algashop.ordering.core.domain.model.commons.Email;
+import com.williamsilva.algashop.ordering.core.domain.model.commons.FullName;
+import com.williamsilva.algashop.ordering.core.domain.model.customer.LoyaltyPoints;
+import com.williamsilva.algashop.ordering.core.domain.model.commons.Phone;
+import com.williamsilva.algashop.ordering.core.domain.model.commons.ZipCode;
+import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerId;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.commons.AddressEmbeddable;
 import org.springframework.stereotype.Component;
 

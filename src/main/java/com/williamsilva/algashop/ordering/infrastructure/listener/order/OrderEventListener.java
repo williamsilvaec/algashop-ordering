@@ -1,9 +1,9 @@
 package com.williamsilva.algashop.ordering.infrastructure.listener.order;
 
-import com.williamsilva.algashop.ordering.domain.model.order.OrderCanceledEvent;
-import com.williamsilva.algashop.ordering.domain.model.order.OrderPaidEvent;
-import com.williamsilva.algashop.ordering.domain.model.order.OrderPlacedEvent;
-import com.williamsilva.algashop.ordering.domain.model.order.OrderReadyEvent;
+import com.williamsilva.algashop.ordering.core.domain.model.order.OrderCanceledEvent;
+import com.williamsilva.algashop.ordering.core.domain.model.order.OrderPaidEvent;
+import com.williamsilva.algashop.ordering.core.domain.model.order.OrderPlacedEvent;
+import com.williamsilva.algashop.ordering.core.domain.model.order.OrderReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 

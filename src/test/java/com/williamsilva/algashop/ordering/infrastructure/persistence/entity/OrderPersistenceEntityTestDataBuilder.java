@@ -1,6 +1,6 @@
 package com.williamsilva.algashop.ordering.infrastructure.persistence.entity;
 
-import com.williamsilva.algashop.ordering.domain.model.IdGenerator;
+import com.williamsilva.algashop.ordering.core.domain.model.IdGenerator;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.order.OrderItemPersistenceEntity;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.order.OrderPersistenceEntity;
 

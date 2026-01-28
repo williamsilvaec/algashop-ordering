@@ -1,8 +1,8 @@
 package com.williamsilva.algashop.ordering.infrastructure.persistence.shoppingcart;
 
-import com.williamsilva.algashop.ordering.domain.model.shoppingcart.ShoppingCartProductAdjustmentService;
-import com.williamsilva.algashop.ordering.domain.model.commons.Money;
-import com.williamsilva.algashop.ordering.domain.model.product.ProductId;
+import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCartProductAdjustmentService;
+import com.williamsilva.algashop.ordering.core.domain.model.commons.Money;
+import com.williamsilva.algashop.ordering.core.domain.model.product.ProductId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

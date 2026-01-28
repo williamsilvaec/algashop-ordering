@@ -1,11 +1,10 @@
 package com.williamsilva.algashop.ordering.infrastructure.product.client.fake;
 
-import com.williamsilva.algashop.ordering.domain.model.product.ProductCatalogService;
-import com.williamsilva.algashop.ordering.domain.model.commons.Money;
-import com.williamsilva.algashop.ordering.domain.model.product.Product;
-import com.williamsilva.algashop.ordering.domain.model.product.ProductName;
-import com.williamsilva.algashop.ordering.domain.model.product.ProductId;
-import org.springframework.stereotype.Component;
+import com.williamsilva.algashop.ordering.core.domain.model.product.ProductCatalogService;
+import com.williamsilva.algashop.ordering.core.domain.model.commons.Money;
+import com.williamsilva.algashop.ordering.core.domain.model.product.Product;
+import com.williamsilva.algashop.ordering.core.domain.model.product.ProductName;
+import com.williamsilva.algashop.ordering.core.domain.model.product.ProductId;
 
 import java.util.Optional;
 

@@ -1,11 +1,14 @@
 package com.williamsilva.algashop.ordering.contract.base;
 
-import com.williamsilva.algashop.ordering.application.checkout.BuyNowApplicationService;
-import com.williamsilva.algashop.ordering.application.checkout.BuyNowInput;
-import com.williamsilva.algashop.ordering.application.checkout.CheckoutApplicationService;
-import com.williamsilva.algashop.ordering.application.checkout.CheckoutInput;
-import com.williamsilva.algashop.ordering.application.order.query.*;
-import com.williamsilva.algashop.ordering.domain.model.order.OrderNotFoundException;
+import com.williamsilva.algashop.ordering.core.application.checkout.BuyNowApplicationService;
+import com.williamsilva.algashop.ordering.core.application.checkout.BuyNowInput;
+import com.williamsilva.algashop.ordering.core.application.checkout.CheckoutApplicationService;
+import com.williamsilva.algashop.ordering.core.application.checkout.CheckoutInput;
+import com.williamsilva.algashop.ordering.core.application.order.query.OrderDetailOutputTestDataBuilder;
+import com.williamsilva.algashop.ordering.core.application.order.query.OrderFilter;
+import com.williamsilva.algashop.ordering.core.application.order.query.OrderQueryService;
+import com.williamsilva.algashop.ordering.core.application.order.query.OrderSummaryOutputTestDataBuilder;
+import com.williamsilva.algashop.ordering.core.domain.model.order.OrderNotFoundException;
 import com.williamsilva.algashop.ordering.presentation.order.OrderController;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;

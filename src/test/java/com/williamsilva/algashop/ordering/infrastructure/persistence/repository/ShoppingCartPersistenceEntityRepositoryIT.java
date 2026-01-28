@@ -1,6 +1,6 @@
 package com.williamsilva.algashop.ordering.infrastructure.persistence.repository;
 
-import com.williamsilva.algashop.ordering.domain.model.customer.CustomerTestDataBuilder;
+import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerTestDataBuilder;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.AbstractPersistenceIT;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntity;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityRepository;

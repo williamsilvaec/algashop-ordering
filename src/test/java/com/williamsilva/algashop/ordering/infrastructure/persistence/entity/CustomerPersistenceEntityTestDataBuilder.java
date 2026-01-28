@@ -6,7 +6,7 @@ import com.williamsilva.algashop.ordering.infrastructure.persistence.commons.Add
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
-import static com.williamsilva.algashop.ordering.domain.model.customer.CustomerTestDataBuilder.DEFAULT_CUSTOMER_ID;
+import static com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerTestDataBuilder.DEFAULT_CUSTOMER_ID;
 
 public class CustomerPersistenceEntityTestDataBuilder {
 

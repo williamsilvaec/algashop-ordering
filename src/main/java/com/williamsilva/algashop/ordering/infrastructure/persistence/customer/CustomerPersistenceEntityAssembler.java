@@ -1,7 +1,7 @@
 package com.williamsilva.algashop.ordering.infrastructure.persistence.customer;
 
-import com.williamsilva.algashop.ordering.domain.model.customer.Customer;
-import com.williamsilva.algashop.ordering.domain.model.commons.Address;
+import com.williamsilva.algashop.ordering.core.domain.model.customer.Customer;
+import com.williamsilva.algashop.ordering.core.domain.model.commons.Address;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.commons.AddressEmbeddable;
 import org.springframework.stereotype.Component;
 

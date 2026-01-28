@@ -1,10 +1,10 @@
 package com.williamsilva.algashop.ordering.infrastructure.persistence.provider;
 
-import com.williamsilva.algashop.ordering.domain.model.customer.Customer;
-import com.williamsilva.algashop.ordering.domain.model.customer.CustomerId;
-import com.williamsilva.algashop.ordering.domain.model.customer.CustomerTestDataBuilder;
-import com.williamsilva.algashop.ordering.domain.model.shoppingcart.ShoppingCart;
-import com.williamsilva.algashop.ordering.domain.model.shoppingcart.ShoppingCartTestDataBuilder;
+import com.williamsilva.algashop.ordering.core.domain.model.customer.Customer;
+import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerId;
+import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerTestDataBuilder;
+import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCart;
+import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCartTestDataBuilder;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.AbstractPersistenceIT;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.SpringDataAuditingConfig;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityAssembler;

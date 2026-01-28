@@ -1,8 +1,8 @@
 package com.williamsilva.algashop.ordering.infrastructure.persistence.provider;
 
-import com.williamsilva.algashop.ordering.domain.model.order.Order;
-import com.williamsilva.algashop.ordering.domain.model.order.OrderStatus;
-import com.williamsilva.algashop.ordering.domain.model.order.OrderTestDataBuilder;
+import com.williamsilva.algashop.ordering.core.domain.model.order.Order;
+import com.williamsilva.algashop.ordering.core.domain.model.order.OrderStatus;
+import com.williamsilva.algashop.ordering.core.domain.model.order.OrderTestDataBuilder;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.AbstractPersistenceIT;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.SpringDataAuditingConfig;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityAssembler;

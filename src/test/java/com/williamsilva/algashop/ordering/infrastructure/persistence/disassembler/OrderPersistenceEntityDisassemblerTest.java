@@ -1,12 +1,12 @@
 package com.williamsilva.algashop.ordering.infrastructure.persistence.disassembler;
 
-import com.williamsilva.algashop.ordering.domain.model.order.Order;
-import com.williamsilva.algashop.ordering.domain.model.order.OrderStatus;
-import com.williamsilva.algashop.ordering.domain.model.order.PaymentMethod;
-import com.williamsilva.algashop.ordering.domain.model.commons.Money;
-import com.williamsilva.algashop.ordering.domain.model.commons.Quantity;
-import com.williamsilva.algashop.ordering.domain.model.customer.CustomerId;
-import com.williamsilva.algashop.ordering.domain.model.order.OrderId;
+import com.williamsilva.algashop.ordering.core.domain.model.order.Order;
+import com.williamsilva.algashop.ordering.core.domain.model.order.OrderStatus;
+import com.williamsilva.algashop.ordering.core.domain.model.order.PaymentMethod;
+import com.williamsilva.algashop.ordering.core.domain.model.commons.Money;
+import com.williamsilva.algashop.ordering.core.domain.model.commons.Quantity;
+import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerId;
+import com.williamsilva.algashop.ordering.core.domain.model.order.OrderId;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.order.OrderPersistenceEntity;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.entity.OrderPersistenceEntityTestDataBuilder;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.order.OrderPersistenceEntityDisassembler;
