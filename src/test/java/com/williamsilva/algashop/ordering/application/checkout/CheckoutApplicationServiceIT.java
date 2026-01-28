@@ -1,32 +1,36 @@
 package com.williamsilva.algashop.ordering.application.checkout;
 
+import com.williamsilva.algashop.ordering.application.AbstractApplicationIT;
 import com.williamsilva.algashop.ordering.domain.model.commons.Money;
 import com.williamsilva.algashop.ordering.domain.model.commons.Quantity;
 import com.williamsilva.algashop.ordering.domain.model.customer.CustomerTestDataBuilder;
 import com.williamsilva.algashop.ordering.domain.model.customer.Customers;
-import com.williamsilva.algashop.ordering.domain.model.order.*;
-import com.williamsilva.algashop.ordering.domain.model.order.shipping.OriginAddressService;
+import com.williamsilva.algashop.ordering.domain.model.order.Order;
+import com.williamsilva.algashop.ordering.domain.model.order.OrderId;
+import com.williamsilva.algashop.ordering.domain.model.order.OrderStatus;
+import com.williamsilva.algashop.ordering.domain.model.order.Orders;
 import com.williamsilva.algashop.ordering.domain.model.order.shipping.ShippingCostService;
 import com.williamsilva.algashop.ordering.domain.model.product.Product;
 import com.williamsilva.algashop.ordering.domain.model.product.ProductTestDataBuilder;
-import com.williamsilva.algashop.ordering.domain.model.shoppingcart.*;
+import com.williamsilva.algashop.ordering.domain.model.shoppingcart.ShoppingCart;
+import com.williamsilva.algashop.ordering.domain.model.shoppingcart.ShoppingCartCantProceedToCheckoutException;
+import com.williamsilva.algashop.ordering.domain.model.shoppingcart.ShoppingCartNotFoundException;
+import com.williamsilva.algashop.ordering.domain.model.shoppingcart.ShoppingCartTestDataBuilder;
+import com.williamsilva.algashop.ordering.domain.model.shoppingcart.ShoppingCarts;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
-@SpringBootTest
-@Transactional
-class CheckoutApplicationServiceIT {
+
+class CheckoutApplicationServiceIT extends AbstractApplicationIT {
 
     @Autowired
     private CheckoutApplicationService service;
@@ -39,12 +43,6 @@ class CheckoutApplicationServiceIT {
 
     @Autowired
     private Customers customers;
-
-    @Autowired
-    private CheckoutService checkoutService;
-
-    @Autowired
-    private OriginAddressService originAddressService;
 
     @MockitoBean
     private ShippingCostService shippingCostService;

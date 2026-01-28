@@ -4,14 +4,13 @@ import com.williamsilva.algashop.ordering.application.AbstractApplicationIT;
 import com.williamsilva.algashop.ordering.application.customer.notification.CustomerNotificationApplicationService;
 import com.williamsilva.algashop.ordering.application.customer.query.CustomerOutput;
 import com.williamsilva.algashop.ordering.application.customer.query.CustomerQueryService;
+import com.williamsilva.algashop.ordering.domain.model.customer.CustomerArchivedEvent;
 import com.williamsilva.algashop.ordering.domain.model.customer.CustomerArchivedException;
 import com.williamsilva.algashop.ordering.domain.model.customer.CustomerEmailIsInUseException;
 import com.williamsilva.algashop.ordering.domain.model.customer.CustomerNotFoundException;
 import com.williamsilva.algashop.ordering.domain.model.customer.CustomerRegisteredEvent;
 import com.williamsilva.algashop.ordering.infrastructure.listener.customer.CustomerEventListener;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,16 +22,6 @@ import java.util.UUID;
 
 class CustomerManagementApplicationServiceIT extends AbstractApplicationIT {
 
-    @BeforeAll
-    public static void beforeAll() {
-        AbstractApplicationIT.beforeAll();
-    }
-
-    @AfterAll
-    public static void afterAll() {
-        AbstractApplicationIT.afterAll();
-    }
-
     @Autowired
     private CustomerManagementApplicationService customerManagementApplicationService;
 
@@ -40,7 +29,7 @@ class CustomerManagementApplicationServiceIT extends AbstractApplicationIT {
     private CustomerEventListener customerEventListener;
 
     @MockitoSpyBean
-    private CustomerNotificationApplicationService notificationApplicationService;
+    private CustomerNotificationApplicationService customerNotificationApplicationService;
 
     @Autowired
     private CustomerQueryService queryService;
@@ -72,9 +61,9 @@ class CustomerManagementApplicationServiceIT extends AbstractApplicationIT {
         Assertions.assertThat(customerOutput.getRegisteredAt()).isNotNull();
 
         Mockito.verify(customerEventListener).listen(Mockito.any(CustomerRegisteredEvent.class));
-        Mockito.verify(notificationApplicationService).notifyNewRegistration(
-                Mockito.any(CustomerNotificationApplicationService.NotifyNewRegistrationInput.class)
-        );
+        Mockito.verify(customerEventListener, Mockito.never()).listen(Mockito.any(CustomerArchivedEvent.class));
+        Mockito.verify(customerNotificationApplicationService)
+                .notifyNewRegistration(Mockito.any(CustomerNotificationApplicationService.NotifyNewRegistrationInput.class));
     }
 
     @Test
@@ -216,5 +205,4 @@ class CustomerManagementApplicationServiceIT extends AbstractApplicationIT {
         Assertions.assertThatExceptionOfType(CustomerEmailIsInUseException.class)
                 .isThrownBy(() -> customerManagementApplicationService.changeEmail(customerId, "teste@email.com"));
     }
-
 }

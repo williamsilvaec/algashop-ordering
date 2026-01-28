@@ -1,6 +1,5 @@
 package com.williamsilva.algashop.ordering.presentation.shoppingcart;
 
-import com.williamsilva.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityRepository;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.shoppingcart.ShoppingCartPersistenceEntityRepository;
 import com.williamsilva.algashop.ordering.presentation.AbstractPresentationIT;
 import com.williamsilva.algashop.ordering.utils.AlgaShopResourceUtils;
@@ -19,9 +18,6 @@ import java.util.UUID;
 
 
 public class ShoppingCartControllerIT extends AbstractPresentationIT {
-
-    @Autowired
-    private CustomerPersistenceEntityRepository customerRepository;
 
     @Autowired
     private ShoppingCartPersistenceEntityRepository shoppingCartRepository;

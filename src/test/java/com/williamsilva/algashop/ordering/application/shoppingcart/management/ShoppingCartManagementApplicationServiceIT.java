@@ -1,25 +1,39 @@
 package com.williamsilva.algashop.ordering.application.shoppingcart.management;
 
+import com.williamsilva.algashop.ordering.application.AbstractApplicationIT;
 import com.williamsilva.algashop.ordering.domain.model.commons.Quantity;
-import com.williamsilva.algashop.ordering.domain.model.customer.*;
-import com.williamsilva.algashop.ordering.domain.model.product.*;
-import com.williamsilva.algashop.ordering.domain.model.shoppingcart.*;
+import com.williamsilva.algashop.ordering.domain.model.customer.Customer;
+import com.williamsilva.algashop.ordering.domain.model.customer.CustomerAlreadyHaveShoppingCartException;
+import com.williamsilva.algashop.ordering.domain.model.customer.CustomerNotFoundException;
+import com.williamsilva.algashop.ordering.domain.model.customer.CustomerTestDataBuilder;
+import com.williamsilva.algashop.ordering.domain.model.customer.Customers;
+import com.williamsilva.algashop.ordering.domain.model.product.Product;
+import com.williamsilva.algashop.ordering.domain.model.product.ProductCatalogService;
+import com.williamsilva.algashop.ordering.domain.model.product.ProductNotFoundException;
+import com.williamsilva.algashop.ordering.domain.model.product.ProductOutOfStockException;
+import com.williamsilva.algashop.ordering.domain.model.product.ProductTestDataBuilder;
+import com.williamsilva.algashop.ordering.domain.model.shoppingcart.ShoppingCart;
+import com.williamsilva.algashop.ordering.domain.model.shoppingcart.ShoppingCartCreatedEvent;
+import com.williamsilva.algashop.ordering.domain.model.shoppingcart.ShoppingCartDoesNotContainItemException;
+import com.williamsilva.algashop.ordering.domain.model.shoppingcart.ShoppingCartEmptiedEvent;
+import com.williamsilva.algashop.ordering.domain.model.shoppingcart.ShoppingCartId;
+import com.williamsilva.algashop.ordering.domain.model.shoppingcart.ShoppingCartItem;
+import com.williamsilva.algashop.ordering.domain.model.shoppingcart.ShoppingCartItemAddedEvent;
+import com.williamsilva.algashop.ordering.domain.model.shoppingcart.ShoppingCartItemRemovedEvent;
+import com.williamsilva.algashop.ordering.domain.model.shoppingcart.ShoppingCartNotFoundException;
+import com.williamsilva.algashop.ordering.domain.model.shoppingcart.ShoppingCarts;
 import com.williamsilva.algashop.ordering.infrastructure.listener.shoppingcart.ShoppingCartEventListener;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
 
-@SpringBootTest
-@Transactional
-class ShoppingCartManagementApplicationServiceIT {
+class ShoppingCartManagementApplicationServiceIT extends AbstractApplicationIT {
 
     @Autowired
     private ShoppingCartManagementApplicationService service;

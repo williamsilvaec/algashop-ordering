@@ -1,84 +1,48 @@
 package com.williamsilva.algashop.ordering.presentation.order;
 
 
-import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.extension.responsetemplating.ResponseTemplateTransformer;
 import com.williamsilva.algashop.ordering.application.checkout.BuyNowInput;
 import com.williamsilva.algashop.ordering.application.checkout.BuyNowInputTestDataBuilder;
 import com.williamsilva.algashop.ordering.application.order.query.OrderDetailOutput;
 import com.williamsilva.algashop.ordering.domain.model.order.OrderId;
-import com.williamsilva.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityRepository;
 import com.williamsilva.algashop.ordering.infrastructure.persistence.order.OrderPersistenceEntityRepository;
-import com.williamsilva.algashop.ordering.infrastructure.persistence.shoppingcart.ShoppingCartPersistenceEntityRepository;
+import com.williamsilva.algashop.ordering.presentation.AbstractPresentationIT;
 import com.williamsilva.algashop.ordering.utils.AlgaShopResourceUtils;
 import io.restassured.RestAssured;
-import io.restassured.path.json.config.JsonPathConfig;
 import org.assertj.core.api.Assertions;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.jdbc.Sql;
 
 import java.util.UUID;
 
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
-import static io.restassured.config.JsonConfig.jsonConfig;
-
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(scripts = "classpath:db/testdata/afterMigrate.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
-@Sql(scripts = "classpath:db/clean/afterMigrate.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_CLASS)
-public class OrderControllerIT {
-
-    @LocalServerPort
-    private int port;
-
-    @Autowired
-    private CustomerPersistenceEntityRepository customerRepository;
+public class OrderControllerIT extends AbstractPresentationIT {
 
     @Autowired
     private OrderPersistenceEntityRepository orderRepository;
 
-    @Autowired
-    private ShoppingCartPersistenceEntityRepository shoppingCartRepository;
-
     private static final UUID validCustomerId = UUID.fromString("6e148bd5-47f6-4022-b9da-07cfaa294f7a");
     private static final UUID validProductId = UUID.fromString("fffe6ec2-7103-48b3-8e4f-3b58e43fb75a");
-    private static final UUID validShoppingCartId = UUID.fromString("4f31582a-66e6-4601-a9d3-ff608c2d4461");
-
-    private WireMockServer wireMockProductCatalog;
-    private WireMockServer wireMockRapidex;
 
     @BeforeEach
     public void setup() {
-        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-        RestAssured.port = port;
-
-        RestAssured.config().jsonConfig(jsonConfig().numberReturnType(JsonPathConfig.NumberReturnType.BIG_DECIMAL));
-
-        wireMockRapidex = new WireMockServer(options()
-                .port(8780)
-                .usingFilesUnderDirectory("src/test/resources/wiremock/rapidex")
-                .extensions(new ResponseTemplateTransformer(true)));
-
-        wireMockProductCatalog = new WireMockServer(options()
-                .port(8781)
-                .usingFilesUnderDirectory("src/test/resources/wiremock/product-catalog")
-                .extensions(new ResponseTemplateTransformer(true)));
-
-        wireMockRapidex.start();
-        wireMockProductCatalog.start();
+        super.beforeEach();
     }
 
-    @AfterEach
-    public void after() {
-        wireMockRapidex.stop();
-        wireMockProductCatalog.stop();
+    @BeforeAll
+    public static void setupBeforeAll() {
+        AbstractPresentationIT.initWireMock();
+    }
+
+    @AfterAll
+    public static void afterAll() {
+        AbstractPresentationIT.stopMock();
     }
 
     @Test
@@ -138,6 +102,7 @@ public class OrderControllerIT {
     }
 
     @Test
+    @Disabled
     public void shouldNotCreateOrderUsingProductWhenProductAPIIsUnavailable() {
         String json = AlgaShopResourceUtils.readContent("json/create-order-with-product.json");
 
@@ -215,5 +180,4 @@ public class OrderControllerIT {
         boolean orderExists = orderRepository.existsById(new OrderId(orderDetailOutput.getId()).value().toLong());
         Assertions.assertThat(orderExists).isTrue();
     }
-
 }

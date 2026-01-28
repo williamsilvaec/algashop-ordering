@@ -1,25 +1,30 @@
 package com.williamsilva.algashop.ordering.application.order.management;
 
+import com.williamsilva.algashop.ordering.application.AbstractApplicationIT;
 import com.williamsilva.algashop.ordering.application.customer.loyaltypoints.CustomerLoyaltyPointsApplicationService;
 import com.williamsilva.algashop.ordering.domain.model.customer.CustomerTestDataBuilder;
 import com.williamsilva.algashop.ordering.domain.model.customer.Customers;
-import com.williamsilva.algashop.ordering.domain.model.order.*;
+import com.williamsilva.algashop.ordering.domain.model.order.Order;
+import com.williamsilva.algashop.ordering.domain.model.order.OrderCanceledEvent;
+import com.williamsilva.algashop.ordering.domain.model.order.OrderId;
+import com.williamsilva.algashop.ordering.domain.model.order.OrderNotFoundException;
+import com.williamsilva.algashop.ordering.domain.model.order.OrderReadyEvent;
+import com.williamsilva.algashop.ordering.domain.model.order.OrderStatus;
+import com.williamsilva.algashop.ordering.domain.model.order.OrderStatusCannotBeChangedException;
+import com.williamsilva.algashop.ordering.domain.model.order.OrderTestDataBuilder;
+import com.williamsilva.algashop.ordering.domain.model.order.Orders;
 import com.williamsilva.algashop.ordering.infrastructure.listener.order.OrderEventListener;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
 
-@SpringBootTest
-@Transactional
-class OrderManagementApplicationServiceIT {
+class OrderManagementApplicationServiceIT extends AbstractApplicationIT {
 
     @Autowired
     private OrderManagementApplicationService service;
