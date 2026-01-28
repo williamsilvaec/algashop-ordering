@@ -15,6 +15,15 @@ public abstract class AbstractApplicationIT {
     protected static PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer<>("postgres:17-alpine")
             .withDatabaseName("ordering_test");
 
+    protected static void beforeAll() {
+        System.setProperty("api.version", "1.44");
+        postgreSQLContainer.start();
+    }
+
+    protected static void afterAll() {
+        postgreSQLContainer.stop();
+    }
+
     @DynamicPropertySource
     public static void configurePropertySource(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);

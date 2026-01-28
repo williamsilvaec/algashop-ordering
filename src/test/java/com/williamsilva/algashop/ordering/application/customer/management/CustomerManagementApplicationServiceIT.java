@@ -25,13 +25,12 @@ class CustomerManagementApplicationServiceIT extends AbstractApplicationIT {
 
     @BeforeAll
     public static void beforeAll() {
-        System.setProperty("api.version", "1.44");
-        postgreSQLContainer.start();
+        AbstractApplicationIT.beforeAll();
     }
 
     @AfterAll
     public static void afterAll() {
-        postgreSQLContainer.stop();
+        AbstractApplicationIT.afterAll();
     }
 
     @Autowired
