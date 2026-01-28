@@ -1,4 +1,4 @@
-package com.williamsilva.algashop.ordering.core.application.shoppingcart.management;
+package com.williamsilva.algashop.ordering.core.application.shoppingcart;
 
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Quantity;
 import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerId;
@@ -12,6 +12,8 @@ import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.Shoppin
 import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCartNotFoundException;
 import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCarts;
 import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingService;
+import com.williamsilva.algashop.ordering.core.ports.in.shoppingcart.ForManagingShoppingCarts;
+import com.williamsilva.algashop.ordering.core.ports.in.shoppingcart.ShoppingCartItemInput;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,20 +23,21 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ShoppingCartManagementApplicationService {
+public class ShoppingCartManagementApplicationService implements ForManagingShoppingCarts {
 
     private final ShoppingCarts shoppingCarts;
     private final ProductCatalogService productCatalogService;
     private final ShoppingService shoppingService;
 
     @Transactional
+    @Override
     public void addItem(ShoppingCartItemInput input) {
         Objects.requireNonNull(input);
         ShoppingCartId shoppingCartId = new ShoppingCartId(input.getShoppingCartId());
         ProductId productId = new ProductId(input.getProductId());
 
         ShoppingCart shoppingCart = shoppingCarts.ofId(shoppingCartId)
-                .orElseThrow(() -> new ShoppingCartNotFoundException());
+                .orElseThrow(ShoppingCartNotFoundException::new);
 
         Product product = productCatalogService.ofId(productId)
                 .orElseThrow(() -> new ProductNotFoundException(productId));
@@ -45,6 +48,7 @@ public class ShoppingCartManagementApplicationService {
     }
 
     @Transactional
+    @Override
     public UUID createNew(UUID rawCustomerId) {
         Objects.requireNonNull(rawCustomerId);
         ShoppingCart shoppingCart = shoppingService.startShopping(new CustomerId(rawCustomerId));
@@ -53,32 +57,35 @@ public class ShoppingCartManagementApplicationService {
     }
 
     @Transactional
+    @Override
     public void removeItem(UUID rawShoppingCartId, UUID rawShoppingCartItemId) {
         Objects.requireNonNull(rawShoppingCartId);
         Objects.requireNonNull(rawShoppingCartItemId);
         ShoppingCartId shoppingCartId = new ShoppingCartId(rawShoppingCartId);
         ShoppingCart shoppingCart = shoppingCarts.ofId(shoppingCartId)
-                .orElseThrow(()-> new ShoppingCartNotFoundException());
+                .orElseThrow(ShoppingCartNotFoundException::new);
         shoppingCart.removeItem(new ShoppingCartItemId(rawShoppingCartItemId));
         shoppingCarts.add(shoppingCart);
     }
 
     @Transactional
+    @Override
     public void empty(UUID rawShoppingCartId) {
         Objects.requireNonNull(rawShoppingCartId);
         ShoppingCartId shoppingCartId = new ShoppingCartId(rawShoppingCartId);
         ShoppingCart shoppingCart = shoppingCarts.ofId(shoppingCartId)
-                .orElseThrow(()-> new ShoppingCartNotFoundException());
+                .orElseThrow(ShoppingCartNotFoundException::new);
         shoppingCart.empty();
         shoppingCarts.add(shoppingCart);
     }
 
     @Transactional
+    @Override
     public void delete(UUID rawShoppingCartId) {
         Objects.requireNonNull(rawShoppingCartId);
         ShoppingCartId shoppingCartId = new ShoppingCartId(rawShoppingCartId);
         ShoppingCart shoppingCart = shoppingCarts.ofId(shoppingCartId)
-                .orElseThrow(()-> new ShoppingCartNotFoundException());
+                .orElseThrow(ShoppingCartNotFoundException::new);
         shoppingCarts.remove(shoppingCart);
     }
 

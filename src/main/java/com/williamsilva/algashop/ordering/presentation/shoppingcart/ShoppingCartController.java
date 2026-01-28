@@ -1,7 +1,7 @@
 package com.williamsilva.algashop.ordering.presentation.shoppingcart;
 
-import com.williamsilva.algashop.ordering.core.application.shoppingcart.management.ShoppingCartItemInput;
-import com.williamsilva.algashop.ordering.core.application.shoppingcart.management.ShoppingCartManagementApplicationService;
+import com.williamsilva.algashop.ordering.core.ports.in.shoppingcart.ShoppingCartItemInput;
+import com.williamsilva.algashop.ordering.core.application.shoppingcart.ShoppingCartManagementApplicationService;
 import com.williamsilva.algashop.ordering.core.application.shoppingcart.query.ShoppingCartOutput;
 import com.williamsilva.algashop.ordering.core.application.shoppingcart.query.ShoppingCartQueryService;
 import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerNotFoundException;

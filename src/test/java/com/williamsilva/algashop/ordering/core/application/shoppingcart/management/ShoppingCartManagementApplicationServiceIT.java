@@ -1,6 +1,7 @@
 package com.williamsilva.algashop.ordering.core.application.shoppingcart.management;
 
 import com.williamsilva.algashop.ordering.core.application.AbstractApplicationIT;
+import com.williamsilva.algashop.ordering.core.application.shoppingcart.ShoppingCartManagementApplicationService;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Quantity;
 import com.williamsilva.algashop.ordering.core.domain.model.customer.Customer;
 import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerAlreadyHaveShoppingCartException;
@@ -22,6 +23,7 @@ import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.Shoppin
 import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCartItemRemovedEvent;
 import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCartNotFoundException;
 import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCarts;
+import com.williamsilva.algashop.ordering.core.ports.in.shoppingcart.ShoppingCartItemInput;
 import com.williamsilva.algashop.ordering.infrastructure.listener.shoppingcart.ShoppingCartEventListener;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

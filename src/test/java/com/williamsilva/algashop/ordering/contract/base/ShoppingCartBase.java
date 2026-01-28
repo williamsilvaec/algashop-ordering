@@ -1,6 +1,6 @@
 package com.williamsilva.algashop.ordering.contract.base;
 
-import com.williamsilva.algashop.ordering.core.application.shoppingcart.management.ShoppingCartManagementApplicationService;
+import com.williamsilva.algashop.ordering.core.application.shoppingcart.ShoppingCartManagementApplicationService;
 import com.williamsilva.algashop.ordering.core.application.shoppingcart.query.ShoppingCartOutputTestDataBuilder;
 import com.williamsilva.algashop.ordering.core.application.shoppingcart.query.ShoppingCartQueryService;
 import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCartNotFoundException;
