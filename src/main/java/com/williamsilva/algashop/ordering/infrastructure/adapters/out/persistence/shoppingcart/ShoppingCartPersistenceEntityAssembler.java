@@ -2,7 +2,7 @@ package com.williamsilva.algashop.ordering.infrastructure.adapters.out.persisten
 
 import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCart;
 import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCartItem;
-import com.williamsilva.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityRepository;
+import com.williamsilva.algashop.ordering.infrastructure.adapters.out.persistence.customer.CustomerPersistenceEntityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -39,10 +39,7 @@ public class ShoppingCartPersistenceEntityAssembler {
         return persistenceEntity;
     }
 
-    private Set<ShoppingCartItemPersistenceEntity> mergeItems(
-            ShoppingCart shoppingCart,
-            ShoppingCartPersistenceEntity shoppingCartPersistenceEntity
-    ){
+    private Set<ShoppingCartItemPersistenceEntity> mergeItems(ShoppingCart shoppingCart, ShoppingCartPersistenceEntity shoppingCartPersistenceEntity){
         Set<ShoppingCartItem> newOrUpdateItems = shoppingCart.items();
         if (newOrUpdateItems == null || shoppingCart.items().isEmpty()){
             return new HashSet<>();
@@ -66,9 +63,7 @@ public class ShoppingCartPersistenceEntityAssembler {
                 }).collect(Collectors.toSet());
     }
 
-    private ShoppingCartItemPersistenceEntity mergeItem(
-            ShoppingCartItemPersistenceEntity persistenceEntity,
-            ShoppingCartItem shoppingCartItem
+    private ShoppingCartItemPersistenceEntity mergeItem(ShoppingCartItemPersistenceEntity persistenceEntity, ShoppingCartItem shoppingCartItem
     ) {
         persistenceEntity.setId(shoppingCartItem.id().value());
         persistenceEntity.setProductId(shoppingCartItem.productId().value());
@@ -78,5 +73,18 @@ public class ShoppingCartPersistenceEntityAssembler {
         persistenceEntity.setAvailable(shoppingCartItem.isAvailable());
         persistenceEntity.setTotalAmount(shoppingCartItem.totalAmount().value());
         return persistenceEntity;
+    }
+
+    private ShoppingCartItemPersistenceEntity toOrderItemsEntities(ShoppingCartItem source) {
+        return ShoppingCartItemPersistenceEntity.builder()
+                .id(source.id().value())
+                .shoppingCart(ShoppingCartPersistenceEntity.builder().id(source.shoppingCartId().value()).build())
+                .productId(source.productId().value())
+                .name(source.name().value())
+                .price(source.price().value())
+                .quantity(source.quantity().value())
+                .available(source.isAvailable())
+                .totalAmount(source.totalAmount().value())
+                .build();
     }
 }

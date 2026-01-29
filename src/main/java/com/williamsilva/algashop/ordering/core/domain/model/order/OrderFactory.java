@@ -1,8 +1,8 @@
 package com.williamsilva.algashop.ordering.core.domain.model.order;
 
+import com.williamsilva.algashop.ordering.core.domain.model.commons.Quantity;
 import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerId;
 import com.williamsilva.algashop.ordering.core.domain.model.product.Product;
-import com.williamsilva.algashop.ordering.core.domain.model.commons.Quantity;
 
 import java.util.Objects;
 
@@ -37,4 +37,5 @@ public class OrderFactory {
 
         return order;
     }
+
 }

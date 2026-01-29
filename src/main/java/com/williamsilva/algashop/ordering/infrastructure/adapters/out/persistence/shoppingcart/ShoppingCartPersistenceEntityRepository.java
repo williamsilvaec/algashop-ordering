@@ -11,15 +11,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ShoppingCartPersistenceEntityRepository extends JpaRepository<ShoppingCartPersistenceEntity, UUID> {
-
 	Optional<ShoppingCartPersistenceEntity> findByCustomer_Id(UUID value);
 
-    @Query("select s from ShoppingCartPersistenceEntity s where s.customer.id = :customerId")
-    Optional<ShoppingCartPersistenceEntity> findByCustomerId(@Param("customerId") UUID customerId);
-
-    @Modifying
-    @Transactional
-    @Query("""
+	@Modifying
+	@Transactional
+	@Query("""
 		UPDATE
 			ShoppingCartItemPersistenceEntity i
 		SET
@@ -28,11 +24,11 @@ public interface ShoppingCartPersistenceEntityRepository extends JpaRepository<S
 		WHERE
 			i.productId = :productId
 		""")
-    void updateItemPrice(@Param("productId") UUID productId, @Param("price") BigDecimal price);
+	void updateItemPrice(@Param("productId") UUID productId, @Param("price") BigDecimal price);
 
-    @Modifying
-    @Transactional
-    @Query("""
+	@Modifying
+	@Transactional
+	@Query("""
 		UPDATE
 			ShoppingCartItemPersistenceEntity i
 		SET
@@ -40,11 +36,11 @@ public interface ShoppingCartPersistenceEntityRepository extends JpaRepository<S
 		WHERE
 			i.productId = :productId
 		""")
-    void updateItemAvailability(@Param("productId") UUID productId, @Param("available") boolean available);
+	void updateItemAvailability(@Param("productId") UUID productId, @Param("available") boolean available);
 
-    @Modifying
-    @Transactional
-    @Query("""
+	@Modifying
+	@Transactional
+	@Query("""
 		UPDATE
 			ShoppingCartPersistenceEntity sc
 		SET
@@ -59,5 +55,5 @@ public interface ShoppingCartPersistenceEntityRepository extends JpaRepository<S
 				WHERE i2.shoppingCart.id = sc.id
 				AND i2.productId = :productId)
 		""")
-    void recalculateTotalsForCartsWithProduct(@Param("productId") UUID productId);
+	void recalculateTotalsForCartsWithProduct(@Param("productId") UUID productId);
 }

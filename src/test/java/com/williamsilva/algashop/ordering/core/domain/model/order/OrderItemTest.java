@@ -1,9 +1,8 @@
 package com.williamsilva.algashop.ordering.core.domain.model.order;
 
-
-import com.williamsilva.algashop.ordering.core.domain.model.product.ProductTestDataBuilder;
-import com.williamsilva.algashop.ordering.core.domain.model.product.Product;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Quantity;
+import com.williamsilva.algashop.ordering.core.domain.model.product.Product;
+import com.williamsilva.algashop.ordering.core.domain.model.product.ProductTestDataBuilder;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -30,4 +29,5 @@ class OrderItemTest {
                 o-> Assertions.assertThat(o.orderId()).isEqualTo(orderId)
         );
     }
+
 }

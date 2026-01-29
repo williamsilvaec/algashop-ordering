@@ -3,7 +3,6 @@ package com.williamsilva.algashop.ordering.core.domain.model.commons;
 import java.util.Objects;
 
 public record FullName(String firstName, String lastName) {
-
     public FullName(String firstName, String lastName) {
         Objects.requireNonNull(firstName);
         Objects.requireNonNull(lastName);

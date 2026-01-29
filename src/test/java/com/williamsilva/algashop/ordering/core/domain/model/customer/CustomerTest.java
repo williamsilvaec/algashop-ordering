@@ -16,9 +16,9 @@ class CustomerTest {
     @Test
     void given_invalidEmail_whenTryCreateCustomer_shouldGenerateException() {
         Assertions.assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(()-> CustomerTestDataBuilder.brandNewCustomer()
-                        .email(new Email("invalid")).build()
-                );
+            .isThrownBy(()-> CustomerTestDataBuilder.brandNewCustomer()
+                    .email(new Email("invalid")).build()
+            );
     }
 
     @Test
@@ -36,23 +36,23 @@ class CustomerTest {
         customer.archive();
 
         Assertions.assertWith(customer,
-                c -> assertThat(c.fullName()).isEqualTo(new FullName("Anonymous","Anonymous")),
-                c -> assertThat(c.email()).isNotEqualTo(new Email("john.doe@gmail.com")),
-                c -> assertThat(c.phone()).isEqualTo(new Phone("000-000-0000")),
-                c -> assertThat(c.document()).isEqualTo(new Document("000-00-0000")),
-                c -> assertThat(c.birthDate()).isNull(),
-                c -> assertThat(c.isPromotionNotificationsAllowed()).isFalse(),
-                c -> assertThat(c.address()).isEqualTo(
-                        Address.builder()
-                                .street("Bourbon Street")
-                                .number("Anonymized")
-                                .neighborhood("North Ville")
-                                .city("York")
-                                .state("South California")
-                                .zipCode(new ZipCode("12345"))
-                                .complement(null)
-                                .build()
-                )
+            c -> assertThat(c.fullName()).isEqualTo(new FullName("Anonymous","Anonymous")),
+            c -> assertThat(c.email()).isNotEqualTo(new Email("john.doe@gmail.com")),
+            c -> assertThat(c.phone()).isEqualTo(new Phone("000-000-0000")),
+            c -> assertThat(c.document()).isEqualTo(new Document("000-00-0000")),
+            c -> assertThat(c.birthDate()).isNull(),
+            c -> assertThat(c.isPromotionNotificationsAllowed()).isFalse(),
+            c -> assertThat(c.address()).isEqualTo(
+                    Address.builder()
+                            .street("Bourbon Street")
+                            .number("Anonymized")
+                            .neighborhood("North Ville")
+                            .city("York")
+                            .state("South California")
+                            .zipCode(new ZipCode("12345"))
+                            .complement(null)
+                            .build()
+            )
         );
 
     }
@@ -95,18 +95,22 @@ class CustomerTest {
                 .isThrownBy(()-> customer.addLoyaltyPoints(new LoyaltyPoints(0)));
 
         Assertions.assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(()-> new LoyaltyPoints(-10));
+                .isThrownBy(()-> customer.addLoyaltyPoints(new LoyaltyPoints(-10)));
     }
 
     @Test
-    void givenValidData_whenCreateBrandNewCustomer_shouldGeneratedCustomerRegisteredEvent() {
+    void givenValidData_whenCreateBrandNewCustomer_shouldGenerateCustomerRegisteredEvent() {
         Customer customer = CustomerTestDataBuilder.brandNewCustomer().build();
-        CustomerRegisteredEvent event = new CustomerRegisteredEvent(
-                customer.id(),
-                customer.registeredAt(),
-                customer.fullName(),
-                customer.email()
-        );
+        CustomerRegisteredEvent event = new CustomerRegisteredEvent(customer.id(),
+                customer.registeredAt(), customer.fullName(), customer.email());
+        Assertions.assertThat(customer.domainEvents()).contains(event);
+    }
+
+    @Test
+    void givenUnarchivedCustomer_whenArchive_shouldGenerateCustomerArchivedEvent() {
+        Customer customer = CustomerTestDataBuilder.existingCustomer().archived(false).archivedAt(null).build();
+        customer.archive();
+        CustomerArchivedEvent event = new CustomerArchivedEvent(customer.id(), customer.archivedAt());
         Assertions.assertThat(customer.domainEvents()).contains(event);
     }
 }

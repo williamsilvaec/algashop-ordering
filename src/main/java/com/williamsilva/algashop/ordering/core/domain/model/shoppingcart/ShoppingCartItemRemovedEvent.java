@@ -6,8 +6,8 @@ import com.williamsilva.algashop.ordering.core.domain.model.product.ProductId;
 import java.time.OffsetDateTime;
 
 public record ShoppingCartItemRemovedEvent(
-        ShoppingCartId shoppingCartId,
-        CustomerId customerId,
-        ProductId productId,
-        OffsetDateTime removedAt
+    ShoppingCartId shoppingCartId,
+    CustomerId customerId,
+    ProductId productId,
+    OffsetDateTime removedAt
 ) {}

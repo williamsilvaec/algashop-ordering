@@ -1,10 +1,10 @@
 package com.williamsilva.algashop.ordering.core.domain.model.shoppingcart;
 
-import com.williamsilva.algashop.ordering.core.domain.model.product.ProductTestDataBuilder;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Money;
-import com.williamsilva.algashop.ordering.core.domain.model.product.Product;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Quantity;
 import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerId;
+import com.williamsilva.algashop.ordering.core.domain.model.product.Product;
+import com.williamsilva.algashop.ordering.core.domain.model.product.ProductTestDataBuilder;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -98,6 +98,7 @@ class ShoppingCartTest {
     void givenCartWithItems_whenChangeItemPrice_shouldRecalculateTotalAmount() {
         ShoppingCart cart = ShoppingCartTestDataBuilder.aShoppingCart().withItems(false).build();
 
+
         Product product = ProductTestDataBuilder.aProduct()
                 .build();
 
@@ -106,7 +107,6 @@ class ShoppingCartTest {
         product = ProductTestDataBuilder.aProduct()
                 .price(new Money("100"))
                 .build();
-
         cart.refreshItem(product);
 
         var item = cart.findItem(product.id());

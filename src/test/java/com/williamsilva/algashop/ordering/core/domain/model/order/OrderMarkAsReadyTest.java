@@ -3,11 +3,12 @@ package com.williamsilva.algashop.ordering.core.domain.model.order;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class OrderMarkAsReadyTest {
+class OrderMarkAsReadyTest {
 
     @Test
     void givenPaidOrder_whenMarkAsReady_shouldUpdateStatusAndTimestamp() {
         Order order = OrderTestDataBuilder.anOrder().status(OrderStatus.PAID).build();
+
         order.markAsReady();
 
         Assertions.assertWith(order,
@@ -17,7 +18,7 @@ public class OrderMarkAsReadyTest {
     }
 
     @Test
-    void givenDraftOrder_whenMaskAsReady_shouldThrowExceptionAndNotChangeState() {
+    void givenDraftOrder_whenMarkAsReady_shouldThrowExceptionAndNotChangeState() {
         Order order = OrderTestDataBuilder.anOrder().status(OrderStatus.DRAFT).build();
 
         Assertions.assertThatExceptionOfType(OrderStatusCannotBeChangedException.class)

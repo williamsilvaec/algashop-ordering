@@ -20,7 +20,8 @@ public abstract class AbstractEventSourceEntity implements DomainEventSource {
     }
 
     @Override
-    public void clearDomaintEvents() {
+    public void clearDomainEvents() {
         this.domainEvents.clear();
     }
+
 }

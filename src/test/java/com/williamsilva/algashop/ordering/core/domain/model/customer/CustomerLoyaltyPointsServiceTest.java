@@ -1,11 +1,11 @@
 package com.williamsilva.algashop.ordering.core.domain.model.customer;
 
+import com.williamsilva.algashop.ordering.core.domain.model.commons.Quantity;
 import com.williamsilva.algashop.ordering.core.domain.model.order.Order;
 import com.williamsilva.algashop.ordering.core.domain.model.order.OrderStatus;
 import com.williamsilva.algashop.ordering.core.domain.model.order.OrderTestDataBuilder;
-import com.williamsilva.algashop.ordering.core.domain.model.product.ProductTestDataBuilder;
 import com.williamsilva.algashop.ordering.core.domain.model.product.Product;
-import com.williamsilva.algashop.ordering.core.domain.model.commons.Quantity;
+import com.williamsilva.algashop.ordering.core.domain.model.product.ProductTestDataBuilder;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -40,4 +40,5 @@ class CustomerLoyaltyPointsServiceTest {
 
         Assertions.assertThat(customer.loyaltyPoints()).isEqualTo(new LoyaltyPoints(0));
     }
+
 }

@@ -7,26 +7,23 @@ import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerNot
 import com.williamsilva.algashop.ordering.core.domain.model.customer.Customers;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Optional;
-
 @DomainService
 @RequiredArgsConstructor
 public class ShoppingService {
+	
+	private final ShoppingCarts shoppingCarts;
+	private final Customers customers;
 
-    private final Customers customers;
-    private final ShoppingCarts shoppingCarts;
+	public ShoppingCart startShopping(CustomerId customerId) {
+		if (!customers.exists(customerId)) {
+			throw new CustomerNotFoundException(customerId);
+		}
 
-    public ShoppingCart startShopping(CustomerId customerId) {
-        if (!customers.exists(customerId)) {
-            throw new CustomerNotFoundException(customerId);
-        }
+		if (shoppingCarts.ofCustomer(customerId).isPresent()) {
+			throw new CustomerAlreadyHaveShoppingCartException(customerId);
+		}
 
-        Optional<ShoppingCart> shoppingCartOptional = shoppingCarts.ofCustomer(customerId);
+		return ShoppingCart.startShopping(customerId);
+	}
 
-        if (shoppingCartOptional.isPresent()) {
-            throw new CustomerAlreadyHaveShoppingCartException(customerId);
-        }
-
-        return ShoppingCart.startShopping(customerId);
-    }
 }

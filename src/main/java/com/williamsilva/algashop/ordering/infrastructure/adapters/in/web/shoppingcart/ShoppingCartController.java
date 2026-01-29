@@ -1,12 +1,12 @@
 package com.williamsilva.algashop.ordering.infrastructure.adapters.in.web.shoppingcart;
 
-import com.williamsilva.algashop.ordering.core.ports.in.shoppingcart.ForManagingShoppingCarts;
-import com.williamsilva.algashop.ordering.core.ports.in.shoppingcart.ShoppingCartItemInput;
-import com.williamsilva.algashop.ordering.core.ports.in.shoppingcart.ShoppingCartOutput;
-import com.williamsilva.algashop.ordering.core.ports.in.shoppingcart.ForQueryingShoppingCarts;
 import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerNotFoundException;
 import com.williamsilva.algashop.ordering.core.domain.model.product.ProductNotFoundException;
-import com.williamsilva.algashop.ordering.presentation.UnprocessableEntityException;
+import com.williamsilva.algashop.ordering.core.ports.in.shoppingcart.ForManagingShoppingCarts;
+import com.williamsilva.algashop.ordering.core.ports.in.shoppingcart.ForQueryingShoppingCarts;
+import com.williamsilva.algashop.ordering.core.ports.in.shoppingcart.ShoppingCartItemInput;
+import com.williamsilva.algashop.ordering.core.ports.in.shoppingcart.ShoppingCartOutput;
+import com.williamsilva.algashop.ordering.infrastructure.adapters.in.web.exceptionhandler.UnprocessableEntityException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,12 +33,12 @@ public class ShoppingCartController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public ShoppingCartOutput create(@RequestBody @Valid ShoppingCartInput input) {
 		UUID shoppingCartId;
-		try {
+        try {
 			shoppingCartId = forManagingShoppingCarts.createNew(input.getCustomerId());
 		} catch (CustomerNotFoundException e) {
 			throw new UnprocessableEntityException(e.getMessage(), e);
 		}
-		return forQueryingShoppingCarts.findById(shoppingCartId);
+        return forQueryingShoppingCarts.findById(shoppingCartId);
 	}
 
 	@GetMapping("/{shoppingCartId}")
@@ -67,10 +67,8 @@ public class ShoppingCartController {
 	@PostMapping("/{shoppingCartId}/items")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void addItem(@PathVariable UUID shoppingCartId,
-						@RequestBody @Valid ShoppingCartItemInput input) {
-
+		   			    @RequestBody @Valid ShoppingCartItemInput input) {
 		input.setShoppingCartId(shoppingCartId);
-
 		try {
 			forManagingShoppingCarts.addItem(input);
 		} catch (ProductNotFoundException e) {

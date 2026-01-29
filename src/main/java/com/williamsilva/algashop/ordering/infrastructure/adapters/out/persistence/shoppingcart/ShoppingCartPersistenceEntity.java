@@ -1,6 +1,6 @@
 package com.williamsilva.algashop.ordering.infrastructure.adapters.out.persistence.shoppingcart;
 
-import com.williamsilva.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntity;
+import com.williamsilva.algashop.ordering.infrastructure.adapters.out.persistence.customer.CustomerPersistenceEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -39,90 +39,90 @@ import java.util.UUID;
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class ShoppingCartPersistenceEntity
-        extends AbstractAggregateRoot<ShoppingCartPersistenceEntity> {
+	extends AbstractAggregateRoot<ShoppingCartPersistenceEntity> {
 
-    @Id
-    @EqualsAndHashCode.Include
-    private UUID id;
-    private BigDecimal totalAmount;
-    private Integer totalItems;
+	@Id
+	@EqualsAndHashCode.Include
+	private UUID id;
+	private BigDecimal totalAmount;
+	private Integer totalItems;
 
-    @JoinColumn
-    @ManyToOne(optional = false)
-    private CustomerPersistenceEntity customer;
+	@JoinColumn
+	@ManyToOne(optional = false)
+	private CustomerPersistenceEntity customer;
 
-    @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL)
-    private Set<ShoppingCartItemPersistenceEntity> items = new HashSet<>();
+	@OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<ShoppingCartItemPersistenceEntity> items = new HashSet<>();
 
-    @CreatedBy
-    private UUID createdByUserId;
+	@CreatedBy
+	private UUID createdByUserId;
 
-    @CreatedDate
-    private OffsetDateTime createdAt;
+	@CreatedDate
+	private OffsetDateTime createdAt;
 
-    @LastModifiedDate
-    private OffsetDateTime lastModifiedAt;
+	@LastModifiedDate
+	private OffsetDateTime lastModifiedAt;
 
-    @LastModifiedBy
-    private UUID lastModifiedByUserId;
+	@LastModifiedBy
+	private UUID lastModifiedByUserId;
 
-    @Version
-    private Long version;
+	@Version
+	private Long version;
 
-    @Builder(toBuilder = true)
-    public ShoppingCartPersistenceEntity(UUID id, CustomerPersistenceEntity customer, BigDecimal totalAmount, Integer totalItems, OffsetDateTime createdAt,
-                                         Set<ShoppingCartItemPersistenceEntity> items) {
-        this.id = id;
-        this.customer = customer;
-        this.totalAmount = totalAmount;
-        this.totalItems = totalItems;
-        this.createdAt = createdAt;
-        this.replaceItems(items);
-    }
+	@Builder(toBuilder = true)
+	public ShoppingCartPersistenceEntity(UUID id, CustomerPersistenceEntity customer, BigDecimal totalAmount, Integer totalItems, OffsetDateTime createdAt,
+										 Set<ShoppingCartItemPersistenceEntity> items) {
+		this.id = id;
+		this.customer = customer;
+		this.totalAmount = totalAmount;
+		this.totalItems = totalItems;
+		this.createdAt = createdAt;
+		this.replaceItems(items);
+	}
 
-    public void addItem(Set<ShoppingCartItemPersistenceEntity> items) {
-        for (ShoppingCartItemPersistenceEntity item : items) {
-            this.addItem(item);
-        }
-    }
+	public void addItem(Set<ShoppingCartItemPersistenceEntity> items) {
+		for (ShoppingCartItemPersistenceEntity item : items) {
+			this.addItem(item);
+		}
+	}
 
-    public void addItem(ShoppingCartItemPersistenceEntity item) {
-        if (item == null) {
-            return;
-        }
-        if (this.getItems() == null) {
-            this.setItems(new HashSet<>());
-        }
-        item.setShoppingCart(this);
-        this.items.add(item);
-    }
+	public void addItem(ShoppingCartItemPersistenceEntity item) {
+		if (item == null) {
+			return;
+		}
+		if (this.getItems() == null) {
+			this.setItems(new HashSet<>());
+		}
+		item.setShoppingCart(this);
+		this.items.add(item);
+	}
 
-    public UUID getCustomerId() {
-        if (customer == null) {
-            return null;
-        }
-        return customer.getId();
-    }
+	public UUID getCustomerId() {
+		if (customer == null) {
+			return null;
+		}
+		return customer.getId();
+	}
 
-    public void replaceItems(Set<ShoppingCartItemPersistenceEntity> updatedItems) {
-        if (updatedItems == null || updatedItems.isEmpty()) {
-            this.setItems(new HashSet<>());
-            return;
-        }
+	public void replaceItems(Set<ShoppingCartItemPersistenceEntity> updatedItems) {
+		if (updatedItems == null || updatedItems.isEmpty()) {
+			this.setItems(new HashSet<>());
+			return;
+		}
 
-        updatedItems.forEach(i -> i.setShoppingCart(this));
-        this.setItems(updatedItems);
-    }
+		updatedItems.forEach(i -> i.setShoppingCart(this));
+		this.setItems(updatedItems);
+	}
 
-    public Collection<Object> getEvents() {
-        return super.domainEvents();
-    }
+	public Collection<Object> getEvents() {
+		return super.domainEvents();
+	}
 
-    public void addEvents(Collection<Object> events) {
-        if (events != null) {
-            for (Object event : events) {
-                this.registerEvent(event);
-            }
-        }
-    }
+	public void addEvents(Collection<Object> events) {
+		if (events != null) {
+			for (Object event : events) {
+				this.registerEvent(event);
+			}
+		}
+	}
 }

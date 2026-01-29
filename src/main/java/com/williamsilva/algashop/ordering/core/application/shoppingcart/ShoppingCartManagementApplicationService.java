@@ -25,68 +25,67 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ShoppingCartManagementApplicationService implements ForManagingShoppingCarts {
 
-    private final ShoppingCarts shoppingCarts;
-    private final ProductCatalogService productCatalogService;
-    private final ShoppingService shoppingService;
+	private final ShoppingCarts shoppingCarts;
+	private final ProductCatalogService productCatalogService;
+	private final ShoppingService shoppingService;
 
-    @Transactional
-    @Override
-    public void addItem(ShoppingCartItemInput input) {
-        Objects.requireNonNull(input);
-        ShoppingCartId shoppingCartId = new ShoppingCartId(input.getShoppingCartId());
-        ProductId productId = new ProductId(input.getProductId());
+	@Transactional
+	@Override
+	public void addItem(ShoppingCartItemInput input) {
+		Objects.requireNonNull(input);
+		ShoppingCartId shoppingCartId = new ShoppingCartId(input.getShoppingCartId());
+		ProductId productId = new ProductId(input.getProductId());
 
-        ShoppingCart shoppingCart = shoppingCarts.ofId(shoppingCartId)
-                .orElseThrow(ShoppingCartNotFoundException::new);
+		ShoppingCart shoppingCart = shoppingCarts.ofId(shoppingCartId)
+				.orElseThrow(() -> new ShoppingCartNotFoundException(shoppingCartId.value()));
 
-        Product product = productCatalogService.ofId(productId)
-                .orElseThrow(() -> new ProductNotFoundException(productId));
+		Product product = productCatalogService.ofId(productId)
+				.orElseThrow(() -> new ProductNotFoundException(productId));
 
-        shoppingCart.addItem(product, new Quantity(input.getQuantity()));
+		shoppingCart.addItem(product, new Quantity(input.getQuantity()));
 
-        shoppingCarts.add(shoppingCart);
-    }
+		shoppingCarts.add(shoppingCart);
+	}
 
-    @Transactional
-    @Override
-    public UUID createNew(UUID rawCustomerId) {
-        Objects.requireNonNull(rawCustomerId);
-        ShoppingCart shoppingCart = shoppingService.startShopping(new CustomerId(rawCustomerId));
-        shoppingCarts.add(shoppingCart);
-        return shoppingCart.id().value();
-    }
+	@Transactional
+	@Override
+	public UUID createNew(UUID rawCustomerId) {
+		Objects.requireNonNull(rawCustomerId);
+		ShoppingCart shoppingCart = shoppingService.startShopping(new CustomerId(rawCustomerId));
+		shoppingCarts.add(shoppingCart);
+		return shoppingCart.id().value();
+	}
 
-    @Transactional
-    @Override
-    public void removeItem(UUID rawShoppingCartId, UUID rawShoppingCartItemId) {
-        Objects.requireNonNull(rawShoppingCartId);
-        Objects.requireNonNull(rawShoppingCartItemId);
-        ShoppingCartId shoppingCartId = new ShoppingCartId(rawShoppingCartId);
-        ShoppingCart shoppingCart = shoppingCarts.ofId(shoppingCartId)
-                .orElseThrow(ShoppingCartNotFoundException::new);
-        shoppingCart.removeItem(new ShoppingCartItemId(rawShoppingCartItemId));
-        shoppingCarts.add(shoppingCart);
-    }
+	@Transactional
+	@Override
+	public void removeItem(UUID rawShoppingCartId, UUID rawShoppingCartItemId) {
+		Objects.requireNonNull(rawShoppingCartId);
+		Objects.requireNonNull(rawShoppingCartItemId);
+		ShoppingCartId shoppingCartId = new ShoppingCartId(rawShoppingCartId);
+		ShoppingCart shoppingCart = shoppingCarts.ofId(shoppingCartId)
+				.orElseThrow(()-> new ShoppingCartNotFoundException(rawShoppingCartId));
+		shoppingCart.removeItem(new ShoppingCartItemId(rawShoppingCartItemId));
+		shoppingCarts.add(shoppingCart);
+	}
 
-    @Transactional
-    @Override
-    public void empty(UUID rawShoppingCartId) {
-        Objects.requireNonNull(rawShoppingCartId);
-        ShoppingCartId shoppingCartId = new ShoppingCartId(rawShoppingCartId);
-        ShoppingCart shoppingCart = shoppingCarts.ofId(shoppingCartId)
-                .orElseThrow(ShoppingCartNotFoundException::new);
-        shoppingCart.empty();
-        shoppingCarts.add(shoppingCart);
-    }
+	@Transactional
+	@Override
+	public void empty(UUID rawShoppingCartId) {
+		Objects.requireNonNull(rawShoppingCartId);
+		ShoppingCartId shoppingCartId = new ShoppingCartId(rawShoppingCartId);
+		ShoppingCart shoppingCart = shoppingCarts.ofId(shoppingCartId)
+				.orElseThrow(()-> new ShoppingCartNotFoundException(rawShoppingCartId));
+		shoppingCart.empty();
+		shoppingCarts.add(shoppingCart);
+	}
 
-    @Transactional
-    @Override
-    public void delete(UUID rawShoppingCartId) {
-        Objects.requireNonNull(rawShoppingCartId);
-        ShoppingCartId shoppingCartId = new ShoppingCartId(rawShoppingCartId);
-        ShoppingCart shoppingCart = shoppingCarts.ofId(shoppingCartId)
-                .orElseThrow(ShoppingCartNotFoundException::new);
-        shoppingCarts.remove(shoppingCart);
-    }
-
+	@Transactional
+	@Override
+	public void delete(UUID rawShoppingCartId) {
+		Objects.requireNonNull(rawShoppingCartId);
+		ShoppingCartId shoppingCartId = new ShoppingCartId(rawShoppingCartId);
+		ShoppingCart shoppingCart = shoppingCarts.ofId(shoppingCartId)
+				.orElseThrow(()-> new ShoppingCartNotFoundException(rawShoppingCartId));
+		shoppingCarts.remove(shoppingCart);
+	}
 }

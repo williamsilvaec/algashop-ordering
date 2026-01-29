@@ -7,7 +7,6 @@ import lombok.Builder;
 import java.time.LocalDate;
 
 public interface ShippingCostService {
-
     CalculationResult calculate(CalculationRequest request);
 
     @Builder

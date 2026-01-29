@@ -1,5 +1,7 @@
 package com.williamsilva.algashop.ordering.core.application.checkout;
 
+import com.williamsilva.algashop.ordering.core.application.order.BillingInputDisassembler;
+import com.williamsilva.algashop.ordering.core.application.order.ShippingInputDisassembler;
 import com.williamsilva.algashop.ordering.core.domain.model.DomainException;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Quantity;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.ZipCode;
@@ -20,6 +22,9 @@ import com.williamsilva.algashop.ordering.core.domain.model.product.Product;
 import com.williamsilva.algashop.ordering.core.domain.model.product.ProductCatalogService;
 import com.williamsilva.algashop.ordering.core.domain.model.product.ProductId;
 import com.williamsilva.algashop.ordering.core.domain.model.product.ProductNotFoundException;
+import com.williamsilva.algashop.ordering.core.ports.in.checkout.BuyNowInput;
+import com.williamsilva.algashop.ordering.core.ports.in.checkout.ForBuyingProduct;
+import com.williamsilva.algashop.ordering.core.ports.in.checkout.ShippingInput;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +33,7 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class BuyNowApplicationService {
+public class BuyNowApplicationService implements ForBuyingProduct {
 
     private final BuyNowService buyNowService;
     private final ProductCatalogService productCatalogService;
@@ -43,6 +48,7 @@ public class BuyNowApplicationService {
     private final BillingInputDisassembler billingInputDisassembler;
 
     @Transactional
+    @Override
     public String buyNow(BuyNowInput input) {
         Objects.requireNonNull(input);
 
@@ -56,16 +62,17 @@ public class BuyNowApplicationService {
             if (input.getCreditCardId() == null) {
                 throw new DomainException("Credit card id is required");
             }
-
             creditCardId = new CreditCardId(input.getCreditCardId());
         }
 
         Customer customer = customers.ofId(customerId).orElseThrow(() -> new CustomerNotFoundException(customerId));
-        Product product = productCatalogService.ofId(productId).orElseThrow(() -> new ProductNotFoundException(productId));
 
-        var calculationResult = calculateShippingCost(input.getShipping());
+        Product product = productCatalogService.ofId(productId).orElseThrow(()-> new ProductNotFoundException(productId));
 
-        Shipping shipping = shippingInputDisassembler.toDomainModel(input.getShipping(), calculationResult);
+        var shippingCalculationResult = calculateShippingCost(input.getShipping());
+
+        Shipping shipping = shippingInputDisassembler.toDomainModel(input.getShipping(), shippingCalculationResult);
+
         Billing billing = billingInputDisassembler.toDomainModel(input.getBilling());
 
         Order order = buyNowService.buyNow(product, customer, billing, shipping, quantity, paymentMethod, creditCardId);
@@ -80,4 +87,5 @@ public class BuyNowApplicationService {
         ZipCode destination = new ZipCode(shipping.getAddress().getZipCode());
         return shippingCostService.calculate(new ShippingCostService.CalculationRequest(origin, destination));
     }
+
 }

@@ -6,7 +6,8 @@ import com.williamsilva.algashop.ordering.core.domain.model.customer.LoyaltyPoin
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class CustomerHasEnoughLoyaltyPointsSpecification implements Specification<Customer> {
+public class CustomerHasEnoughLoyaltyPointsSpecification
+        implements Specification<Customer> {
 
     private final LoyaltyPoints expectedLoyaltyPoints;
 

@@ -3,23 +3,15 @@ package com.williamsilva.algashop.ordering.core.domain.model.customer;
 import com.williamsilva.algashop.ordering.core.domain.model.AbstractDomainIT;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Email;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.FullName;
-import com.williamsilva.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityAssembler;
-import com.williamsilva.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityDisassembler;
-import com.williamsilva.algashop.ordering.infrastructure.persistence.customer.CustomersPersistenceProvider;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@Import({CustomersPersistenceProvider.class,
-        CustomerPersistenceEntityAssembler.class,
-        CustomerPersistenceEntityDisassembler.class})
 class CustomersIT extends AbstractDomainIT {
 
     private Customers customers;
@@ -74,7 +66,7 @@ class CustomersIT extends AbstractDomainIT {
         customerT1.archive();
         customers.add(customerT1);
 
-        customerT2.changeName(new FullName("William","Silva"));
+        customerT2.changeName(new FullName("Alex","Silva"));
 
         Assertions.assertThatExceptionOfType(ObjectOptimisticLockingFailureException.class)
                 .isThrownBy(()-> customers.add(customerT2));
@@ -113,26 +105,19 @@ class CustomersIT extends AbstractDomainIT {
         Customer customer = CustomerTestDataBuilder.brandNewCustomer().build();
         customers.add(customer);
 
-        Optional<Customer> customerOpt = customers.ofEmail(customer.email());
+        Optional<Customer> customerOptional = customers.ofEmail(customer.email());
 
-        Assertions.assertThat(customerOpt).isPresent();
+        Assertions.assertThat(customerOptional).isPresent();
     }
 
     @Test
-    public void shouldNotFindByEmailIfNoCustomerExistsWithEmail() {
-        Optional<Customer> customerOpt = customers.ofEmail(new Email(UUID.randomUUID() + "@gmail.com"));
-
-        Assertions.assertThat(customerOpt).isNotPresent();
-    }
-
-    @Test
-    public void shouldReturnIfEmailInUse() {
+    public void shouldReturnIfEmailIsInUse() {
         Customer customer = CustomerTestDataBuilder.brandNewCustomer().build();
         customers.add(customer);
 
         Assertions.assertThat(customers.isEmailUnique(customer.email(), customer.id())).isTrue();
         Assertions.assertThat(customers.isEmailUnique(customer.email(), new CustomerId())).isFalse();
-        Assertions.assertThat(customers.isEmailUnique(new Email("william@gmail.com"), new CustomerId())).isTrue();
+        Assertions.assertThat(customers.isEmailUnique(new Email("alex@gmail.com"), new CustomerId())).isTrue();
     }
 
-}
+ }

@@ -2,10 +2,10 @@ package com.williamsilva.algashop.ordering.core.domain.model.order;
 
 import com.williamsilva.algashop.ordering.core.domain.model.AbstractEventSourceEntity;
 import com.williamsilva.algashop.ordering.core.domain.model.AggregateRoot;
-import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerId;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Money;
-import com.williamsilva.algashop.ordering.core.domain.model.product.Product;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Quantity;
+import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerId;
+import com.williamsilva.algashop.ordering.core.domain.model.product.Product;
 import lombok.Builder;
 
 import java.math.BigDecimal;
@@ -16,7 +16,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class Order extends AbstractEventSourceEntity implements AggregateRoot<OrderId> {
+public class Order
+        extends AbstractEventSourceEntity
+        implements AggregateRoot<OrderId> {
 
     private OrderId id;
     private CustomerId customerId;
@@ -90,6 +92,10 @@ public class Order extends AbstractEventSourceEntity implements AggregateRoot<Or
         Objects.requireNonNull(product);
         Objects.requireNonNull(quantity);
 
+        if (quantity.equals(Quantity.ZERO)) {
+            throw new IllegalArgumentException();
+        }
+
         this.verifyIfChangeable();
 
         product.checkOutOfStock();
@@ -109,49 +115,37 @@ public class Order extends AbstractEventSourceEntity implements AggregateRoot<Or
         this.recalculateTotals();
     }
 
-    public void removeItem(OrderItemId orderItemId) {
-        Objects.requireNonNull(orderItemId);
-        this.verifyIfChangeable();
-
-        OrderItem orderItem = this.findOrderItem(orderItemId);
-        this.items.remove(orderItem);
-
-        this.recalculateTotals();
-    }
-
     public void place() {
         this.verifyIfCanChangeToPlaced();
-        this.setPlacedAt(OffsetDateTime.now());
         this.changeStatus(OrderStatus.PLACED);
-        this.publishDomainEvent(new OrderPlacedEvent(this.id(), this.customerId(), this.placedAt()));
+        this.setPlacedAt(OffsetDateTime.now());
+        publishDomainEvent(new OrderPlacedEvent(this.id(), this.customerId(), this.placedAt()));
     }
 
     public void markAsPaid() {
-        this.setPaidAt(OffsetDateTime.now());
         this.changeStatus(OrderStatus.PAID);
-        this.publishDomainEvent(new OrderPaidEvent(this.id(), this.customerId(), this.paidAt()));
+        this.setPaidAt(OffsetDateTime.now());
+        publishDomainEvent(new OrderPaidEvent(this.id(), this.customerId(), this.paidAt()));
     }
 
     public void markAsReady() {
         this.changeStatus(OrderStatus.READY);
         this.setReadyAt(OffsetDateTime.now());
-        this.publishDomainEvent(new OrderReadyEvent(this.id(), this.customerId(), this.readyAt()));
+        publishDomainEvent(new OrderReadyEvent(this.id(), this.customerId(), this.readyAt()));
     }
 
     public void cancel() {
         this.setCanceledAt(OffsetDateTime.now());
         this.changeStatus(OrderStatus.CANCELED);
-        this.publishDomainEvent(new OrderCanceledEvent(this.id(), this.customerId(), this.canceledAt()));
+        publishDomainEvent(new OrderCanceledEvent(this.id(), this.customerId(), this.canceledAt()));
     }
 
     public void changePaymentMethod(PaymentMethod paymentMethod, CreditCardId creditCardId) {
         Objects.requireNonNull(paymentMethod);
-
         if (paymentMethod.equals(PaymentMethod.CREDIT_CARD)) {
             Objects.requireNonNull(creditCardId);
             this.setCreditCardId(creditCardId);
         }
-
         this.verifyIfChangeable();
         this.setPaymentMethod(paymentMethod);
     }
@@ -183,6 +177,17 @@ public class Order extends AbstractEventSourceEntity implements AggregateRoot<Or
 
         OrderItem orderItem = this.findOrderItem(orderItemId);
         orderItem.changeQuantity(quantity);
+
+        this.recalculateTotals();
+    }
+
+    public void removeItem(OrderItemId orderItemId) {
+        Objects.requireNonNull(orderItemId);
+        this.verifyIfChangeable();
+
+        OrderItem orderItem = findOrderItem(orderItemId);
+        this.items.remove(orderItem);
+
         this.recalculateTotals();
     }
 
@@ -270,7 +275,7 @@ public class Order extends AbstractEventSourceEntity implements AggregateRoot<Or
                 .reduce(0, Integer::sum);
 
         BigDecimal shippingCost;
-        if (this.shipping() == null) {
+        if(this.shipping() == null) {
             shippingCost = BigDecimal.ZERO;
         } else {
             shippingCost = this.shipping().cost().value();
@@ -306,10 +311,11 @@ public class Order extends AbstractEventSourceEntity implements AggregateRoot<Or
     }
 
     private OrderItem findOrderItem(OrderItemId orderItemId) {
+        Objects.requireNonNull(orderItemId);
         return this.items().stream()
-                .filter(orderItem -> orderItem.id().equals(orderItemId))
+                .filter(i -> i.id().equals(orderItemId))
                 .findFirst()
-                .orElseThrow(() -> new OrderDoesNotContainOrderItemException(this.id(), orderItemId));
+                .orElseThrow(()-> new OrderDoesNotContainOrderItemException(this.id(), orderItemId));
     }
 
     private void verifyIfChangeable() {
@@ -318,17 +324,17 @@ public class Order extends AbstractEventSourceEntity implements AggregateRoot<Or
         }
     }
 
-    private void setId(OrderId id) {
-        Objects.requireNonNull(id);
-        this.id = id;
-    }
-
     public Long version() {
         return version;
     }
 
     private void setVersion(Long version) {
         this.version = version;
+    }
+
+    private void setId(OrderId id) {
+        Objects.requireNonNull(id);
+        this.id = id;
     }
 
     private void setCustomerId(CustomerId customerId) {

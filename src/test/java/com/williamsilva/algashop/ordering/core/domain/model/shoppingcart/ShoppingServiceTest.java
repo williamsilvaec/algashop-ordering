@@ -2,11 +2,11 @@ package com.williamsilva.algashop.ordering.core.domain.model.shoppingcart;
 
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Money;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Quantity;
-import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerTestDataBuilder;
 import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerAlreadyHaveShoppingCartException;
-import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerNotFoundException;
-import com.williamsilva.algashop.ordering.core.domain.model.customer.Customers;
 import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerId;
+import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerNotFoundException;
+import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerTestDataBuilder;
+import com.williamsilva.algashop.ordering.core.domain.model.customer.Customers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

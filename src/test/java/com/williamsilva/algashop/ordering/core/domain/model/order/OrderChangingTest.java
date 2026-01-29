@@ -1,10 +1,12 @@
 package com.williamsilva.algashop.ordering.core.domain.model.order;
 
-import com.williamsilva.algashop.ordering.core.domain.model.product.ProductTestDataBuilder;
-import com.williamsilva.algashop.ordering.core.domain.model.product.Product;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Quantity;
-import org.assertj.core.api.Assertions;
+import com.williamsilva.algashop.ordering.core.domain.model.product.Product;
+import com.williamsilva.algashop.ordering.core.domain.model.product.ProductTestDataBuilder;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class OrderChangingTest {
 
@@ -12,19 +14,20 @@ public class OrderChangingTest {
     void givenDraftOrder_whenChangeIsPerformed_shouldNotThrowException() {
         Order draftOrder = OrderTestDataBuilder.anOrder().build();
 
+        Product product = ProductTestDataBuilder.aProductAltMousePad().build();
+        Quantity quantity = new Quantity(2);
         Billing billing = OrderTestDataBuilder.aBilling();
         Shipping shipping = OrderTestDataBuilder.aShipping();
-        PaymentMethod paymentMethod = PaymentMethod.CREDIT_CARD;
-        Product product = ProductTestDataBuilder.aProductAltRamMemory().build();
-        Quantity quantity = new Quantity(1);
+        PaymentMethod method = PaymentMethod.CREDIT_CARD;
+        CreditCardId creditCardId = new CreditCardId();
 
         OrderItem orderItem = draftOrder.items().iterator().next();
 
-        Assertions.assertThatCode(() -> draftOrder.addItem(product, quantity)).doesNotThrowAnyException();
-        Assertions.assertThatCode(() -> draftOrder.changePaymentMethod(paymentMethod, new CreditCardId())).doesNotThrowAnyException();
-        Assertions.assertThatCode(() -> draftOrder.changeShipping(shipping)).doesNotThrowAnyException();
-        Assertions.assertThatCode(() -> draftOrder.changeBilling(billing)).doesNotThrowAnyException();
-        Assertions.assertThatCode(() -> draftOrder.changeItemQuantity(orderItem.id(), quantity)).doesNotThrowAnyException();
+        assertThatCode(() -> draftOrder.addItem(product, quantity)).doesNotThrowAnyException();
+        assertThatCode(() -> draftOrder.changeBilling(billing)).doesNotThrowAnyException();
+        assertThatCode(() -> draftOrder.changeShipping(shipping)).doesNotThrowAnyException();
+        assertThatCode(() -> draftOrder.changeItemQuantity(orderItem.id(), quantity)).doesNotThrowAnyException();
+        assertThatCode(() -> draftOrder.changePaymentMethod(method, creditCardId)).doesNotThrowAnyException();
     }
 
     @Test
@@ -32,8 +35,8 @@ public class OrderChangingTest {
         Order placedOrder = OrderTestDataBuilder.anOrder().status(OrderStatus.PLACED).build();
         Billing billing = OrderTestDataBuilder.aBilling();
 
-        Assertions.assertThatExceptionOfType(OrderCannotBeEditedException.class)
-                .isThrownBy(() -> placedOrder.changeBilling(billing));
+        assertThatThrownBy(() -> placedOrder.changeBilling(billing))
+                .isInstanceOf(OrderCannotBeEditedException.class);
     }
 
     @Test
@@ -41,27 +44,28 @@ public class OrderChangingTest {
         Order placedOrder = OrderTestDataBuilder.anOrder().status(OrderStatus.PLACED).build();
         Shipping shipping = OrderTestDataBuilder.aShipping();
 
-        Assertions.assertThatExceptionOfType(OrderCannotBeEditedException.class)
-                .isThrownBy(() -> placedOrder.changeShipping(shipping));
+        assertThatThrownBy(() -> placedOrder.changeShipping(shipping))
+                .isInstanceOf(OrderCannotBeEditedException.class);
     }
 
     @Test
     void givenPlacedOrder_whenChangeItemQuantityIsCalled_shouldThrowOrderCannotBeEditedException() {
         Order placedOrder = OrderTestDataBuilder.anOrder().status(OrderStatus.PLACED).build();
+        Quantity quantity = new Quantity(5);
 
         OrderItem orderItem = placedOrder.items().iterator().next();
-        Quantity quantity = new Quantity(1);
 
-        Assertions.assertThatThrownBy(() -> placedOrder.changeItemQuantity(orderItem.id(), quantity))
+        assertThatThrownBy(() -> placedOrder.changeItemQuantity(orderItem.id(), quantity))
                 .isInstanceOf(OrderCannotBeEditedException.class);
     }
 
     @Test
     void givenPlacedOrder_whenChangePaymentMethodIsCalled_shouldThrowOrderCannotBeEditedException() {
         Order placedOrder = OrderTestDataBuilder.anOrder().status(OrderStatus.PLACED).build();
-        PaymentMethod paymentMethod = PaymentMethod.CREDIT_CARD;
+        PaymentMethod method = PaymentMethod.GATEWAY_BALANCE;
 
-        Assertions.assertThatThrownBy(() -> placedOrder.changePaymentMethod(paymentMethod, new CreditCardId()))
+        assertThatThrownBy(() -> placedOrder.changePaymentMethod(method, new CreditCardId()))
                 .isInstanceOf(OrderCannotBeEditedException.class);
     }
+
 }

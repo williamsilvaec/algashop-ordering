@@ -1,10 +1,10 @@
 package com.williamsilva.algashop.ordering.core.application.checkout;
 
-import com.williamsilva.algashop.ordering.core.application.checkout.CheckoutInput;
-import com.williamsilva.algashop.ordering.core.application.checkout.ShippingInput;
-import com.williamsilva.algashop.ordering.core.application.commons.AddressData;
-import com.williamsilva.algashop.ordering.core.application.order.query.BillingData;
-import com.williamsilva.algashop.ordering.core.application.order.query.RecipientData;
+import com.williamsilva.algashop.ordering.core.ports.in.checkout.CheckoutInput;
+import com.williamsilva.algashop.ordering.core.ports.in.checkout.ShippingInput;
+import com.williamsilva.algashop.ordering.core.ports.in.commons.AddressData;
+import com.williamsilva.algashop.ordering.core.ports.in.order.BillingData;
+import com.williamsilva.algashop.ordering.core.ports.in.order.RecipientData;
 
 import java.util.UUID;
 

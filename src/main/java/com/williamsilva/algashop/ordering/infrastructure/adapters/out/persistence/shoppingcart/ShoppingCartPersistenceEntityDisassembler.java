@@ -1,13 +1,13 @@
 package com.williamsilva.algashop.ordering.infrastructure.adapters.out.persistence.shoppingcart;
 
-import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCart;
-import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCartItem;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Money;
-import com.williamsilva.algashop.ordering.core.domain.model.product.ProductName;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Quantity;
 import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerId;
 import com.williamsilva.algashop.ordering.core.domain.model.product.ProductId;
+import com.williamsilva.algashop.ordering.core.domain.model.product.ProductName;
+import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCart;
 import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCartId;
+import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCartItem;
 import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCartItemId;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 @Component
 public class ShoppingCartPersistenceEntityDisassembler {
-
     public ShoppingCart toDomainEntity(ShoppingCartPersistenceEntity source) {
         return ShoppingCart.existing()
                 .id(new ShoppingCartId(source.getId()))
@@ -25,7 +24,6 @@ public class ShoppingCartPersistenceEntityDisassembler {
                 .createdAt(source.getCreatedAt())
                 .items(toItemsDomainEntities(source.getItems()))
                 .totalItems(new Quantity(source.getTotalItems()))
-                .version(source.getVersion())
                 .build();
     }
 

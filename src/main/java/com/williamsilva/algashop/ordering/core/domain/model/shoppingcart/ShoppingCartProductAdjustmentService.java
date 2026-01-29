@@ -4,7 +4,6 @@ import com.williamsilva.algashop.ordering.core.domain.model.commons.Money;
 import com.williamsilva.algashop.ordering.core.domain.model.product.ProductId;
 
 public interface ShoppingCartProductAdjustmentService {
-
     void adjustPrice(ProductId productId, Money updatedPrice);
-    void changeAvailability(ProductId productId, boolean isAvailable);
+    void changeAvailability(ProductId productId, boolean available);
 }

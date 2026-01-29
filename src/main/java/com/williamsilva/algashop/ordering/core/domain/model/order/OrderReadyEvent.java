@@ -4,5 +4,5 @@ import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerId;
 
 import java.time.OffsetDateTime;
 
-public record OrderReadyEvent(OrderId orderId, CustomerId customerId, OffsetDateTime readyAt) {
+public record OrderReadyEvent(OrderId orderId, CustomerId customerId, OffsetDateTime readyAt){
 }

@@ -1,5 +1,7 @@
 package com.williamsilva.algashop.ordering.core.application.checkout;
 
+import com.williamsilva.algashop.ordering.core.application.order.BillingInputDisassembler;
+import com.williamsilva.algashop.ordering.core.application.order.ShippingInputDisassembler;
 import com.williamsilva.algashop.ordering.core.domain.model.DomainException;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.ZipCode;
 import com.williamsilva.algashop.ordering.core.domain.model.customer.Customer;
@@ -12,10 +14,17 @@ import com.williamsilva.algashop.ordering.core.domain.model.order.Orders;
 import com.williamsilva.algashop.ordering.core.domain.model.order.PaymentMethod;
 import com.williamsilva.algashop.ordering.core.domain.model.order.shipping.OriginAddressService;
 import com.williamsilva.algashop.ordering.core.domain.model.order.shipping.ShippingCostService;
+import com.williamsilva.algashop.ordering.core.domain.model.product.Product;
+import com.williamsilva.algashop.ordering.core.domain.model.product.ProductCatalogService;
+import com.williamsilva.algashop.ordering.core.domain.model.product.ProductId;
+import com.williamsilva.algashop.ordering.core.domain.model.product.ProductNotFoundException;
 import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCart;
 import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCartId;
 import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCartNotFoundException;
 import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCarts;
+import com.williamsilva.algashop.ordering.core.ports.in.checkout.CheckoutInput;
+import com.williamsilva.algashop.ordering.core.ports.in.checkout.ForBuyingWithShoppingCart;
+import com.williamsilva.algashop.ordering.core.ports.in.checkout.ShippingInput;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,60 +33,63 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class CheckoutApplicationService {
+public class CheckoutApplicationService implements ForBuyingWithShoppingCart {
 
-    private final Orders orders;
-    private final ShoppingCarts shoppingCarts;
-    private final Customers customers;
+	private final Orders orders;
+	private final ShoppingCarts shoppingCarts;
+	private final Customers customers;
 
-    private final CheckoutService checkoutService;
+	private final CheckoutService checkoutService;
 
-    private final BillingInputDisassembler billingInputDisassembler;
-    private final ShippingInputDisassembler shippingInputDisassembler;
+	private final BillingInputDisassembler billingInputDisassembler;
+	private final ShippingInputDisassembler shippingInputDisassembler;
 
-    private final ShippingCostService shippingCostService;
-    private final OriginAddressService originAddressService;
+	private final ShippingCostService shippingCostService;
+	private final OriginAddressService originAddressService;
+	private final ProductCatalogService productCatalogService;
 
-    @Transactional
-    public String checkout(CheckoutInput input) {
-        Objects.requireNonNull(input);
-        PaymentMethod paymentMethod = PaymentMethod.valueOf(input.getPaymentMethod());
-        CreditCardId creditCardId = null;
+	@Transactional
+	public String checkout(CheckoutInput input) {
+		Objects.requireNonNull(input);
+		PaymentMethod paymentMethod = PaymentMethod.valueOf(input.getPaymentMethod());
 
-        if (paymentMethod.equals(PaymentMethod.CREDIT_CARD)) {
-            if (input.getCreditCardId() == null) {
-                throw new DomainException("Credit card id is required");
-            }
-            creditCardId = new CreditCardId(input.getCreditCardId());
-        }
+		CreditCardId creditCardId = null;
 
-        ShoppingCartId shoppingCartId = new ShoppingCartId(input.getShoppingCartId());
-        ShoppingCart shoppingCart = shoppingCarts.ofId(shoppingCartId)
-                .orElseThrow(ShoppingCartNotFoundException::new);
+		if (paymentMethod.equals(PaymentMethod.CREDIT_CARD)) {
+			if (input.getCreditCardId() == null) {
+				throw new DomainException("Credit card id is required");
+			}
+			creditCardId = new CreditCardId(input.getCreditCardId());
+		}
 
-        Customer customer = customers.ofId(shoppingCart.customerId()).orElseThrow(CustomerNotFoundException::new);
+		ShoppingCartId shoppingCartId = new ShoppingCartId(input.getShoppingCartId());
+		ShoppingCart shoppingCart = shoppingCarts.ofId(shoppingCartId)
+				.orElseThrow(() -> new ShoppingCartNotFoundException(shoppingCartId.value()));
 
-        var shippingCalculationResult = calculateShippingCost(input.getShipping());
+		Customer customer = customers.ofId(shoppingCart.customerId()).orElseThrow(() -> new CustomerNotFoundException());
 
-        Order order = checkoutService.checkout(
-                customer,
-                shoppingCart,
-                billingInputDisassembler.toDomainModel(input.getBilling()),
-                shippingInputDisassembler.toDomainModel(input.getShipping(), shippingCalculationResult),
-                paymentMethod,
-                creditCardId
-        );
+		var shippingCalculationResult = calculateShippingCost(input.getShipping());
 
-        orders.add(order);
-        shoppingCarts.add(shoppingCart);
+		Order order = checkoutService.checkout(customer, shoppingCart,
+				billingInputDisassembler.toDomainModel(input.getBilling()),
+				shippingInputDisassembler.toDomainModel(input.getShipping(), shippingCalculationResult),
+				paymentMethod, creditCardId);
 
-        return order.id().toString();
-    }
+		orders.add(order);
+		shoppingCarts.add(shoppingCart);
 
-    private ShippingCostService.CalculationResult calculateShippingCost(ShippingInput shipping) {
-        ZipCode origin = originAddressService.originAddress().zipCode();
-        ZipCode destination = new ZipCode(shipping.getAddress().getZipCode());
-        return shippingCostService.calculate(new ShippingCostService.CalculationRequest(origin, destination));
-    }
+		return order.id().toString();
+	}
+
+	private ShippingCostService.CalculationResult calculateShippingCost(ShippingInput shipping) {
+		ZipCode origin = originAddressService.originAddress().zipCode();
+		ZipCode destination = new ZipCode(shipping.getAddress().getZipCode());
+		return shippingCostService.calculate(new ShippingCostService.CalculationRequest(origin, destination));
+	}
+
+	private Product findProduct(ProductId productId) {
+		return productCatalogService.ofId(productId)
+				.orElseThrow(()-> new ProductNotFoundException());
+	}
 
 }

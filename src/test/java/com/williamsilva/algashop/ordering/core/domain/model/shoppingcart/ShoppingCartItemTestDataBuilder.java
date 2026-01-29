@@ -1,10 +1,10 @@
 package com.williamsilva.algashop.ordering.core.domain.model.shoppingcart;
 
-import com.williamsilva.algashop.ordering.core.domain.model.product.ProductTestDataBuilder;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Money;
-import com.williamsilva.algashop.ordering.core.domain.model.product.ProductName;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Quantity;
 import com.williamsilva.algashop.ordering.core.domain.model.product.ProductId;
+import com.williamsilva.algashop.ordering.core.domain.model.product.ProductName;
+import com.williamsilva.algashop.ordering.core.domain.model.product.ProductTestDataBuilder;
 
 public class ShoppingCartItemTestDataBuilder {
 
@@ -62,4 +62,4 @@ public class ShoppingCartItemTestDataBuilder {
         this.available = available;
         return this;
     }
-}
+} 

@@ -3,9 +3,7 @@ package com.williamsilva.algashop.ordering.core.domain.model.order;
 import com.williamsilva.algashop.ordering.core.domain.model.Specification;
 import com.williamsilva.algashop.ordering.core.domain.model.customer.Customer;
 import com.williamsilva.algashop.ordering.core.domain.model.customer.LoyaltyPoints;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 public class CustomerHaveFreeShippingSpecification implements Specification<Customer> {
 
     private final CustomerHasOrderedEnoughAtYearSpecification hasOrderedEnoughAtYear;

@@ -12,7 +12,6 @@ public record Product(
         Money price,
         Boolean inStock
 ) {
-
     public Product {
         Objects.requireNonNull(id);
         Objects.requireNonNull(name);

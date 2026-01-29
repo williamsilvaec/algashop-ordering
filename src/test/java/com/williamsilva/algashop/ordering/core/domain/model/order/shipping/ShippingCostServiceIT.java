@@ -4,13 +4,13 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.extension.responsetemplating.ResponseTemplateTransformer;
 import com.williamsilva.algashop.ordering.core.domain.model.AbstractDomainIT;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.ZipCode;
+import com.williamsilva.algashop.ordering.core.domain.model.order.shipping.ShippingCostService.CalculationRequest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static com.williamsilva.algashop.ordering.core.domain.model.order.shipping.ShippingCostService.CalculationRequest;
 import static org.springframework.cloud.contract.wiremock.WireMockSpring.options;
 
 class ShippingCostServiceIT extends AbstractDomainIT {

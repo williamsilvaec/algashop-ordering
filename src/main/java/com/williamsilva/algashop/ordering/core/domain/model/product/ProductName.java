@@ -1,21 +1,16 @@
 package com.williamsilva.algashop.ordering.core.domain.model.product;
 
-import java.util.Objects;
+import com.williamsilva.algashop.ordering.core.domain.model.FieldValidations;
 
 public record ProductName(String value) {
 
-    public ProductName(String value) {
-        Objects.requireNonNull(value);
+	public ProductName {
+		FieldValidations.requiresNonBlank(value);
+	}
 
-        if (value.isBlank()) {
-            throw new IllegalArgumentException();
-        }
+	@Override
+	public String toString() {
+		return value;
+	}
 
-        this.value = value.trim();
-    }
-
-    @Override
-    public String toString() {
-        return this.value.toString();
-    }
 }

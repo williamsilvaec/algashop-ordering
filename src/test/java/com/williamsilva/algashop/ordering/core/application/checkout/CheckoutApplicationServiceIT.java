@@ -5,10 +5,13 @@ import com.williamsilva.algashop.ordering.core.domain.model.commons.Money;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Quantity;
 import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerTestDataBuilder;
 import com.williamsilva.algashop.ordering.core.domain.model.customer.Customers;
+import com.williamsilva.algashop.ordering.core.domain.model.order.CheckoutService;
 import com.williamsilva.algashop.ordering.core.domain.model.order.Order;
 import com.williamsilva.algashop.ordering.core.domain.model.order.OrderId;
+import com.williamsilva.algashop.ordering.core.domain.model.order.OrderPlacedEvent;
 import com.williamsilva.algashop.ordering.core.domain.model.order.OrderStatus;
 import com.williamsilva.algashop.ordering.core.domain.model.order.Orders;
+import com.williamsilva.algashop.ordering.core.domain.model.order.shipping.OriginAddressService;
 import com.williamsilva.algashop.ordering.core.domain.model.order.shipping.ShippingCostService;
 import com.williamsilva.algashop.ordering.core.domain.model.product.Product;
 import com.williamsilva.algashop.ordering.core.domain.model.product.ProductTestDataBuilder;
@@ -17,20 +20,23 @@ import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.Shoppin
 import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCartNotFoundException;
 import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCartTestDataBuilder;
 import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCarts;
+import com.williamsilva.algashop.ordering.core.ports.in.checkout.CheckoutInput;
+import com.williamsilva.algashop.ordering.infrastructure.adapters.in.listener.order.OrderEventListener;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
-
-class CheckoutApplicationServiceIT extends AbstractApplicationIT {
+class CheckoutApplicationServiceIT
+        extends AbstractApplicationIT {
 
     @Autowired
     private CheckoutApplicationService service;
@@ -44,8 +50,17 @@ class CheckoutApplicationServiceIT extends AbstractApplicationIT {
     @Autowired
     private Customers customers;
 
+    @Autowired
+    private CheckoutService checkoutService;
+
+    @Autowired
+    private OriginAddressService originAddressService;
+
     @MockitoBean
     private ShippingCostService shippingCostService;
+
+    @MockitoSpyBean
+    private OrderEventListener orderEventListener;
 
     @BeforeEach
     public void setup() {
@@ -86,6 +101,8 @@ class CheckoutApplicationServiceIT extends AbstractApplicationIT {
         Optional<ShoppingCart> updatedCart = shoppingCarts.ofId(shoppingCart.id());
         Assertions.assertThat(updatedCart).isPresent();
         Assertions.assertThat(updatedCart.get().isEmpty()).isTrue();
+
+        Mockito.verify(orderEventListener).listen(Mockito.any(OrderPlacedEvent.class));
     }
 
     @Test

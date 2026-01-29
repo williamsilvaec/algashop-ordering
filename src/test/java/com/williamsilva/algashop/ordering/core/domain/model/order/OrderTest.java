@@ -1,13 +1,13 @@
 package com.williamsilva.algashop.ordering.core.domain.model.order;
 
-import com.williamsilva.algashop.ordering.core.domain.model.product.ProductTestDataBuilder;
-import com.williamsilva.algashop.ordering.core.domain.model.product.ProductOutOfStockException;
-import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerId;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Money;
-import com.williamsilva.algashop.ordering.core.domain.model.product.Product;
-import com.williamsilva.algashop.ordering.core.domain.model.product.ProductName;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Quantity;
+import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerId;
+import com.williamsilva.algashop.ordering.core.domain.model.product.Product;
 import com.williamsilva.algashop.ordering.core.domain.model.product.ProductId;
+import com.williamsilva.algashop.ordering.core.domain.model.product.ProductName;
+import com.williamsilva.algashop.ordering.core.domain.model.product.ProductOutOfStockException;
+import com.williamsilva.algashop.ordering.core.domain.model.product.ProductTestDataBuilder;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.Test;
@@ -23,12 +23,12 @@ class OrderTest {
         Order order = Order.draft(customerId);
 
         Assertions.assertWith(order,
-                o-> Assertions.assertThat(o.id()).isNotNull(),
-                o-> Assertions.assertThat(o.customerId()).isEqualTo(customerId),
-                o-> Assertions.assertThat(o.totalAmount()).isEqualTo(Money.ZERO),
-                o-> Assertions.assertThat(o.totalItems()).isEqualTo(Quantity.ZERO),
-                o-> Assertions.assertThat(o.isDraft()).isTrue(),
-                o-> Assertions.assertThat(o.items()).isEmpty(),
+                o -> Assertions.assertThat(o.id()).isNotNull(),
+                o -> Assertions.assertThat(o.customerId()).isEqualTo(customerId),
+                o -> Assertions.assertThat(o.totalAmount()).isEqualTo(Money.ZERO),
+                o -> Assertions.assertThat(o.totalItems()).isEqualTo(Quantity.ZERO),
+                o -> Assertions.assertThat(o.isDraft()).isTrue(),
+                o -> Assertions.assertThat(o.items()).isEmpty(),
 
                 o -> Assertions.assertThat(o.placedAt()).isNull(),
                 o -> Assertions.assertThat(o.paidAt()).isNull(),
@@ -135,10 +135,14 @@ class OrderTest {
     public void givenDraftOrder_whenChangeShipping_shouldAllowChange() {
         Shipping shipping = OrderTestDataBuilder.aShipping();
         Order order = Order.draft(new CustomerId());
+        Money expectedTotalAmount = order.totalAmount().add(shipping.cost());
 
         order.changeShipping(shipping);
 
-        Assertions.assertWith(order, o -> Assertions.assertThat(o.shipping()).isEqualTo(shipping));
+        Assertions.assertWith(order,
+                o -> Assertions.assertThat(o.shipping()).isEqualTo(shipping),
+                o -> Assertions.assertThat(o.totalAmount()).isEqualTo(expectedTotalAmount)
+        );
     }
 
     @Test
@@ -152,7 +156,7 @@ class OrderTest {
         Order order = Order.draft(new CustomerId());
 
         Assertions.assertThatExceptionOfType(OrderInvalidShippingDeliveryDateException.class)
-                .isThrownBy(() -> order.changeShipping(shipping));
+                .isThrownBy(()-> order.changeShipping(shipping));
     }
 
     @Test
@@ -185,5 +189,5 @@ class OrderTest {
 
         Assertions.assertThatExceptionOfType(ProductOutOfStockException.class).isThrownBy(addItemTask);
     }
-
+  
 }

@@ -1,14 +1,15 @@
 package com.williamsilva.algashop.ordering.core.domain.model.product;
 
-import com.williamsilva.algashop.ordering.core.domain.model.DomainEntityNotFoundException;
+import com.williamsilva.algashop.ordering.core.domain.model.DomainException;
+import com.williamsilva.algashop.ordering.core.domain.model.ErrorMessages;
 
-import static com.williamsilva.algashop.ordering.core.domain.model.ErrorMessages.ERROR_PRODUCT_NOT_FOUND;
+public class ProductNotFoundException extends DomainException {
+    public ProductNotFoundException() {
 
-public class ProductNotFoundException extends DomainEntityNotFoundException {
-
-    public ProductNotFoundException() {}
-
-    public ProductNotFoundException(ProductId id) {
-        super(String.format(ERROR_PRODUCT_NOT_FOUND, id));
     }
+
+    public ProductNotFoundException(ProductId productId) {
+        super(String.format(ErrorMessages.ERROR_PRODUCT_NOT_FOUND, productId));
+    }
+
 }

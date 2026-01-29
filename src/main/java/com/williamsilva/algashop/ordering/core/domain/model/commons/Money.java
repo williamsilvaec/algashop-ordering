@@ -16,11 +16,10 @@ public record Money(BigDecimal value) implements Comparable<Money> {
 
     public Money(BigDecimal value) {
         Objects.requireNonNull(value);
-        if (value.signum() == -1) {
+        this.value = value.setScale(2, roundingMode);
+        if (this.value.signum() == -1) {
             throw new IllegalArgumentException();
         }
-
-        this.value = value.setScale(2, roundingMode);
     }
 
     public Money multiply(Quantity quantity) {
@@ -28,25 +27,26 @@ public record Money(BigDecimal value) implements Comparable<Money> {
         if (quantity.value() < 1) {
             throw new IllegalArgumentException();
         }
-
-        return new Money(this.value.multiply(new BigDecimal(quantity.value())));
+        BigDecimal multiplied = this.value.multiply(new BigDecimal(quantity.value()));
+        return new Money(multiplied);
     }
 
     public Money add(Money money) {
-        return new Money(this.value.add(money.value()));
-    }
-
-    public Money divide(Money money) {
-        return new Money(this.value.divide(money.value(), roundingMode));
+        Objects.requireNonNull(money);
+        return new Money(this.value.add(money.value));
     }
 
     @Override
     public String toString() {
-        return this.value.toString();
+        return value.toString();
     }
 
     @Override
     public int compareTo(Money o) {
         return this.value.compareTo(o.value);
+    }
+
+    public Money divide(Money o) {
+        return new Money(this.value.divide(o.value, roundingMode));
     }
 }

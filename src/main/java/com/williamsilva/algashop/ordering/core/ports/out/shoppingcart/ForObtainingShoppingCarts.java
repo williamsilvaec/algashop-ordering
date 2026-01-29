@@ -5,7 +5,6 @@ import com.williamsilva.algashop.ordering.core.ports.in.shoppingcart.ShoppingCar
 import java.util.UUID;
 
 public interface ForObtainingShoppingCarts {
-
     ShoppingCartOutput findById(UUID shoppingCartId);
     ShoppingCartOutput findByCustomerId(UUID customerId);
 }

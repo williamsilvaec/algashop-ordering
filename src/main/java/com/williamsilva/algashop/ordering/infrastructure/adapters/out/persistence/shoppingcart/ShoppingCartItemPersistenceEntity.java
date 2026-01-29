@@ -9,10 +9,9 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -25,9 +24,8 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity
+@Data
 @ToString(of = "id")
-@Getter
-@Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
@@ -35,45 +33,42 @@ import java.util.UUID;
 @Table(name = "shopping_cart_item")
 @EntityListeners(AuditingEntityListener.class)
 public class ShoppingCartItemPersistenceEntity {
+	@Id
+	@EqualsAndHashCode.Include
+	private UUID id;
+	@JoinColumn
+	@ManyToOne(optional = false)
+	private ShoppingCartPersistenceEntity shoppingCart;
+	private UUID productId;
+	private String name;
+	private BigDecimal price;
+	private Integer quantity;
+	private Boolean available;
+	private BigDecimal totalAmount;
 
-    @Id
-    @EqualsAndHashCode.Include
-    private UUID id;
+	@CreatedBy
+	private UUID createdByUserId;
 
-    @JoinColumn
-    @ManyToOne(optional = false)
-    private ShoppingCartPersistenceEntity shoppingCart;
+	@CreatedDate
+	private OffsetDateTime createdAt;
 
-    private UUID productId;
-    private String name;
-    private BigDecimal price;
-    private Integer quantity;
-    private Boolean available;
-    private BigDecimal totalAmount;
+	@LastModifiedDate
+	private OffsetDateTime lastModifiedAt;
 
-    @CreatedBy
-    private UUID createdByUserId;
+	@LastModifiedBy
+	private UUID lastModifiedByUserId;
 
-    @CreatedDate
-    private OffsetDateTime createdAt;
+	@Version
+	private Long version;
 
-    @LastModifiedDate
-    private OffsetDateTime lastModifiedAt;
+	private ShoppingCartPersistenceEntity getShoppingCart() {
+		return shoppingCart;
+	}
 
-    @LastModifiedBy
-    private UUID lastModifiedByUserId;
-
-    @Version
-    private Long version;
-
-    private ShoppingCartPersistenceEntity getShoppingCart() {
-        return shoppingCart;
-    }
-
-    public UUID getShoppingCartId() {
-        if (getShoppingCart() == null) {
-            return null;
-        }
-        return getShoppingCart().getId();
-    }
+	public UUID getShoppingCartId() {
+		if (getShoppingCart() == null) {
+			return null;
+		}
+		return getShoppingCart().getId();
+	}
 }

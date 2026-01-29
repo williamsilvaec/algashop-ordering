@@ -1,12 +1,12 @@
 package com.williamsilva.algashop.ordering.core.application.checkout;
 
-import com.williamsilva.algashop.ordering.core.application.checkout.BuyNowInput;
-import com.williamsilva.algashop.ordering.core.application.checkout.ShippingInput;
-import com.williamsilva.algashop.ordering.core.application.commons.AddressData;
-import com.williamsilva.algashop.ordering.core.application.order.query.BillingData;
-import com.williamsilva.algashop.ordering.core.application.order.query.RecipientData;
 import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerTestDataBuilder;
 import com.williamsilva.algashop.ordering.core.domain.model.product.ProductTestDataBuilder;
+import com.williamsilva.algashop.ordering.core.ports.in.checkout.BuyNowInput;
+import com.williamsilva.algashop.ordering.core.ports.in.checkout.ShippingInput;
+import com.williamsilva.algashop.ordering.core.ports.in.commons.AddressData;
+import com.williamsilva.algashop.ordering.core.ports.in.order.BillingData;
+import com.williamsilva.algashop.ordering.core.ports.in.order.RecipientData;
 
 import java.util.UUID;
 

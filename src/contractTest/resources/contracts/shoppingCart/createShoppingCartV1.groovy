@@ -27,24 +27,24 @@ Contract.make {
                 totalItems: 3,
                 totalAmount: 1250.00,
                 items: [
-                        [
-                                id: anyUuid(),
-                                productId: anyUuid(),
-                                name: "Notebook",
-                                price: 500.00,
-                                quantity: 2,
-                                totalAmount: 1000.00,
-                                available: anyBoolean()
-                        ],
-                        [
-                                id: anyUuid(),
-                                productId: anyUuid(),
-                                name: "Mouse pad",
-                                price: 250.00,
-                                quantity: 1,
-                                totalAmount: 250.00,
-                                available: anyBoolean()
-                        ]
+                    [
+                            id: anyUuid(),
+                            productId: anyUuid(),
+                            name: "Notebook",
+                            price: 500.00,
+                            quantity: 2,
+                            totalAmount: 1000.00,
+                            available: anyBoolean()
+                    ],
+                    [
+                            id: anyUuid(),
+                            productId: anyUuid(),
+                            name: "Mouse pad",
+                            price: 250.00,
+                            quantity: 1,
+                            totalAmount: 250.00,
+                            available: anyBoolean()
+                    ]
                 ]
         ])
     }

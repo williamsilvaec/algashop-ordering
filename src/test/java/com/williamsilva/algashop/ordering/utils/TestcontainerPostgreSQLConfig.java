@@ -16,4 +16,5 @@ public class TestcontainerPostgreSQLConfig {
     public PostgreSQLContainer postgreSQLContainer() {
         return postgreSQLContainer;
     }
+
 }

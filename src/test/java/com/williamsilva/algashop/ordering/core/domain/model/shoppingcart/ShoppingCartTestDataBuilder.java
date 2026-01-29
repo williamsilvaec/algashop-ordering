@@ -1,14 +1,13 @@
 package com.williamsilva.algashop.ordering.core.domain.model.shoppingcart;
 
-import com.williamsilva.algashop.ordering.core.domain.model.product.ProductTestDataBuilder;
-import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerId;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Quantity;
-
-import static com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerTestDataBuilder.DEFAULT_CUSTOMER_ID;
+import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerId;
+import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerTestDataBuilder;
+import com.williamsilva.algashop.ordering.core.domain.model.product.ProductTestDataBuilder;
 
 public class ShoppingCartTestDataBuilder {
 
-    public CustomerId customerId = DEFAULT_CUSTOMER_ID;
+    public CustomerId customerId = CustomerTestDataBuilder.DEFAULT_CUSTOMER_ID;
     public static final ShoppingCartId DEFAULT_SHOPPING_CART_ID = new ShoppingCartId();
     private boolean withItems = true;
 
@@ -27,7 +26,10 @@ public class ShoppingCartTestDataBuilder {
                     ProductTestDataBuilder.aProduct().build(),
                     new Quantity(2)
             );
-            cart.addItem(ProductTestDataBuilder.aProductAltRamMemory().build(), new Quantity(1));
+            cart.addItem(
+                    ProductTestDataBuilder.aProductAltRamMemory().build(),
+                    new Quantity(1)
+            );
         }
 
         return cart;
@@ -42,4 +44,4 @@ public class ShoppingCartTestDataBuilder {
         this.withItems = withItems;
         return this;
     }
-}
+} 

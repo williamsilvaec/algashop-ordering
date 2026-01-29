@@ -45,4 +45,5 @@ public class OrderCancelTest {
                 (i) -> Assertions.assertThat(i.canceledAt()).isNotNull()
         );
     }
+
 }

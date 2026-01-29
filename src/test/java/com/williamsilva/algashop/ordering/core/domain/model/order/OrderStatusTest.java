@@ -1,21 +1,20 @@
 package com.williamsilva.algashop.ordering.core.domain.model.order;
 
-
-import com.williamsilva.algashop.ordering.core.domain.model.order.OrderStatus;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class OrderStatusTest {
 
     @Test
-    void canChangeTo() {
+    public void canChangeTo() {
         Assertions.assertThat(OrderStatus.DRAFT.canChangeTo(OrderStatus.PLACED)).isTrue();
         Assertions.assertThat(OrderStatus.DRAFT.canChangeTo(OrderStatus.CANCELED)).isTrue();
         Assertions.assertThat(OrderStatus.PAID.canChangeTo(OrderStatus.DRAFT)).isFalse();
     }
 
     @Test
-    void canNotChangeTo() {
+    public void canNotChangeTo() {
         Assertions.assertThat(OrderStatus.PLACED.canNotChangeTo(OrderStatus.DRAFT)).isTrue();
     }
+
 }

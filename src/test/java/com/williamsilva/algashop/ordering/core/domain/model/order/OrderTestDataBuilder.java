@@ -1,8 +1,6 @@
 package com.williamsilva.algashop.ordering.core.domain.model.order;
 
-import com.williamsilva.algashop.ordering.core.domain.model.product.ProductTestDataBuilder;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Address;
-import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerId;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Document;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Email;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.FullName;
@@ -10,6 +8,8 @@ import com.williamsilva.algashop.ordering.core.domain.model.commons.Money;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Phone;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Quantity;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.ZipCode;
+import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerId;
+import com.williamsilva.algashop.ordering.core.domain.model.product.ProductTestDataBuilder;
 
 import java.time.LocalDate;
 
@@ -28,7 +28,7 @@ public class OrderTestDataBuilder {
 
     private OrderStatus status = OrderStatus.DRAFT;
 
-    private CreditCardId creditCardId = null;
+    private CreditCardId creditCardId;
 
     private OrderTestDataBuilder() {
 
@@ -169,4 +169,5 @@ public class OrderTestDataBuilder {
         this.creditCardId = creditCardId;
         return this;
     }
+
 }

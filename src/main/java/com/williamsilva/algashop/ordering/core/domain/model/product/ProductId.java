@@ -1,6 +1,5 @@
 package com.williamsilva.algashop.ordering.core.domain.model.product;
 
-
 import com.williamsilva.algashop.ordering.core.domain.model.IdGenerator;
 
 import java.util.Objects;

@@ -1,6 +1,5 @@
 package com.williamsilva.algashop.ordering.core.domain.model.customer;
 
-import com.williamsilva.algashop.ordering.core.domain.model.customer.LoyaltyPoints;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -23,8 +22,19 @@ class LoyaltyPointsTest {
         LoyaltyPoints loyaltyPoints = new LoyaltyPoints(10);
 
         Assertions.assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> loyaltyPoints.add(-5));
+                        .isThrownBy(()-> loyaltyPoints.add(-5));
 
         Assertions.assertThat(loyaltyPoints.value()).isEqualTo(10);
     }
+
+    @Test
+    void shouldNotAddZeroValue() {
+        LoyaltyPoints loyaltyPoints = new LoyaltyPoints(10);
+
+        Assertions.assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(()-> loyaltyPoints.add(0));
+
+        Assertions.assertThat(loyaltyPoints.value()).isEqualTo(10);
+    }
+
 }

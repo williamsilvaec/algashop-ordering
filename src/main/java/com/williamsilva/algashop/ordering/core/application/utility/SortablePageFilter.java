@@ -11,7 +11,6 @@ import org.springframework.data.domain.Sort;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public abstract class SortablePageFilter<T> extends PageFilter {
-
     private T sortByProperty;
     private Sort.Direction sortDirection;
 

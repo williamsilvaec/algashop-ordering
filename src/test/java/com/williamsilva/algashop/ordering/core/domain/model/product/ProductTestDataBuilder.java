@@ -1,9 +1,6 @@
 package com.williamsilva.algashop.ordering.core.domain.model.product;
 
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Money;
-import com.williamsilva.algashop.ordering.core.domain.model.product.Product;
-import com.williamsilva.algashop.ordering.core.domain.model.product.ProductId;
-import com.williamsilva.algashop.ordering.core.domain.model.product.ProductName;
 
 public class ProductTestDataBuilder {
 
@@ -38,9 +35,10 @@ public class ProductTestDataBuilder {
 
     public static Product.ProductBuilder aProductAltMousePad() {
         return Product.builder()
-                .id(DEFAULT_PRODUCT_ID)
+                .id(new ProductId())
                 .name(new ProductName("Mouse Pad"))
                 .price(new Money("100"))
                 .inStock(true);
     }
+
 }

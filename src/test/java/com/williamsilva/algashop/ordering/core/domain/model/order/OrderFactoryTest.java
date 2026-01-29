@@ -1,10 +1,9 @@
 package com.williamsilva.algashop.ordering.core.domain.model.order;
 
-
-import com.williamsilva.algashop.ordering.core.domain.model.product.ProductTestDataBuilder;
+import com.williamsilva.algashop.ordering.core.domain.model.commons.Quantity;
 import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerId;
 import com.williamsilva.algashop.ordering.core.domain.model.product.Product;
-import com.williamsilva.algashop.ordering.core.domain.model.commons.Quantity;
+import com.williamsilva.algashop.ordering.core.domain.model.product.ProductTestDataBuilder;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -20,9 +19,10 @@ class OrderFactoryTest {
 
         Quantity quantity = new Quantity(1);
         CustomerId customerId = new CustomerId();
+        CreditCardId creditCardId = new CreditCardId();
 
         Order order = OrderFactory.filled(
-                customerId, shipping, billing, paymentMethod, product, quantity, new CreditCardId()
+                customerId, shipping, billing, paymentMethod, product, quantity, creditCardId
         );
 
         Assertions.assertWith(order,
@@ -39,4 +39,5 @@ class OrderFactoryTest {
         Assertions.assertThat(order.isPlaced()).isTrue();
 
     }
+
 }

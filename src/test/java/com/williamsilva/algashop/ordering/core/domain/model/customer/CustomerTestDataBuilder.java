@@ -6,10 +6,6 @@ import com.williamsilva.algashop.ordering.core.domain.model.commons.Email;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.FullName;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Phone;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.ZipCode;
-import com.williamsilva.algashop.ordering.core.domain.model.customer.BirthDate;
-import com.williamsilva.algashop.ordering.core.domain.model.customer.Customer;
-import com.williamsilva.algashop.ordering.core.domain.model.customer.CustomerId;
-import com.williamsilva.algashop.ordering.core.domain.model.customer.LoyaltyPoints;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;

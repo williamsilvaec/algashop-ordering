@@ -19,6 +19,7 @@ public class CustomerRegistrationService {
             Phone phone, Document document, Boolean promotionNotificationsAllowed,
             Address address
     ) {
+
         Customer customer = Customer.brandNew()
                 .fullName(fullName)
                 .birthDate(birthDate)
@@ -34,14 +35,15 @@ public class CustomerRegistrationService {
         return customer;
     }
 
-    public void changeEmail(Customer customer, Email email) {
-        verifyEmailUniqueness(email, customer.id());
-        customer.changeEmail(email);
+    public void changeEmail(Customer customer, Email newEmail) {
+        verifyEmailUniqueness(newEmail, customer.id());
+        customer.changeEmail(newEmail);
     }
 
-    private void verifyEmailUniqueness(Email email, CustomerId id) {
-        if (!customers.isEmailUnique(email, id)) {
-            throw new CustomerEmailIsInUseException();
+    private void verifyEmailUniqueness(Email email, CustomerId customerId) {
+        if (!customers.isEmailUnique(email, customerId)) {
+            throw new CustomerEmailIsInUseException(customerId);
         }
     }
+
 }

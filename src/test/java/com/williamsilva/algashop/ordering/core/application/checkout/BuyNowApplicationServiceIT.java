@@ -10,6 +10,7 @@ import com.williamsilva.algashop.ordering.core.domain.model.order.shipping.Shipp
 import com.williamsilva.algashop.ordering.core.domain.model.product.Product;
 import com.williamsilva.algashop.ordering.core.domain.model.product.ProductCatalogService;
 import com.williamsilva.algashop.ordering.core.domain.model.product.ProductTestDataBuilder;
+import com.williamsilva.algashop.ordering.core.ports.in.checkout.BuyNowInput;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,8 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import java.time.LocalDate;
 import java.util.Optional;
 
-class BuyNowApplicationServiceIT extends AbstractApplicationIT {
+class BuyNowApplicationServiceIT
+        extends AbstractApplicationIT {
 
     @Autowired
     private BuyNowApplicationService buyNowApplicationService;
@@ -62,4 +64,5 @@ class BuyNowApplicationServiceIT extends AbstractApplicationIT {
         Assertions.assertThat(orderId).isNotBlank();
         Assertions.assertThat(orders.exists(new OrderId(orderId))).isTrue();
     }
+
 }

@@ -1,8 +1,8 @@
 package com.williamsilva.algashop.ordering.infrastructure.adapters.out.persistence.shoppingcart;
 
-import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCartProductAdjustmentService;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Money;
 import com.williamsilva.algashop.ordering.core.domain.model.product.ProductId;
+import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCartProductAdjustmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,18 +11,18 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ShoppingCartUpdateProvider implements ShoppingCartProductAdjustmentService {
 
-    private final ShoppingCartPersistenceEntityRepository repository;
+    private final ShoppingCartPersistenceEntityRepository shoppingCartPersistenceEntityRepository;
 
     @Override
     @Transactional
     public void adjustPrice(ProductId productId, Money updatedPrice) {
-        repository.updateItemPrice(productId.value(), updatedPrice.value());
-        repository.recalculateTotalsForCartsWithProduct(productId.value());
+        shoppingCartPersistenceEntityRepository.updateItemPrice(productId.value(), updatedPrice.value());
+        shoppingCartPersistenceEntityRepository.recalculateTotalsForCartsWithProduct(productId.value());
     }
 
     @Override
     @Transactional
-    public void changeAvailability(ProductId productId, boolean isAvailable) {
-        repository.updateItemAvailability(productId.value(), isAvailable);
+    public void changeAvailability(ProductId productId, boolean available) {
+        shoppingCartPersistenceEntityRepository.updateItemAvailability(productId.value(), available);
     }
 }

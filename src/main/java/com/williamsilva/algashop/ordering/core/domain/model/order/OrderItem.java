@@ -1,25 +1,25 @@
 package com.williamsilva.algashop.ordering.core.domain.model.order;
 
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Money;
-import com.williamsilva.algashop.ordering.core.domain.model.product.Product;
-import com.williamsilva.algashop.ordering.core.domain.model.product.ProductName;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Quantity;
+import com.williamsilva.algashop.ordering.core.domain.model.product.Product;
 import com.williamsilva.algashop.ordering.core.domain.model.product.ProductId;
+import com.williamsilva.algashop.ordering.core.domain.model.product.ProductName;
 import lombok.Builder;
 
 import java.util.Objects;
 
 public class OrderItem {
-
+    
     private OrderItemId id;
     private OrderId orderId;
-
+    
     private ProductId productId;
     private ProductName productName;
-
+    
     private Money price;
     private Quantity quantity;
-
+    
     private Money totalAmount;
 
     @Builder(builderClassName = "ExistingOrderItemBuilder", builderMethodName = "existing")
@@ -37,7 +37,13 @@ public class OrderItem {
     }
 
     @Builder(builderClassName = "BrandNewOrderItemBuilder", builderMethodName = "brandNew")
-    private static OrderItem createBrandNew(OrderId orderId, Product product, Quantity quantity) {
+    private static OrderItem createBrandNew(OrderId orderId,
+                                            Product product,
+                                            Quantity quantity) {
+        Objects.requireNonNull(product);
+        Objects.requireNonNull(orderId);
+        Objects.requireNonNull(quantity);
+
         OrderItem orderItem = new OrderItem(
                 new OrderItemId(),
                 orderId,
@@ -137,4 +143,5 @@ public class OrderItem {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
 }
