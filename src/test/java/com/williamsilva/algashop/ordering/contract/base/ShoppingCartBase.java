@@ -2,7 +2,7 @@ package com.williamsilva.algashop.ordering.contract.base;
 
 import com.williamsilva.algashop.ordering.core.application.shoppingcart.ShoppingCartManagementApplicationService;
 import com.williamsilva.algashop.ordering.core.application.shoppingcart.query.ShoppingCartOutputTestDataBuilder;
-import com.williamsilva.algashop.ordering.core.application.shoppingcart.query.ShoppingCartQueryService;
+import com.williamsilva.algashop.ordering.core.ports.in.shoppingcart.ForQueryingShoppingCarts;
 import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCartNotFoundException;
 import com.williamsilva.algashop.ordering.presentation.shoppingcart.ShoppingCartController;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
@@ -27,7 +27,7 @@ public class ShoppingCartBase {
     private ShoppingCartManagementApplicationService managementService;
 
     @MockitoBean
-    private ShoppingCartQueryService queryService;
+    private ForQueryingShoppingCarts queryService;
 
     public static final UUID validShoppingCartId = UUID.fromString("ad265aa3-c77d-46e9-9782-b70c487c1e17");
 

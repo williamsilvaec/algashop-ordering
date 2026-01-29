@@ -1,6 +1,6 @@
 package com.williamsilva.algashop.ordering.presentation.shoppingcart;
 
-import com.williamsilva.algashop.ordering.core.application.shoppingcart.query.ShoppingCartItemOutput;
+import com.williamsilva.algashop.ordering.core.ports.in.shoppingcart.ShoppingCartItemOutput;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

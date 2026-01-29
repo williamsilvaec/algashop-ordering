@@ -1,9 +1,9 @@
 package com.williamsilva.algashop.ordering.infrastructure.persistence.shoppingcart;
 
-import com.williamsilva.algashop.ordering.core.application.shoppingcart.query.ShoppingCartOutput;
-import com.williamsilva.algashop.ordering.core.application.shoppingcart.query.ShoppingCartQueryService;
 import com.williamsilva.algashop.ordering.core.application.utility.Mapper;
 import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCartNotFoundException;
+import com.williamsilva.algashop.ordering.core.ports.in.shoppingcart.ShoppingCartOutput;
+import com.williamsilva.algashop.ordering.core.ports.out.shoppingcart.ForObtainingShoppingCarts;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Component
 @Transactional(readOnly = true)
-public class ShoppingCartQueryServiceImpl implements ShoppingCartQueryService {
+public class ShoppingCartQueryServiceImpl implements ForObtainingShoppingCarts {
 
     private final ShoppingCartPersistenceEntityRepository persistenceRepository;
     private final Mapper mapper;
