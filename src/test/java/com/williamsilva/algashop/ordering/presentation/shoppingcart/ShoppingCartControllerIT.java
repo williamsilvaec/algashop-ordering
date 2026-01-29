@@ -1,6 +1,6 @@
 package com.williamsilva.algashop.ordering.presentation.shoppingcart;
 
-import com.williamsilva.algashop.ordering.infrastructure.persistence.shoppingcart.ShoppingCartPersistenceEntityRepository;
+import com.williamsilva.algashop.ordering.infrastructure.adapters.out.persistence.shoppingcart.ShoppingCartPersistenceEntityRepository;
 import com.williamsilva.algashop.ordering.presentation.AbstractPresentationIT;
 import com.williamsilva.algashop.ordering.utils.AlgaShopResourceUtils;
 import io.restassured.RestAssured;

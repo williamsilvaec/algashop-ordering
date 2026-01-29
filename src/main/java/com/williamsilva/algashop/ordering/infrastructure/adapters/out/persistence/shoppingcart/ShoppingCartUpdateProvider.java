@@ -1,4 +1,4 @@
-package com.williamsilva.algashop.ordering.infrastructure.persistence.shoppingcart;
+package com.williamsilva.algashop.ordering.infrastructure.adapters.out.persistence.shoppingcart;
 
 import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCartProductAdjustmentService;
 import com.williamsilva.algashop.ordering.core.domain.model.commons.Money;

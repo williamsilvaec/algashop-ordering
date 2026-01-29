@@ -1,4 +1,4 @@
-package com.williamsilva.algashop.ordering.infrastructure.persistence.shoppingcart;
+package com.williamsilva.algashop.ordering.infrastructure.adapters.out.persistence.shoppingcart;
 
 import com.williamsilva.algashop.ordering.core.application.utility.Mapper;
 import com.williamsilva.algashop.ordering.core.domain.model.shoppingcart.ShoppingCartNotFoundException;
@@ -11,12 +11,12 @@ import java.util.UUID;
 
 @Component
 @Transactional(readOnly = true)
-public class ShoppingCartQueryServiceImpl implements ForObtainingShoppingCarts {
+public class ForObtainingShoppingCartsJpaRepositoryImpl implements ForObtainingShoppingCarts {
 
     private final ShoppingCartPersistenceEntityRepository persistenceRepository;
     private final Mapper mapper;
 
-    public ShoppingCartQueryServiceImpl(ShoppingCartPersistenceEntityRepository persistenceRepository, Mapper mapper) {
+    public ForObtainingShoppingCartsJpaRepositoryImpl(ShoppingCartPersistenceEntityRepository persistenceRepository, Mapper mapper) {
         this.persistenceRepository = persistenceRepository;
         this.mapper = mapper;
     }
